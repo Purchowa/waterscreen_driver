@@ -1,6 +1,5 @@
 #include "waterscreen_state_context.h"
-
-waterscreenState_t g_waterscreenState = {.demoMode = false, .isPresenting = false, .valveOpenStateCounter = 0}; // old state concept
+#include "waterscreen_states.h"
 
 WaterscreenContext_t g_waterscreenContext = { .waterscreenStateHandler = idleState};
 

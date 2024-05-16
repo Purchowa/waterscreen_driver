@@ -13,6 +13,7 @@
 #include "board.h"
 #include "fsl_power.h"
 
+#include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
 
 
@@ -45,12 +46,6 @@ static void swTimerWaterBurstCallback(TimerHandle_t xTimer);
 
 static uint8_t g_valveSrcPacketBuffer[VALVE_BUFFER_SIZE] = {0};
 static uint8_t g_valveDestPacketBuffer[VALVE_BUFFER_SIZE] = {0};
-
-static void turnOffWaterscreenDemo(waterscreenState_t* state) {
-	state->demoMode = false;
-	state->isPresenting = false;
-	state->valveOpenStateCounter = 0;
-}
 
 // Testing SPI
 static void test_initSourceValveBuffer(uint8_t* valveBuffer) {

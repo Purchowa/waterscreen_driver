@@ -11,13 +11,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef struct {
-	bool demoMode;
-	bool isPresenting;
-	uint32_t valveOpenStateCounter;
-} waterscreenState_t;
-extern waterscreenState_t g_waterscreenState;
-
 typedef void (*waterscreenStateFunction_t)();
 typedef struct {
 	waterscreenStateFunction_t waterscreenStateHandler;
