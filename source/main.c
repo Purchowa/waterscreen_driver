@@ -13,8 +13,8 @@
 #include "board.h"
 #include "fsl_power.h"
 
-#include "waterscreen_state_context.h"
-#include "waterscreen_states.h"
+#include "waterscreen_state/waterscreen_state_context.h"
+#include "waterscreen_state/waterscreen_states.h"
 
 
 
