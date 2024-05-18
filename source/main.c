@@ -15,6 +15,7 @@
 
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
+#include "power_control.h"
 
 #define RUN_UNIT_TESTS 0
 #if RUN_UNIT_TESTS
@@ -26,7 +27,7 @@
 /*** RTOS WiFi Task configuration ***/
 
 // Task priority
-#define WIFI_TASK_PRIORITY (configMAX_PRIORITIES - 3)
+#define WIFI_TASK_PRIORITY (configTIMER_TASK_PRIORITY - 1) // Software Time must have the highest priority.
 
 // Size in bytes I guess
 #define WIFI_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE + 100)
@@ -75,7 +76,6 @@ int main() {
     /*reset FLEXCOMM for SPI*/
     RESET_PeripheralReset(VALVES_SPI_RESET);
     // --
-
 
 	CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     /* Init board hardware. */
@@ -127,7 +127,6 @@ int main() {
 	for (;;){
 	}
 
-
 	return 0;
 }
 
@@ -135,10 +134,17 @@ static void mockWifiTask(void* context) {
 	PRINTF("Hello from WiFi task.\r\n");
   	for (;;) {
 		if (isS3ButtonPressed()) {
-				changeWaterscreenState((WaterscreenContext_t*) context, demoModeState);
-			}
+			manageValvePower(OnDeviceState);
+			manageWaterPump(OnDeviceState);
+
+			changeWaterscreenState((WaterscreenContext_t*) context, demoModeState);
+		}
+
 		if (isS2ButtonPressed()){
 			changeWaterscreenState((WaterscreenContext_t*) context, closeValvesState);
+
+			manageValvePower(OffDeviceState);
+			manageWaterPump(OffDeviceState);
 		}
 	}
 

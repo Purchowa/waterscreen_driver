@@ -14,10 +14,15 @@ mcu_data: ksdk2_0
 processor_version: 14.0.0
 board: LPCXpresso55S69
 pin_labels:
+- {pin_num: '7', pin_signal: PIO0_1/FC3_CTS_SDA_SSEL0/CT_INP0/SCT_GPI1/SD1_CLK/CMP0_OUT/SECURE_GPIO0_1, label: 'P18[2]/SD1_CLK', identifier: POWER_SUPPLY}
 - {pin_num: '81', pin_signal: PIO0_2/FC3_TXD_SCL_MISO_WS/CT_INP1/SCT0_OUT0/SCT_GPI2/SECURE_GPIO0_2, label: 'U6[11]/P20[5]/FC3_SPI_MISO', identifier: VALVE_MISO}
 - {pin_num: '83', pin_signal: PIO0_3/FC3_RXD_SDA_MOSI_DATA/CTIMER0_MAT1/SCT0_OUT1/SCT_GPI3/SECURE_GPIO0_3, label: 'U3[11]/P20[3]/FC3_SPI_MOSI', identifier: VALVE_MOSI}
 - {pin_num: '89', pin_signal: PIO0_6/FC3_SCK/CT_INP13/CTIMER4_MAT0/SCT_GPI6/SECURE_GPIO0_6, label: 'U3[13]/P20[7]/FC3_SPI_SCK', identifier: VALVE_MOSI}
 - {pin_num: '62', pin_signal: PIO1_3/SCT0_OUT4/HS_SPI_MISO/USB0_PORTPWRN/PLU_OUT6, label: 'P17[11]/P23[5]/LSPI_HS_MISO', identifier: VALVE_RELAY}
+- {pin_num: '57', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, label: 'P18[4]/SD1_CMD', identifier: PUMP}
+- {pin_num: '82', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, label: 'P18[12]/SD1_D2', identifier: BOTTOM_WATER_SENSOR}
+- {pin_num: '42', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, label: 'P18[8]/PLU_OUT5/GPIO/SD1_D3/FC4_SPI_SSEL2', identifier: UPPER_WATER_SENSOR_2}
+- {pin_num: '77', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, label: 'P18[6]/PLU_CLKIN/GPIO/SD1_D0', identifier: UPPER_WATER_SENSOR_1}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -925,7 +930,13 @@ void BOARD_InitPMODPins(void)
 BOARD_InitGPIOPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '62', peripheral: GPIO, signal: 'PIO1, 3', pin_signal: PIO1_3/SCT0_OUT4/HS_SPI_MISO/USB0_PORTPWRN/PLU_OUT6}
+  - {pin_num: '7', peripheral: GPIO, signal: 'PIO0, 1', pin_signal: PIO0_1/FC3_CTS_SDA_SSEL0/CT_INP0/SCT_GPI1/SD1_CLK/CMP0_OUT/SECURE_GPIO0_1, direction: OUTPUT,
+    gpio_init_state: 'true'}
+  - {pin_num: '57', peripheral: GPIO, signal: 'PIO1, 14', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, direction: OUTPUT,
+    gpio_init_state: 'true'}
+  - {pin_num: '77', peripheral: GPIO, signal: 'PIO1, 25', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, direction: INPUT}
+  - {pin_num: '42', peripheral: GPIO, signal: 'PIO1, 23', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, direction: INPUT}
+  - {pin_num: '82', peripheral: GPIO, signal: 'PIO1, 15', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, direction: INPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -942,18 +953,111 @@ void BOARD_InitGPIOPins(void)
     /* Enables the clock for the I/O controller.: Enable Clock. */
     CLOCK_EnableClock(kCLOCK_Iocon);
 
-    IOCON->PIO[1][3] = ((IOCON->PIO[1][3] &
+    /* Enables the clock for the GPIO0 module */
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+
+    /* Enables the clock for the GPIO1 module */
+    CLOCK_EnableClock(kCLOCK_Gpio1);
+
+    gpio_pin_config_t POWER_SUPPLY_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO0_1 (pin 7)  */
+    GPIO_PinInit(BOARD_INITGPIOPINS_POWER_SUPPLY_GPIO, BOARD_INITGPIOPINS_POWER_SUPPLY_PORT, BOARD_INITGPIOPINS_POWER_SUPPLY_PIN, &POWER_SUPPLY_config);
+
+    gpio_pin_config_t PUMP_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_14 (pin 57)  */
+    GPIO_PinInit(BOARD_INITGPIOPINS_PUMP_GPIO, BOARD_INITGPIOPINS_PUMP_PORT, BOARD_INITGPIOPINS_PUMP_PIN, &PUMP_config);
+
+    gpio_pin_config_t BOTTOM_WATER_SENSOR_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_15 (pin 82)  */
+    GPIO_PinInit(BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO, BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PORT, BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN, &BOTTOM_WATER_SENSOR_config);
+
+    gpio_pin_config_t UPPER_WATER_SENSOR_2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_23 (pin 42)  */
+    GPIO_PinInit(BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_GPIO, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PORT, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN, &UPPER_WATER_SENSOR_2_config);
+
+    gpio_pin_config_t UPPER_WATER_SENSOR_1_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_25 (pin 77)  */
+    GPIO_PinInit(BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_GPIO, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PORT, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PIN, &UPPER_WATER_SENSOR_1_config);
+
+    IOCON->PIO[0][1] = ((IOCON->PIO[0][1] &
                          /* Mask bits to zero which are setting */
                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
 
                         /* Selects pin function.
-                         * : PORT13 (pin 62) is configured as PIO1_3. */
-                        | IOCON_PIO_FUNC(PIO1_3_FUNC_ALT0)
+                         * : PORT01 (pin 7) is configured as PIO0_1. */
+                        | IOCON_PIO_FUNC(PIO0_1_FUNC_ALT0)
 
                         /* Select Digital mode.
                          * : Enable Digital mode.
                          * Digital input is enabled. */
-                        | IOCON_PIO_DIGIMODE(PIO1_3_DIGIMODE_DIGITAL));
+                        | IOCON_PIO_DIGIMODE(PIO0_1_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[1][14] = ((IOCON->PIO[1][14] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT114 (pin 57) is configured as PIO1_14. */
+                         | IOCON_PIO_FUNC(PIO1_14_FUNC_ALT0)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO1_14_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[1][15] = ((IOCON->PIO[1][15] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT115 (pin 82) is configured as PIO1_15. */
+                         | IOCON_PIO_FUNC(PIO1_15_FUNC_ALT0)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO1_15_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[1][23] = ((IOCON->PIO[1][23] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT123 (pin 42) is configured as PIO1_23. */
+                         | IOCON_PIO_FUNC(PIO1_23_FUNC_ALT0)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO1_23_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[1][25] = ((IOCON->PIO[1][25] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT125 (pin 77) is configured as PIO1_25. */
+                         | IOCON_PIO_FUNC(PIO1_25_FUNC_ALT0)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO1_25_DIGIMODE_DIGITAL));
 }
 /***********************************************************************************************************************
  * EOF

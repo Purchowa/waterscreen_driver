@@ -432,19 +432,121 @@ void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 (Core #0
  */
 void BOARD_InitPMODPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
-#define PIO1_3_DIGIMODE_DIGITAL 0x01u /*!<@brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
-#define PIO1_3_FUNC_ALT0 0x00u        /*!<@brief Selects pin function.: Alternative connection 0. */
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_1_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO0_1_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_14_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_14_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_15_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_15_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_23_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_23_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_25_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_25_FUNC_ALT0 0x00u
 
-/*! @name PIO1_3 (number 62), P17[11]/P23[5]/LSPI_HS_MISO
+/*! @name PIO0_1 (number 7), P18[2]/SD1_CLK
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITGPIOPINS_VALVE_RELAY_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITGPIOPINS_VALVE_RELAY_GPIO_PIN_MASK (1U << 3U) /*!<@brief GPIO pin mask */
-#define BOARD_INITGPIOPINS_VALVE_RELAY_PORT 1U                  /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITGPIOPINS_VALVE_RELAY_PIN 3U                   /*!<@brief PORT pin number */
-#define BOARD_INITGPIOPINS_VALVE_RELAY_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
-                                                                /* @} */
+#define BOARD_INITGPIOPINS_POWER_SUPPLY_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_POWER_SUPPLY_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_POWER_SUPPLY_PORT 0U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_POWER_SUPPLY_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITGPIOPINS_POWER_SUPPLY_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                                 /* @} */
+
+/*! @name PIO1_14 (number 57), P18[4]/SD1_CMD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITGPIOPINS_PUMP_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_PUMP_GPIO_PIN_MASK (1U << 14U) /*!<@brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_PUMP_PORT 1U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_PUMP_PIN 14U                   /*!<@brief PORT pin number */
+#define BOARD_INITGPIOPINS_PUMP_PIN_MASK (1U << 14U)      /*!<@brief PORT pin mask */
+                                                          /* @} */
+
+/*! @name PIO1_25 (number 77), P18[6]/PLU_CLKIN/GPIO/SD1_D0
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+/*!
+ * @brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_GPIO GPIO
+/*!
+ * @brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_GPIO_PIN_MASK (1U << 25U)
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PORT 1U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PIN 25U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PIN_MASK (1U << 25U)
+/* @} */
+
+/*! @name PIO1_23 (number 42), P18[8]/PLU_OUT5/GPIO/SD1_D3/FC4_SPI_SSEL2
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+/*!
+ * @brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_GPIO GPIO
+/*!
+ * @brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_GPIO_PIN_MASK (1U << 23U)
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PORT 1U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN 23U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN_MASK (1U << 23U)
+/* @} */
+
+/*! @name PIO1_15 (number 82), P18[12]/SD1_D2
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+/*!
+ * @brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO GPIO
+/*!
+ * @brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO_PIN_MASK (1U << 15U)
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PORT 1U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN 15U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN_MASK (1U << 15U)
+/* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
