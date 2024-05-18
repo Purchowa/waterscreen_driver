@@ -1,15 +1,11 @@
-/*
- * waterscreen_states.h
- *
- *  Created on: 14 maj 2024
- *      Author: purch
- */
 
 #ifndef WATERSCREEN_STATES_H_
 #define WATERSCREEN_STATES_H_
 
-void demoModeState();
-void closeValvesState();
-void idleState();
+#include "waterscreen_state_context.h"
+
+void demoModeState(WaterscreenContext_t*);
+void closeValvesState(WaterscreenContext_t*);
+void idleState(WaterscreenContext_t*);
 
 #endif /* WATERSCREEN_STATES_H_ */

@@ -18,36 +18,36 @@ static uint8_t lastElementIndex(const uint8_t pictureIndex){
 	return g_pictureData[pictureIndex].rowCount - 1;
 }
 
-void demoModeState() {
-	static uint8_t pictureIndex = 0;
+void demoModeState(WaterscreenContext_t* context) {
+	static uint8_t pictureIndex = -1;
 	static uint8_t valveOpenStateCounter = 0;
-	valveOpenStateCounter = lastElementIndex(pictureIndex);
-
-	// Print picture in direction - bottom-up
-	sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter--]);
-
-	PRINTF("[%d]: valve burst!\r\n", valveOpenStateCounter);
 
 	if (valveOpenStateCounter <= 0){
-		pictureIndex++;
+		++pictureIndex;
 
 		if (PICTURE_BUFFER_SIZE <= pictureIndex){
 			pictureIndex = 0;
-			changeWaterscreenState(closeValvesState);
+			changeWaterscreenState(context, closeValvesState);
 		}
-		valveOpenStateCounter = lastElementIndex(pictureIndex);
+		else{
+			valveOpenStateCounter = lastElementIndex(pictureIndex);
+		}
+	}
+	else{
+		sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter--]); // Print picture in direction - bottom-up
+		PRINTF("[%d]: valve burst!\r\n", valveOpenStateCounter);
 	}
 }
 
-void closeValvesState() {
+void closeValvesState(WaterscreenContext_t* context) {
 	static const uint64_t closeValves = 0;
 
 	sendDataToValves(&closeValves);
 
-	changeWaterscreenState(idleState);
+	changeWaterscreenState(context, idleState);
 }
 
 
-void idleState() {
+void idleState(WaterscreenContext_t* context) {
 
 }

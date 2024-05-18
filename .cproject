@@ -129,6 +129,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/startup}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/uCUnit}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/tests}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/waterscreen_state}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1540524650" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.4634256" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>

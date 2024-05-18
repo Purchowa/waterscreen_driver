@@ -1,13 +1,11 @@
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
 
-WaterscreenContext_t g_waterscreenContext = { .waterscreenStateHandler = idleState};
-
-void changeWaterscreenState(waterscreenStateFunction_t newState){
-	g_waterscreenContext.waterscreenStateHandler = newState;
+void changeWaterscreenState(WaterscreenContext_t* context, waterscreenStateFunction_t newState){
+	context->waterscreenStateHandler = newState;
 }
 
-void performWaterscreenAction(){
-	g_waterscreenContext.waterscreenStateHandler();
+void performWaterscreenAction(WaterscreenContext_t* context){
+	context->waterscreenStateHandler(context);
 }
 

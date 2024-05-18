@@ -13,10 +13,15 @@
 #include "board.h"
 #include "fsl_power.h"
 
-#include "waterscreen_state/waterscreen_state_context.h"
-#include "waterscreen_state/waterscreen_states.h"
+#include "waterscreen_state_context.h"
+#include "waterscreen_states.h"
 
+#define RUN_UNIT_TESTS 0
+#if RUN_UNIT_TESTS
 
+#include "test_main.h"
+
+#endif
 
 /*** RTOS WiFi Task configuration ***/
 
@@ -49,6 +54,10 @@ static void swTimerWaterBurstCallback(TimerHandle_t xTimer);
 /*** Board buttons ***/
 static bool isS3ButtonPressed(){
 	return (GPIO_PinRead(BOARD_INITBUTTONSPINS_S3_GPIO, BOARD_INITBUTTONSPINS_S3_PORT, BOARD_INITBUTTONSPINS_S3_PIN) == 0);
+}
+
+static bool isS2ButtonPressed(){
+	return (GPIO_PinRead(BOARD_INITBUTTONSPINS_S2_GPIO, BOARD_INITBUTTONSPINS_S2_PORT, BOARD_INITBUTTONSPINS_S2_PIN) == 0);
 }
 /* --- */
 
@@ -93,26 +102,28 @@ int main() {
     // ---
 
 
-#if VALVES_SPI_TESTING
-
+#if RUN_UNIT_TESTS
+    runUnitTests();
 #else
+    WaterscreenContext_t waterscreenContext = { .waterscreenStateHandler = idleState, .data=0};
 
+    if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, &waterscreenContext, WIFI_TASK_PRIORITY, NULL) !=
+    		pdPASS)
+    	{
+    		PRINTF("WiFi task creation failed!.\r\n");
+    		while (1)
+    			;
+    	}
+
+    	// --- Timer for writing every row of water.
+    	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, &waterscreenContext, swTimerWaterBurstCallback);
+
+    	static const int ticksToWait = 0;
+    	xTimerStart(swTimerHandle, ticksToWait);
+    	vTaskStartScheduler();
 #endif
 
-	if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL) !=
-		pdPASS)
-	{
-		PRINTF("WiFi task creation failed!.\r\n");
-		while (1)
-			;
-	}
 
-	// --- Timer for writing every row of water.
-	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, NO_ID, swTimerWaterBurstCallback);
-
-	static const int ticksToWait = 0;
-	xTimerStart(swTimerHandle, ticksToWait);
-	vTaskStartScheduler();
 	for (;;){
 	}
 
@@ -120,17 +131,21 @@ int main() {
 	return 0;
 }
 
-static void mockWifiTask(void* pvParameters) {
+static void mockWifiTask(void* context) {
 	PRINTF("Hello from WiFi task.\r\n");
   	for (;;) {
 		if (isS3ButtonPressed()) {
-				changeWaterscreenState(demoModeState);
+				changeWaterscreenState((WaterscreenContext_t*) context, demoModeState);
 			}
+		if (isS2ButtonPressed()){
+			changeWaterscreenState((WaterscreenContext_t*) context, closeValvesState);
+		}
 	}
 
 	vTaskSuspend(NULL); // Basically kill task.
 }
 
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer) {
-	performWaterscreenAction();
+	WaterscreenContext_t* context = (WaterscreenContext_t*)pvTimerGetTimerID(xTimer); // Allowed in documentation
+	performWaterscreenAction(context);
 }

@@ -52,8 +52,7 @@ void System_exit(int val) {
 /* Stub: Initialize your hardware here */
 void System_Init(void)
 {
-
-	PRINTF("Init of hardware finished.\n");
+	PRINTF("Init of hardware finished.\r\n");
 }
 
 /* Stub: Shutdown your hardware here */
@@ -61,7 +60,7 @@ void System_Shutdown(void)
 {
 
 	/* asm("\tSTOP"); */
-	PRINTF("System shutdown.\n");
+	PRINTF("System shutdown.\r\n");
 	System_exit(0);
 }
 
@@ -70,7 +69,7 @@ void System_Recover(void)
 {
 	/* Stub: Recover the hardware */
 	/* asm("\tRESET"); */
-	PRINTF("System reset.\n");
+	PRINTF("System reset.\r\n");
 	System_exit(0);
 }
 
@@ -87,7 +86,7 @@ void System_Safestate(void)
 
 	/* Put processor into idle state */
 	/* asm("\tIDLE"); */
-	PRINTF("System safe state.\n");
+	PRINTF("System safe state.\r\n");
 	System_exit(0);
 }
 

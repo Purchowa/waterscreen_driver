@@ -11,14 +11,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef void (*waterscreenStateFunction_t)();
-typedef struct {
+struct WaterscreenContext;
+
+typedef void (*waterscreenStateFunction_t)(struct WaterscreenContext*);
+
+typedef struct WaterscreenContext{
 	waterscreenStateFunction_t waterscreenStateHandler;
+	int data;
 } WaterscreenContext_t;
 
-extern WaterscreenContext_t g_waterscreenContext;
-
-void changeWaterscreenState(waterscreenStateFunction_t newState);
-void performWaterscreenAction();
+void changeWaterscreenState(WaterscreenContext_t* context, waterscreenStateFunction_t newState);
+void performWaterscreenAction(WaterscreenContext_t* context);
 
 #endif /* WATERSCREEN_STATE_CONTEXT_H_ */
