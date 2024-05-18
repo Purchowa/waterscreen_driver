@@ -426,25 +426,31 @@ void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 (Core #0
  */
 #define PIO0_6_MODE_INACTIVE 0x00u
 
-/*! @name PIO0_3 (number 83), U3[11]/P20[3]/FC3_SPI_MOSI
-  @{ */
-#define BOARD_INITPMODPINS_VALVE_MOSI_PORT 0U                  /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPMODPINS_VALVE_MOSI_PIN 3U                   /*!<@brief PORT pin number */
-#define BOARD_INITPMODPINS_VALVE_MOSI_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
-                                                               /* @} */
-
-/*! @name PIO0_2 (number 81), U6[11]/P20[5]/FC3_SPI_MISO
-  @{ */
-#define BOARD_INITPMODPINS_VALVE_MISO_PORT 0U                  /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPMODPINS_VALVE_MISO_PIN 2U                   /*!<@brief PORT pin number */
-#define BOARD_INITPMODPINS_VALVE_MISO_PIN_MASK (1U << 2U)      /*!<@brief PORT pin mask */
-                                                               /* @} */
-
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitPMODPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+
+#define PIO1_3_DIGIMODE_DIGITAL 0x01u /*!<@brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_3_FUNC_ALT0 0x00u        /*!<@brief Selects pin function.: Alternative connection 0. */
+
+/*! @name PIO1_3 (number 62), P17[11]/P23[5]/LSPI_HS_MISO
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITGPIOPINS_VALVE_RELAY_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITGPIOPINS_VALVE_RELAY_GPIO_PIN_MASK (1U << 3U) /*!<@brief GPIO pin mask */
+#define BOARD_INITGPIOPINS_VALVE_RELAY_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITGPIOPINS_VALVE_RELAY_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITGPIOPINS_VALVE_RELAY_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitGPIOPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 #if defined(__cplusplus)
 }

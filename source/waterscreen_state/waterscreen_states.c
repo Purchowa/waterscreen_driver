@@ -14,26 +14,28 @@ static void sendDataToValves(const uint64_t* data){
 	SPI_MasterTransferBlocking(VALVES_SPI_MASTER, &valvesTransfer);
 }
 
-static void iteratePicture(uint8_t* valveOpenStateCounter, uint8_t* pictureIndex){
-	*valveOpenStateCounter = 0;
-	++(*pictureIndex);
+static uint8_t lastElementIndex(const uint8_t pictureIndex){
+	return g_pictureData[pictureIndex].rowCount - 1;
 }
 
 void demoModeState() {
-	static uint8_t valveOpenStateCounter = 0;
 	static uint8_t pictureIndex = 0;
+	static uint8_t valveOpenStateCounter = 0;
+	valveOpenStateCounter = lastElementIndex(pictureIndex);
 
-	sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter++]);
+	// Print picture in direction - bottom-up
+	sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter--]);
 
 	PRINTF("[%d]: valve burst!\r\n", valveOpenStateCounter);
 
-	if (g_pictureData[pictureIndex].rowCount <= valveOpenStateCounter){
-		iteratePicture(&valveOpenStateCounter, &pictureIndex); // One picture after another without delay.
+	if (valveOpenStateCounter <= 0){
+		pictureIndex++;
 
 		if (PICTURE_BUFFER_SIZE <= pictureIndex){
 			pictureIndex = 0;
 			changeWaterscreenState(closeValvesState);
 		}
+		valveOpenStateCounter = lastElementIndex(pictureIndex);
 	}
 }
 
