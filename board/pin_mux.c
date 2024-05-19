@@ -41,6 +41,7 @@ pin_labels:
 void BOARD_InitBootPins(void)
 {
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitLEDsPins();
     BOARD_InitBUTTONsPins();
     BOARD_InitPMODPins();
     BOARD_InitGPIOPins();
@@ -344,7 +345,7 @@ void BOARD_InitUSBPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLEDsPins:
-- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '1', peripheral: GPIO, signal: 'PIO1, 4', pin_signal: PIO1_4/FC0_SCK/SD0_D0/CTIMER2_MAT1/SCT0_OUT0/FREQME_GPIO_CLK_A, direction: OUTPUT, gpio_init_state: 'true',
     mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}

@@ -12,12 +12,12 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_power.h"
+#include "fsl_common.h"
 
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
-#include "power_control.h"
 
-#define RUN_UNIT_TESTS 0
+
 #if RUN_UNIT_TESTS
 
 #include "test_main.h"
@@ -105,7 +105,7 @@ int main() {
 #if RUN_UNIT_TESTS
     runUnitTests();
 #else
-    WaterscreenContext_t waterscreenContext = { .waterscreenStateHandler = idleState, .data=0};
+    WaterscreenContext_t waterscreenContext = { .waterscreenStateHandler = idleState, .currentStateStatus = kStatus_Success};
 
     if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, &waterscreenContext, WIFI_TASK_PRIORITY, NULL) !=
     		pdPASS)
@@ -131,20 +131,16 @@ int main() {
 }
 
 static void mockWifiTask(void* context) {
-	PRINTF("Hello from WiFi task.\r\n");
+	// PRINTF("Hello from WiFi task.\r\n");
   	for (;;) {
 		if (isS3ButtonPressed()) {
-			manageValvePower(OnDeviceState);
-			manageWaterPump(OnDeviceState);
 
 			changeWaterscreenState((WaterscreenContext_t*) context, demoModeState);
 		}
 
 		if (isS2ButtonPressed()){
-			changeWaterscreenState((WaterscreenContext_t*) context, closeValvesState);
 
-			manageValvePower(OffDeviceState);
-			manageWaterPump(OffDeviceState);
+			changeWaterscreenState((WaterscreenContext_t*) context, closeValvesState);
 		}
 	}
 
@@ -153,5 +149,8 @@ static void mockWifiTask(void* context) {
 
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer) {
 	WaterscreenContext_t* context = (WaterscreenContext_t*)pvTimerGetTimerID(xTimer); // Allowed in documentation
+
 	performWaterscreenAction(context);
+	validateWaterscreenStatus(context);
+
 }
