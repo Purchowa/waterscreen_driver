@@ -131,6 +131,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/tests}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/waterscreen_state}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/gpio}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1540524650" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.4634256" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -352,7 +353,7 @@
 					</fileInfo>
 					<fileInfo id="com.crt.advproject.config.exe.debug.754586422.1125805240" name="waterscreen_states.c" rcbsApplicability="disable" resourcePath="source/waterscreen_state/waterscreen_states.c" toolsToInvoke="com.crt.advproject.gcc.exe.debug.1160880117.1144927838">
 						<tool id="com.crt.advproject.gcc.exe.debug.1160880117.1144927838" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1160880117">
-							<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1631381269" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+							<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1631381269" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 								<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/board}&quot;"/>
 								<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source}&quot;"/>
 								<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/freertos/freertos-kernel/include}&quot;"/>
@@ -788,7 +789,6 @@
 &lt;/infoList&gt;&#13;
 &lt;/TargetConfig&gt;</projectStorage>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="openCmsis"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
@@ -797,5 +797,17 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/waterscreen_prototype"/>
 		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="tests" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-r -j8</buildArguments>
+				<buildTarget>tests</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
 	</storageModule>
 </cproject>
