@@ -4,11 +4,7 @@
 #include "valves_spi_cfg.h"
 #include "power_control.h"
 
-#include <fsl_debug_console.h>
-
-#if !RUN_UNIT_TESTS // What to do to run unit tests on this.
 #include <fsl_spi.h>
-#endif
 
 static status_t sendDataToValves(const uint64_t* data){
 	static spi_transfer_t valvesTransfer = {.txData = NULL, .rxData = NULL, .dataSize = VALVE_BUFFER_SIZE, .configFlags = kSPI_FrameAssert};
@@ -40,7 +36,6 @@ void demoModeState(WaterscreenContext_t* context) {
 	else{
 		const status_t status = sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter--]); // Print picture in direction - bottom-up
 		context->currentStateStatus = status;
-		// PRINTF("[%d]: valve burst!\r\n", valveOpenStateCounter);
 	}
 }
 
