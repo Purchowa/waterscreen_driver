@@ -10,13 +10,11 @@
 
 #include <stdint.h>
 
-#define PICTURE_BUFFER_SIZE 2
-
 typedef struct {
 	const uint8_t rowCount;
 	const uint64_t *dataBuffer;
 } pictureData_t;
 
-extern const pictureData_t g_pictureData[PICTURE_BUFFER_SIZE];
+void assignPicture(const pictureData_t* dest);
 
 #endif /* PICTURES_H_ */

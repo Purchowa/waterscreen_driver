@@ -1,5 +1,7 @@
 #include "pictures.h"
 
+#define PICTURE_COUNT 2
+
 const uint64_t pictPumpkin[] = {
 		0b0000000000000000000000000000000000000000000000000000000000000000,
 		0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -226,7 +228,14 @@ const uint64_t pictKI[] = {
 		0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
-const pictureData_t g_pictureData[PICTURE_BUFFER_SIZE] = {
+static const pictureData_t pictureData[PICTURE_COUNT] = {
 		{.rowCount = sizeof(pictPumpkin) / sizeof(*pictPumpkin), .dataBuffer = pictPumpkin},
 		{.rowCount = sizeof(pictKI) / sizeof(*pictKI), .dataBuffer = pictKI}
 };
+
+void assignPicture(const pictureData_t* dest){
+	static uint8_t pictureIndex = 0;
+
+	pictureIndex = (pictureIndex + 1) % PICTURE_COUNT;
+	dest = &pictureData[pictureIndex];
+}
