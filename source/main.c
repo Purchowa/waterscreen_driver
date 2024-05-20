@@ -112,6 +112,7 @@ int main() {
     WaterscreenContext_t waterscreenContext = {
     		.waterscreenStateHandler = idleState,
 			.picture = &initialPictureData,
+			.demoLoopCount = 1,
 			.valveOpenCounter = 0,
 			.currentStateStatus = kStatus_Success};
 

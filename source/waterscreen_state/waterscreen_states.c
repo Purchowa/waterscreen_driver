@@ -4,7 +4,6 @@
 #include "power_control.h"
 #include "spi_transfer/spi_transfer.h"
 
-#define SINGLE_DEMO_PICTURE_COUNT 1
 
 static inline uint16_t lastElementIndex(const pictureData_t *picture)
 {
@@ -17,21 +16,22 @@ void choosePictureState(WaterscreenContext_t *context)
 
 	assignPicture(context->picture);
 	context->valveOpenCounter = lastElementIndex(context->picture);
-	++pictureCounter;
 
-	if (SINGLE_DEMO_PICTURE_COUNT < pictureCounter)
+	if (pictureCounter < context->demoLoopCount)
 	{
+		++pictureCounter;
 		changeWaterscreenState(context, demoModeState);
 	}
 	else
 	{
+		pictureCounter = 0;
 		changeWaterscreenState(context, closeValvesState);
 	}
 }
 
 void demoModeState(WaterscreenContext_t *context)
 {
-	if (context->valveOpenCounter <= 0)
+	if (context->valveOpenCounter < 0)
 	{
 		changeWaterscreenState(context, choosePictureState);
 	}

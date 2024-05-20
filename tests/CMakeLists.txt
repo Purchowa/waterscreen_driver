@@ -24,7 +24,7 @@ set(SRC
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.c
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.h
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.c
-  ${TESTS_PATH}/main.c
+  ${TESTS_PATH}/test_main.c
 )
 
 set(EXE_NAME tests)

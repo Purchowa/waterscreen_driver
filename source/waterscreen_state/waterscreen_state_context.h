@@ -24,7 +24,8 @@ typedef void (*waterscreenStateFunction_t)(struct WaterscreenContext*);
 typedef struct WaterscreenContext{
 	waterscreenStateFunction_t waterscreenStateHandler;
 	const pictureData_t* picture;
-	uint16_t valveOpenCounter;
+	uint8_t demoLoopCount;
+	int32_t valveOpenCounter;
 	status_t currentStateStatus;
 } WaterscreenContext_t;
 
