@@ -19,16 +19,11 @@
 #include "pictures.h"
 #include "validation.h"
 
-#if RUN_UNIT_TESTS
-
-#include "test_main.h"
-
-#endif
 
 /*** RTOS WiFi Task configuration ***/
 
 // Task priority
-#define WIFI_TASK_PRIORITY (configTIMER_TASK_PRIORITY - 1) // Software Time must have the highest priority.
+#define WIFI_TASK_PRIORITY (configTIMER_TASK_PRIORITY - 5) // Software Time must have the highest priority.
 
 // Size in bytes I guess
 #define WIFI_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE + 100)
@@ -102,10 +97,6 @@ int main() {
     SPI_MasterInit(VALVES_SPI_MASTER, &valvesMasterConfig, srcFreq);
     // ---
 
-
-#if RUN_UNIT_TESTS
-    runUnitTests();
-#else
     const uint64_t initialPicture = 0;
     const pictureData_t initialPictureData = {.dataBuffer = &initialPicture, .rowCount = 0};
 
@@ -118,19 +109,18 @@ int main() {
 
     if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, &waterscreenContext, WIFI_TASK_PRIORITY, NULL) !=
     		pdPASS)
-    	{
-    		PRINTF("WiFi task creation failed!.\r\n");
-    		while (1)
-    			;
-    	}
+	{
+		PRINTF("WiFi task creation failed!.\r\n");
+		while (1)
+			;
+	}
 
-    	// --- Timer for writing every row of water.
-    	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, &waterscreenContext, swTimerWaterBurstCallback);
+	// --- Timer for writing every row of water.
+	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, &waterscreenContext, swTimerWaterBurstCallback);
 
-    	static const int ticksToWait = 0;
-    	xTimerStart(swTimerHandle, ticksToWait);
-    	vTaskStartScheduler();
-#endif
+	static const int ticksToWait = 0;
+	xTimerStart(swTimerHandle, ticksToWait);
+	vTaskStartScheduler();
 
 
 	for (;;){
@@ -140,7 +130,8 @@ int main() {
 }
 
 static void mockWifiTask(void* context) {
-	// PRINTF("Hello from WiFi task.\r\n");
+	PRINTF("Hello from WiFi task.\r\n");
+	vTaskSuspend(NULL); // Basically kill task.
   	for (;;) {
 		if (isS3ButtonPressed()) {
 
@@ -153,7 +144,6 @@ static void mockWifiTask(void* context) {
 		}
 	}
 
-	vTaskSuspend(NULL); // Basically kill task.
 }
 
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer) {
@@ -161,5 +151,5 @@ static void swTimerWaterBurstCallback(TimerHandle_t xTimer) {
 
 	performWaterscreenAction(context);
 	validateWaterscreenStatus(context);
-
+	PRINTF("WORK!\r\n");
 }

@@ -8,8 +8,6 @@
 #ifndef WATERSCREEN_STATE_CONTEXT_H_
 #define WATERSCREEN_STATE_CONTEXT_H_
 
-#define RUN_UNIT_TESTS 0
-
 #include "pictures.h"
 
 #include <stdbool.h>

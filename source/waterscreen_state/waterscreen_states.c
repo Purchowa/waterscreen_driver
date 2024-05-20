@@ -4,6 +4,7 @@
 #include "power_control.h"
 #include "spi_transfer/spi_transfer.h"
 
+#include <fsl_debug_console.h>
 
 static inline uint16_t lastElementIndex(const pictureData_t *picture)
 {
@@ -37,6 +38,7 @@ void demoModeState(WaterscreenContext_t *context)
 	}
 	else
 	{
+		PRINTF("Water burst!\r\n");
 		const status_t status = sendDataToValves(&context->picture->dataBuffer[context->valveOpenCounter--]); // Print picture in direction - bottom-up
 		context->currentStateStatus = status;
 	}
