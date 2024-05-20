@@ -16,7 +16,8 @@
 
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
-
+#include "pictures.h"
+#include "validation.h"
 
 #if RUN_UNIT_TESTS
 
@@ -105,7 +106,14 @@ int main() {
 #if RUN_UNIT_TESTS
     runUnitTests();
 #else
-    WaterscreenContext_t waterscreenContext = { .waterscreenStateHandler = idleState, .currentStateStatus = kStatus_Success};
+    const uint64_t initialPicture = 0;
+    const pictureData_t initialPictureData = {.dataBuffer = &initialPicture, .rowCount = 0};
+
+    WaterscreenContext_t waterscreenContext = {
+    		.waterscreenStateHandler = idleState,
+			.picture = &initialPictureData,
+			.valveOpenCounter = 0,
+			.currentStateStatus = kStatus_Success};
 
     if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, &waterscreenContext, WIFI_TASK_PRIORITY, NULL) !=
     		pdPASS)
@@ -135,7 +143,7 @@ static void mockWifiTask(void* context) {
   	for (;;) {
 		if (isS3ButtonPressed()) {
 
-			changeWaterscreenState((WaterscreenContext_t*) context, demoModeState);
+			changeWaterscreenState((WaterscreenContext_t*) context, choosePictureState);
 		}
 
 		if (isS2ButtonPressed()){

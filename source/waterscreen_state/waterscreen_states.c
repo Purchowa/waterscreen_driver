@@ -1,47 +1,49 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
 #include "pictures.h"
-#include "valves_spi_cfg.h"
 #include "power_control.h"
+#include "spi_transfer/spi_transfer.h"
 
-#include <fsl_debug_console.h>
-#include <fsl_spi.h>
+#define SINGLE_DEMO_PICTURE_COUNT 1
 
-
-static status_t sendDataToValves(const uint64_t* data){
-	static spi_transfer_t valvesTransfer = {.txData = NULL, .rxData = NULL, .dataSize = VALVE_BUFFER_SIZE, .configFlags = kSPI_FrameAssert};
-
-	valvesTransfer.txData = (uint8_t*)data;
-
-	return SPI_MasterTransferBlocking(VALVES_SPI_MASTER, &valvesTransfer);
+static inline uint16_t lastElementIndex(const pictureData_t *picture)
+{
+	return picture->rowCount - 1;
 }
 
-static uint8_t lastElementIndex(const uint8_t pictureIndex){
-	return g_pictureData[pictureIndex].rowCount - 1;
-}
+void choosePictureState(WaterscreenContext_t *context)
+{
+	static uint8_t pictureCounter = 0;
 
-void demoModeState(WaterscreenContext_t* context) {
-	static uint8_t pictureIndex = -1;
-	static uint8_t valveOpenStateCounter = 0;
+	assignPicture(context->picture);
+	context->valveOpenCounter = lastElementIndex(context->picture);
+	++pictureCounter;
 
-	if (valveOpenStateCounter <= 0){
-		++pictureIndex;
-
-		if (PICTURE_BUFFER_SIZE <= pictureIndex){
-			pictureIndex = 0;
-			changeWaterscreenState(context, closeValvesState);
-		}
-		else{
-			valveOpenStateCounter = lastElementIndex(pictureIndex);
-		}
+	if (SINGLE_DEMO_PICTURE_COUNT < pictureCounter)
+	{
+		changeWaterscreenState(context, demoModeState);
 	}
-	else{
-		const status_t status = sendDataToValves(&g_pictureData[pictureIndex].dataBuffer[valveOpenStateCounter--]); // Print picture in direction - bottom-up
+	else
+	{
+		changeWaterscreenState(context, closeValvesState);
+	}
+}
+
+void demoModeState(WaterscreenContext_t *context)
+{
+	if (context->valveOpenCounter <= 0)
+	{
+		changeWaterscreenState(context, choosePictureState);
+	}
+	else
+	{
+		const status_t status = sendDataToValves(&context->picture->dataBuffer[context->valveOpenCounter--]); // Print picture in direction - bottom-up
 		context->currentStateStatus = status;
 	}
 }
 
-void closeValvesState(WaterscreenContext_t* context) {
+void closeValvesState(WaterscreenContext_t *context)
+{
 	static const uint64_t closeValves = 0;
 
 	const status_t status = sendDataToValves(&closeValves);
@@ -52,8 +54,7 @@ void closeValvesState(WaterscreenContext_t* context) {
 	changeWaterscreenState(context, idleState);
 }
 
-
-void idleState(WaterscreenContext_t* ) {
+void idleState(WaterscreenContext_t *)
+{
 	// Check for days, weeks, post to API, even the timer might be here lower.
 }
-
