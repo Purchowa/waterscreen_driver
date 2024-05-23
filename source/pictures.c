@@ -1,4 +1,5 @@
 #include "pictures.h"
+#include <assert.h>
 
 #define PICTURE_COUNT 2
 
@@ -233,9 +234,10 @@ static const pictureData_t pictureData[PICTURE_COUNT] = {
 		{.rowCount = sizeof(pictKI) / sizeof(*pictKI), .dataBuffer = pictKI}
 };
 
-void assignPicture(const pictureData_t* dest){
+void assignPicture(const pictureData_t** dest){
 	static uint8_t pictureIndex = 0;
 
 	pictureIndex = (pictureIndex + 1) % PICTURE_COUNT;
-	dest = &pictureData[pictureIndex];
+	*dest = &pictureData[pictureIndex];
+	assert(dest);
 }

@@ -11,12 +11,15 @@
 
 void validateWaterscreenStatus(WaterscreenContext_t* context){
 	switch(context->currentStateStatus){
-	case kStatus_Success:
-		turnOnSuccessLed();
+	case kStatus_Success:{
+		changeSuccessLed(OnDeviceState);
+		changeErrorLed(OffDeviceState);
 		break;
+	}
 
 	default:{
-		turnOnErrorLed();
+		changeSuccessLed(OffDeviceState);
+		changeErrorLed(OnDeviceState);
 	}
 
 	}

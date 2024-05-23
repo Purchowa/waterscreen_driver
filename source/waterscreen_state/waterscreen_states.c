@@ -4,8 +4,6 @@
 #include "power_control.h"
 #include "spi_transfer/spi_transfer.h"
 
-#include <fsl_debug_console.h>
-
 static inline uint16_t lastElementIndex(const pictureData_t *picture)
 {
 	return picture->rowCount - 1;
@@ -15,12 +13,11 @@ void choosePictureState(WaterscreenContext_t *context)
 {
 	static uint8_t pictureCounter = 0;
 
-	assignPicture(context->picture);
-	context->valveOpenCounter = lastElementIndex(context->picture);
-
 	if (pictureCounter < context->demoLoopCount)
 	{
 		++pictureCounter;
+		assignPicture(&context->picture);
+		context->valveOpenCounter = lastElementIndex(context->picture);
 		changeWaterscreenState(context, demoModeState);
 	}
 	else
@@ -38,7 +35,6 @@ void demoModeState(WaterscreenContext_t *context)
 	}
 	else
 	{
-		PRINTF("Water burst!\r\n");
 		const status_t status = sendDataToValves(&context->picture->dataBuffer[context->valveOpenCounter--]); // Print picture in direction - bottom-up
 		context->currentStateStatus = status;
 	}
@@ -56,7 +52,7 @@ void closeValvesState(WaterscreenContext_t *context)
 	changeWaterscreenState(context, idleState);
 }
 
-void idleState(WaterscreenContext_t *)
+void idleState(WaterscreenContext_t* context)
 {
 	// Check for days, weeks, post to API, even the timer might be here lower.
 }

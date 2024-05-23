@@ -1,0 +1,5 @@
+#ifndef COMMON_STATE_ASSERTY_H_
+#define COMMON_STATE_ASSERTY_H_
+
+
+#endif

@@ -1,7 +1,7 @@
 Include(FetchContent)
 FetchContent_Declare(
   cmocka
-  GIT_REPOSITORY https://git.cryptomilk.org/projects/cmocka.git
+  GIT_REPOSITORY https://github.com/clibs/cmocka
   GIT_TAG        cmocka-1.1.5 # or a later release
   GIT_SHALLOW    1
 )

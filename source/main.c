@@ -23,7 +23,7 @@
 /*** RTOS WiFi Task configuration ***/
 
 // Task priority
-#define WIFI_TASK_PRIORITY (configTIMER_TASK_PRIORITY - 5) // Software Time must have the highest priority.
+#define WIFI_TASK_PRIORITY (configTIMER_TASK_PRIORITY - 1) // Software Time must have the highest priority.
 
 // Size in bytes I guess
 #define WIFI_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE + 100)
@@ -34,7 +34,7 @@ static void mockWifiTask(void *pvParameters);
 
 /*** RTOS Software (SW) Timer configuration ***/
 
-#define SW_TIMER_PERIOD_MS (100 / portTICK_PERIOD_MS)
+#define SW_TIMER_PERIOD_MS (14 / portTICK_PERIOD_MS)
 #define NO_ID 0
 
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer);
@@ -57,6 +57,13 @@ static bool isS2ButtonPressed(){
 	return (GPIO_PinRead(BOARD_INITBUTTONSPINS_S2_GPIO, BOARD_INITBUTTONSPINS_S2_PORT, BOARD_INITBUTTONSPINS_S2_PIN) == 0);
 }
 /* --- */
+
+static WaterscreenContext_t s_context = {
+		.waterscreenStateHandler = idleState,
+		.picture = NULL,
+		.demoLoopCount = 1,
+		.valveOpenCounter = 0,
+		.currentStateStatus = kStatus_Fail};
 
 int main() {
 	// Handle for timer.
@@ -97,59 +104,51 @@ int main() {
     SPI_MasterInit(VALVES_SPI_MASTER, &valvesMasterConfig, srcFreq);
     // ---
 
-    const uint64_t initialPicture = 0;
-    const pictureData_t initialPictureData = {.dataBuffer = &initialPicture, .rowCount = 0};
-
-    WaterscreenContext_t waterscreenContext = {
-    		.waterscreenStateHandler = idleState,
-			.picture = &initialPictureData,
-			.demoLoopCount = 1,
-			.valveOpenCounter = 0,
-			.currentStateStatus = kStatus_Success};
-
-    if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, &waterscreenContext, WIFI_TASK_PRIORITY, NULL) !=
+    if (xTaskCreate(mockWifiTask, "MockWifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL) !=
     		pdPASS)
 	{
-		PRINTF("WiFi task creation failed!.\r\n");
-		while (1)
-			;
+		PRINTF("[RTOS]-Task: WiFi task creation failed!.\r\n");
 	}
 
-	// --- Timer for writing every row of water.
-	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, &waterscreenContext, swTimerWaterBurstCallback);
 
-	static const int ticksToWait = 0;
-	xTimerStart(swTimerHandle, ticksToWait);
+	swTimerHandle = xTimerCreate("WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, NULL, swTimerWaterBurstCallback);
+	if (swTimerHandle){
+		if (xTimerStart(swTimerHandle, 0) != pdPASS){
+			PRINTF("[RTOS]-Timer: start command could not be sent to the timer command queue\r\n");
+		}
+	}
+	else{
+		PRINTF("[RTOS]-Timer: insufficient FreeRTOS heap remaining to allocate the timer\r\n");
+	}
+
 	vTaskStartScheduler();
 
 
 	for (;;){
+		PRINTF("Critical error! - task scheduler hasn't started or was stopped!");
 	}
 
 	return 0;
 }
 
-static void mockWifiTask(void* context) {
+static void mockWifiTask(void* params) {
 	PRINTF("Hello from WiFi task.\r\n");
-	vTaskSuspend(NULL); // Basically kill task.
   	for (;;) {
 		if (isS3ButtonPressed()) {
 
-			changeWaterscreenState((WaterscreenContext_t*) context, choosePictureState);
+			changeWaterscreenState(&s_context, choosePictureState);
 		}
 
 		if (isS2ButtonPressed()){
 
-			changeWaterscreenState((WaterscreenContext_t*) context, closeValvesState);
+			changeWaterscreenState(&s_context, closeValvesState);
 		}
 	}
+	vTaskSuspend(NULL); // Basically kill task.
 
 }
 
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer) {
-	WaterscreenContext_t* context = (WaterscreenContext_t*)pvTimerGetTimerID(xTimer); // Allowed in documentation
-
-	performWaterscreenAction(context);
-	validateWaterscreenStatus(context);
-	PRINTF("WORK!\r\n");
+	performWaterscreenAction(&s_context);
+	validateWaterscreenStatus(&s_context);
 }

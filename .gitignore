@@ -7,3 +7,4 @@
 
 # NXP config cache file, settings are with YAML in the sources:
 *.mex
+*.launch
