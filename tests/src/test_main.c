@@ -83,6 +83,7 @@ static void test_not_stuct_in_demo(void** state) {
     
     for (int8_t i = 0; i < loopCount; ++i) {
 
+        expect_value(manageValvePower, state, OnDeviceState);
         assert_ptr_equal(context.waterscreenStateHandler, choosePictureState);
         performWaterscreenAction(&context);
 

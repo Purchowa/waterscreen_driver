@@ -18,6 +18,7 @@ void choosePictureState(WaterscreenContext_t *context)
 		++pictureCounter;
 		assignPicture(&context->picture);
 		context->valveOpenCounter = lastElementIndex(context->picture);
+		manageValvePower(OnDeviceState);
 		changeWaterscreenState(context, demoModeState);
 	}
 	else
