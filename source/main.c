@@ -134,14 +134,13 @@ int main() {
 static void mockWifiTask(void* params) {
 	PRINTF("Hello from WiFi task.\r\n");
   	for (;;) {
-		if (isS3ButtonPressed()) {
-
+		if (isS3ButtonPressed() && s_context.waterscreenStateHandler == idleState) {
 			changeWaterscreenState(&s_context, choosePictureState);
 		}
 
 		if (isS2ButtonPressed()){
-
-			changeWaterscreenState(&s_context, closeValvesState);
+			closeValvesSubState(&s_context);
+			changeWaterscreenState(&s_context, idleState);
 		}
 	}
 	vTaskSuspend(NULL); // Basically kill task.

@@ -5,8 +5,10 @@
 #include "waterscreen_state_context.h"
 
 void choosePictureState(WaterscreenContext_t*);
+void checkSensorsSubState(WaterscreenContext_t*);
 void demoModeState(WaterscreenContext_t*);
-void closeValvesState(WaterscreenContext_t*);
+void closeValvesSubState(WaterscreenContext_t*);
 void idleState(WaterscreenContext_t*);
+void lowWaterState(WaterscreenContext_t*);
 
 #endif /* WATERSCREEN_STATES_H_ */

@@ -27,6 +27,8 @@ set(SRC
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.c
   ${TESTS_PATH}/src/common_state_assert.h
   ${TESTS_PATH}/src/common_state_assert.c
+  ${TESTS_PATH}/src/mocked_functions.c
+  ${TESTS_PATH}/src/mocked_functions.h
   ${TESTS_PATH}/src/test_main.c
 )
 

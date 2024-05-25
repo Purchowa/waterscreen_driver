@@ -1,8 +1,9 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
 #include "pictures.h"
-#include "power_control.h"
 #include "spi_transfer/spi_transfer.h"
+#include "power_control.h"
+#include "sensors_control.h"
 
 static inline uint16_t lastElementIndex(const pictureData_t *picture)
 {
@@ -24,12 +25,34 @@ void choosePictureState(WaterscreenContext_t *context)
 	else
 	{
 		pictureCounter = 0;
-		changeWaterscreenState(context, closeValvesState);
+		closeValvesSubState(context);
+		changeWaterscreenState(context, idleState);
+	}
+}
+
+void checkSensorsSubState(WaterscreenContext_t* context)
+{
+	const bool isWaterAlarmTriggered = shouldWaterAlaramTrigger();
+
+	if (isWaterAlarmTriggered) {
+		// Post waterAlaram to API.
+		closeValvesSubState(context);
+		context->currentStateStatus = 1;
+		changeWaterscreenState(context, lowWaterState);
+	}
+
+	if (shouldWaterPumpTrigger() && !isWaterAlarmTriggered) {
+		manageWaterPump(OnDeviceState);
+	}
+	else {
+		manageWaterPump(OffDeviceState);
 	}
 }
 
 void demoModeState(WaterscreenContext_t *context)
 {
+	checkSensorsSubState(context);
+
 	if (context->valveOpenCounter < 0)
 	{
 		changeWaterscreenState(context, choosePictureState);
@@ -41,7 +64,7 @@ void demoModeState(WaterscreenContext_t *context)
 	}
 }
 
-void closeValvesState(WaterscreenContext_t *context)
+void closeValvesSubState(WaterscreenContext_t *context)
 {
 	static const uint64_t closeValves = 0;
 
@@ -49,11 +72,16 @@ void closeValvesState(WaterscreenContext_t *context)
 	context->currentStateStatus = status;
 
 	manageValvePower(OffDeviceState);
-
-	changeWaterscreenState(context, idleState);
 }
 
 void idleState(WaterscreenContext_t* context)
 {
 	// Check for days, weeks, post to API, even the timer might be here lower.
+}
+
+void lowWaterState(WaterscreenContext_t* context)
+{
+	if (!shouldWaterAlaramTrigger()) {
+		changeWaterscreenState(context, idleState);
+	}
 }

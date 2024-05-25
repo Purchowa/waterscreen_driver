@@ -8,6 +8,7 @@
 
 #include <fsl_gpio.h>
 #include <pin_mux.h>
+#include <board.h>
 
 // Temporary solution for informing the user what is the current water screen status.
 void changeSuccessLed(DeviceState_t state) {

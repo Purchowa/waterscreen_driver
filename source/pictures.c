@@ -237,7 +237,7 @@ static const pictureData_t pictureData[PICTURE_COUNT] = {
 void assignPicture(const pictureData_t** dest){
 	static uint8_t pictureIndex = 0;
 
-	pictureIndex = (pictureIndex + 1) % PICTURE_COUNT;
 	*dest = &pictureData[pictureIndex];
+	pictureIndex = (pictureIndex + 1) % PICTURE_COUNT;
 	assert(dest);
 }
