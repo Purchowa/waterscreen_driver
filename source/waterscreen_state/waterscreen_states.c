@@ -59,7 +59,7 @@ void demoModeState(WaterscreenContext_t *context)
 	}
 	else
 	{
-		const status_t status = sendDataToValves(&context->picture->dataBuffer[context->valveOpenCounter--]); // Print picture in direction - bottom-up
+		const status_t status = sendDataToValves(&context->picture->dataBuffer[context->valveOpenCounter--]);
 		context->currentStateStatus = status;
 	}
 }
@@ -77,10 +77,12 @@ void closeValvesSubState(WaterscreenContext_t *context)
 void idleState(WaterscreenContext_t* context)
 {
 	// Check for days, weeks, post to API, even the timer might be here lower.
+	checkSensorsSubState(context);
 }
 
 void lowWaterState(WaterscreenContext_t* context)
 {
+	manageWaterPump(OffDeviceState);
 	if (!shouldWaterAlaramTrigger()) {
 		changeWaterscreenState(context, idleState);
 	}

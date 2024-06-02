@@ -164,6 +164,7 @@ void givenAlaramOn_lowWaterState_remainLowWaterState(void** state)
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState, .picture = NULL, .demoLoopCount = 0, .valveOpenCounter = 0, .currentStateStatus = Success };
 
     for (uint8_t i = 0; i < 3; ++i) {
+        expect_value(manageWaterPump, state, OffDeviceState);
         will_return(shouldWaterAlaramTrigger, true);
         performWaterscreenAction(&context);
         assert_ptr_equal(context.waterscreenStateHandler, lowWaterState);
@@ -174,10 +175,37 @@ void givenAlarmOff_lowWaterState_changeStateToIdle(void** state)
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState, .picture = NULL, .demoLoopCount = 0, .valveOpenCounter = 0, .currentStateStatus = Success };
 
+    expect_value(manageWaterPump, state, OffDeviceState);
     will_return(shouldWaterAlaramTrigger, false);
     performWaterscreenAction(&context);
 
     assert_ptr_equal(context.waterscreenStateHandler, idleState);
+}
+
+void givenPumpOn_lowWaterState_remainAlwaysPumpOff(void** state)
+{
+    WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState, .picture = NULL, .demoLoopCount = 0, .valveOpenCounter = 0, .currentStateStatus = Success };
+
+    expect_value(manageWaterPump, state, OffDeviceState);
+    will_return(shouldWaterAlaramTrigger, false);
+    performWaterscreenAction(&context);
+}
+
+void givenPumpOn_idleState_turnOffPump(void** state) 
+{
+    WaterscreenContext_t context = { .waterscreenStateHandler = idleState, .picture = NULL, .demoLoopCount = 0, .valveOpenCounter = 0, .currentStateStatus = Success };
+
+    // Assume that pump is on when entering idle.
+    will_return(shouldWaterAlaramTrigger, false);
+    will_return(shouldWaterPumpTrigger, true);
+    expect_value(manageWaterPump, state, OnDeviceState);
+    performWaterscreenAction(&context);
+
+    // When sensors trigger turn off pump
+    will_return(shouldWaterAlaramTrigger, false);
+    will_return(shouldWaterPumpTrigger, false);
+    expect_value(manageWaterPump, state, OffDeviceState);
+    performWaterscreenAction(&context);
 }
 
 int main()
@@ -197,6 +225,9 @@ int main()
 
         cmocka_unit_test(givenAlaramOn_lowWaterState_remainLowWaterState),
         cmocka_unit_test(givenAlarmOff_lowWaterState_changeStateToIdle),
+        cmocka_unit_test(givenPumpOn_lowWaterState_remainAlwaysPumpOff),
+
+        cmocka_unit_test(givenPumpOn_idleState_turnOffPump),
     };
 
     return cmocka_run_group_tests_name("Waterscreen machine state tests", tests, NULL, NULL);

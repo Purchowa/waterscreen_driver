@@ -28,7 +28,6 @@ int main() {
     /* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
-    BOARD_InitBUTTONsPins();
 
 #ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL
     /* Init FSL debug console. */
@@ -48,11 +47,16 @@ int main() {
     valvesMasterConfig.baudRate_Bps = 12000000; // 12 MHz
     SPI_MasterInit(VALVES_SPI_MASTER, &valvesMasterConfig, srcFreq);
     // ---
-
-    if (xTaskCreate(hmiTask, "MockWifiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL) !=
+    if (xTaskCreate(hmiTask, "hmiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL) !=
     		pdPASS)
 	{
-		PRINTF("[RTOS]-Task: WiFi task creation failed!.\r\n");
+		PRINTF("[RTOS]-Task: HMI task creation failed!.\r\n");
+	}
+
+    if (xTaskCreate(wifiTask, "wifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL) !=
+        		pdPASS)
+	{
+		PRINTF("[RTOS]-Task: WIFI task creation failed!.\r\n");
 	}
 
 
