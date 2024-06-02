@@ -9,7 +9,8 @@
 #include <fsl_spi.h>
 
 status_t sendDataToValves(const uint64_t* data){
-	static spi_transfer_t valvesTransfer = {.txData = NULL, .rxData = NULL, .dataSize = VALVE_BUFFER_SIZE, .configFlags = kSPI_FrameAssert};
+	static uint64_t readMock = 0;
+	static spi_transfer_t valvesTransfer = {.txData = NULL, .rxData = (uint8_t*)&readMock, .dataSize = VALVE_BUFFER_SIZE, .configFlags = kSPI_FrameAssert};
 
 	valvesTransfer.txData = (uint8_t*)data;
 

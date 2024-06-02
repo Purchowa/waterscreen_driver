@@ -27,25 +27,19 @@
 
 // Size in bytes I guess
 #define WIFI_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE + 100)
-
 static void mockWifiTask(void *pvParameters);
 /* --- */
 
 
 /*** RTOS Software (SW) Timer configuration ***/
-
 #define SW_TIMER_PERIOD_MS (14 / portTICK_PERIOD_MS)
-#define NO_ID 0
-
 static void swTimerWaterBurstCallback(TimerHandle_t xTimer);
 /* --- */
 
 
 /*** SPI configuration - writing to water valves ***/
 // Flexcom 3 is on P20 (PMOD).
-
 #include "valves_spi_cfg.h"
-
 /* --- */
 
 /*** Board buttons ***/
