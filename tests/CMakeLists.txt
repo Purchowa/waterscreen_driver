@@ -4,41 +4,50 @@ project("waterscreen_tests" VERSION 1.0 LANGUAGES C)
 
 include(cmake/FetchCMocka.cmake)
 
-set (TESTS_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(TESTS_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 cmake_path(GET TESTS_PATH PARENT_PATH PROJ_DIR)
 
-set (DIRS
-  ${PROJ_DIR}/source
-  ${PROJ_DIR}/source/spi_transfer
-  ${PROJ_DIR}/source/gpio
-  ${PROJ_DIR}/source/waterscreen_state
-  src
+set(EMBEDDED_DIRS
+        ${PROJ_DIR}/source
+        ${PROJ_DIR}/source/spi_transfer
+        ${PROJ_DIR}/source/gpio
+        ${PROJ_DIR}/source/waterscreen_state
 )
 
-set(SRC
-  ${PROJ_DIR}/source/spi_transfer/spi_transfer.h
-  ${PROJ_DIR}/source/gpio/power_control.h
-  ${PROJ_DIR}/source/gpio/sensors_control.h
-  ${PROJ_DIR}/source/pictures.h
-  ${PROJ_DIR}/source/waterscreen_state/validation.h
-  ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.h
-  ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.c
-  ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.h
-  ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.c
-  src/common_state_assert.h
-  src/common_state_assert.c
-  src/mocked_functions.c
-  src/mocked_functions.h
-  src/test_main.c
+set(EMBEDDED_SRC
+        ${PROJ_DIR}/source/spi_transfer/spi_transfer.h
+        ${PROJ_DIR}/source/gpio/power_control.h
+        ${PROJ_DIR}/source/gpio/sensors_control.h
+        ${PROJ_DIR}/source/pictures.h
+        ${PROJ_DIR}/source/waterscreen_state/validation.h
+        ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.h
+        ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.c
+        ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.h
+        ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.c
 )
 
-set(EXE_NAME tests)
+SET(TEST_UTILS_SRC
+        src/utils/common_state_assert.h
+        src/utils/common_state_assert.c
+        src/utils/mocked_functions.c
+        src/utils/mocked_functions.h
+)
 
-add_executable(${EXE_NAME} ${SRC})
+function(generate_test name src)
+    add_executable(${name} ${EMBEDDED_SRC} ${TEST_UTILS_SRC} ${src})
 
-target_link_libraries(${EXE_NAME} PRIVATE cmocka-static)
-target_include_directories(${EXE_NAME} PRIVATE ${DIRS})
-target_compile_features(${EXE_NAME} PRIVATE c_std_11)
+    target_link_libraries(${name} PRIVATE cmocka-static)
+    target_include_directories(${name} PRIVATE ${EMBEDDED_DIRS})
+    target_compile_features(${name} PRIVATE c_std_17)
+
+    add_test(NAME ${name} COMMAND ${name})
+endfunction()
 
 enable_testing()
-add_test(NAME ${EXE_NAME} COMMAND ${EXE_NAME})
+
+generate_test("presentationStateTest" "src/presentation_state_test.c")
+generate_test("demonstrationStateTest" "src/demonstration_state_test.c")
+generate_test("lowWaterStateTest" "src/sensors_test.c")
+generate_test("idleStateTest" "src/idle_state_test.c")
+generate_test("sensorsTest" "src/sensors_test.c")
+generate_test("valvesTest" "src/valves_test.c")
