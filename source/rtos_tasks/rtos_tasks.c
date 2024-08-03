@@ -52,7 +52,7 @@ void hmiTask(void* params)
 {
   	for (;;) {
 		if (isS3ButtonPressed() && s_context.waterscreenStateHandler == idleState) {
-			changeWaterscreenState(&s_context, choosePictureState);
+			changeWaterscreenState(&s_context, demoModeState);
 		}
 
 		if (isS2ButtonPressed()){

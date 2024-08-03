@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.28)
 
 project("waterscreen_tests" VERSION 1.0 LANGUAGES C)
 
@@ -12,7 +12,7 @@ set (DIRS
   ${PROJ_DIR}/source/spi_transfer
   ${PROJ_DIR}/source/gpio
   ${PROJ_DIR}/source/waterscreen_state
-  ${TESTS_PATH}/src
+  src
 )
 
 set(SRC
@@ -25,11 +25,11 @@ set(SRC
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.c
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.h
   ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.c
-  ${TESTS_PATH}/src/common_state_assert.h
-  ${TESTS_PATH}/src/common_state_assert.c
-  ${TESTS_PATH}/src/mocked_functions.c
-  ${TESTS_PATH}/src/mocked_functions.h
-  ${TESTS_PATH}/src/test_main.c
+  src/common_state_assert.h
+  src/common_state_assert.c
+  src/mocked_functions.c
+  src/mocked_functions.h
+  src/test_main.c
 )
 
 set(EXE_NAME tests)

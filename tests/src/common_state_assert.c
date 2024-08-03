@@ -9,8 +9,9 @@
 #include <cmocka.h>
 
 
-void assertClosedValves() {
-    expect_value(manageValvePower, state, OffDeviceState);
-    expect_value(sendDataToValves, *data, 0);
-    will_return(sendDataToValves, Success);
+void assertClosedValves()
+{
+    expect_value( manageValvePower, state, OffDeviceState );
+    expect_value( sendDataToValves, *data, 0 );
+    will_return( sendDataToValves, Success );
 }
