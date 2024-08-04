@@ -10,6 +10,13 @@
 
 #include "utils/common_state_assert.h"
 
+static const uint64_t pictKI[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
+                                   0b0100000000000000000000000000000000000000000000000000000000000000,
+                                   0b0010000000000000000000000000000000000000000000000000000000000000,
+                                   0b0001000000000000000000000000000000000000000000000000000000000000 };
+
+static const pictureData_t picture = { .dataBuffer = pictKI, .rowCount = 4 };
+
 static void givenDemoModeState_demoModeState_transitionToIdleState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
@@ -40,9 +47,10 @@ static void givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures(
     {
         expect_value( manageValvePower, state, OnDeviceState );
         assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
+        will_return( getPicture, &picture );
         performWaterscreenAction( &context );
 
-        assert_non_null( context.picture );
+        assert_ptr_equal( context.picture, &picture );
         assert_int_equal( context.valveOpenCounter, lastIndexFromPicture );
 
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
@@ -55,7 +63,7 @@ static void givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures(
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );
             performWaterscreenAction( &context );
-            assert_non_null( context.picture );
+            assert_ptr_equal( context.picture, &picture );
         }
         assert_int_equal( context.valveOpenCounter, endOfDemoCounterValue );
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );

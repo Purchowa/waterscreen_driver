@@ -30,14 +30,7 @@ bool shouldWaterAlaramTrigger()
     return mock_type( bool );
 }
 
-static const uint64_t pictKI[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
-                                   0b0100000000000000000000000000000000000000000000000000000000000000,
-                                   0b0010000000000000000000000000000000000000000000000000000000000000,
-                                   0b0001000000000000000000000000000000000000000000000000000000000000 };
-
-static const pictureData_t picture = { .dataBuffer = pictKI, .rowCount = 4 };
-
-void assignPicture( const pictureData_t **dest )
+pictureData_t *getPicture()
 {
-    *dest = &picture;
+    return mock_ptr_type( pictureData_t * );
 }

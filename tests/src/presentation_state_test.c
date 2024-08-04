@@ -12,10 +12,17 @@
 
 #include "utils/common_state_assert.h"
 
+static const uint64_t pictKI[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
+                                   0b0100000000000000000000000000000000000000000000000000000000000000,
+                                   0b0010000000000000000000000000000000000000000000000000000000000000,
+                                   0b0001000000000000000000000000000000000000000000000000000000000000 };
+
+static const pictureData_t picture = { .dataBuffer = pictKI, .rowCount = 4 };
+
 static void givenPicture_presentationState_printBottomUp( void **state )
 {
-    const pictureData_t *mockedPicture = NULL;
-    assignPicture( &mockedPicture );
+    will_return( getPicture, &picture );
+    const pictureData_t *mockedPicture = getPicture();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
                                      .picture                 = mockedPicture,

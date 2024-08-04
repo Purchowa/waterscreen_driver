@@ -15,6 +15,9 @@ typedef struct {
 	const uint64_t *dataBuffer;
 } pictureData_t;
 
-void assignPicture(const pictureData_t** dest); // reference to a pointer
+/**
+ * \return non-owning pointer to picture structure
+ **/
+pictureData_t* getPicture();
 
 #endif /* PICTURES_H_ */
