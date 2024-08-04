@@ -47,7 +47,7 @@ enable_testing()
 
 generate_test("presentationStateTest" "src/presentation_state_test.c")
 generate_test("demonstrationStateTest" "src/demonstration_state_test.c")
-generate_test("lowWaterStateTest" "src/sensors_test.c")
+generate_test("lowWaterStateTest" "src/low_water_state_test.c")
 generate_test("idleStateTest" "src/idle_state_test.c")
 generate_test("sensorsTest" "src/sensors_test.c")
 generate_test("valvesTest" "src/valves_test.c")

@@ -12,25 +12,19 @@
 
 #include "utils/common_state_assert.h"
 
-static const uint64_t pictKI[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
-                                   0b0100000000000000000000000000000000000000000000000000000000000000,
-                                   0b0010000000000000000000000000000000000000000000000000000000000000,
-                                   0b0001000000000000000000000000000000000000000000000000000000000000 };
-
-static const pictureData_t picture = { .dataBuffer = pictKI, .rowCount = 4 };
-
-void assignPicture( const pictureData_t **dest ) { *dest = &picture; }
-
 static void givenPicture_presentationState_printBottomUp( void **state )
 {
+    const pictureData_t *mockedPicture = NULL;
+    assignPicture( &mockedPicture );
+
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
-                                     .picture                 = &picture,
+                                     .picture                 = mockedPicture,
                                      .demoLoopCount           = 0,
-                                     .valveOpenCounter        = picture.rowCount - 1,
+                                     .valveOpenCounter        = mockedPicture->rowCount - 1,
                                      .currentStateStatus      = Success };
-    for ( int8_t i = picture.rowCount - 1; 0 <= i; --i )
+    for ( int8_t i = mockedPicture->rowCount - 1; 0 <= i; --i )
     { // Print picture
-        expect_value( sendDataToValves, *data, picture.dataBuffer[i] );
+        expect_value( sendDataToValves, *data, mockedPicture->dataBuffer[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlaramTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );

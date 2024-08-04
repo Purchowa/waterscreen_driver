@@ -34,3 +34,5 @@ SpacesInParensOptions:
   InConditionalStatements: true
   InCStyleCasts: true
   Other: true
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
