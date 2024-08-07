@@ -9,18 +9,21 @@
 
 #include <fsl_common.h>
 
-void validateWaterscreenStatus(WaterscreenContext_t* context){
-	switch(context->currentStateStatus){
-	case kStatus_Success:{
-		changeSuccessLed(OnDeviceState);
-		changeErrorLed(OffDeviceState);
-		break;
-	}
+void validateWaterscreenStatus( WaterscreenContext_t *context )
+{
+    switch ( context->currentStateStatus )
+    {
+    case kStatus_Success:
+        {
+            changeSuccessLed( OnDeviceState );
+            changeErrorLed( OffDeviceState );
+            break;
+        }
 
-	default:{
-		changeSuccessLed(OffDeviceState);
-		changeErrorLed(OnDeviceState);
-	}
-
-	}
+    default:
+        {
+            changeSuccessLed( OffDeviceState );
+            changeErrorLed( OnDeviceState );
+        }
+    }
 }

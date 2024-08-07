@@ -11,8 +11,8 @@
 #include "power_control.h"
 
 // Temporary solution for informing the user what is the current water screen status.
-void changeSuccessLed(DeviceState_t );
+void changeSuccessLed( DeviceState_t );
 
-void changeErrorLed(DeviceState_t );
+void changeErrorLed( DeviceState_t );
 
 #endif /* LED_CONTROL_H_ */

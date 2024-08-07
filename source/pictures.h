@@ -10,14 +10,15 @@
 
 #include <stdint.h>
 
-typedef struct {
-	const uint8_t rowCount;
-	const uint64_t *dataBuffer;
+typedef struct
+{
+    const uint8_t   rowCount;
+    const uint64_t *dataBuffer;
 } pictureData_t;
 
 /**
  * \return non-owning pointer to picture structure
  **/
-pictureData_t* getPicture();
+pictureData_t *getPicture();
 
 #endif /* PICTURES_H_ */

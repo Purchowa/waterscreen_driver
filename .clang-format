@@ -32,7 +32,7 @@ MaxEmptyLinesToKeep: 2
 SpacesInParens: Custom
 SpacesInParensOptions:
   InConditionalStatements: true
-  InCStyleCasts: true
+  InCStyleCasts: false
   Other: true
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
