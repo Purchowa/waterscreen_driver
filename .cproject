@@ -298,7 +298,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.2141649221" name="Enable Link-time optimization (-flto)" superClass="com.crt.advproject.link.gcc.lto"/>
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.782582233" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.manage.679196178" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.2145500857" name="Linker script" superClass="com.crt.advproject.link.script" value="waterscreen_prototype_Debug.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.2145500857" name="Linker script" superClass="com.crt.advproject.link.script" value="waterscreen_driver_Debug.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1395938621" name="Script path" superClass="com.crt.advproject.link.scriptdir" value="" valueType="string"/>
 								<option id="com.crt.advproject.link.crpenable.1770213144" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1269713044" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
@@ -685,7 +685,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.1801678901" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.22886131" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5sp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.1591818636" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.396965584" name="Linker script" superClass="com.crt.advproject.link.script" value="waterscreen_prototype_Release.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.396965584" name="Linker script" superClass="com.crt.advproject.link.script" value="waterscreen_driver_Release.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1469418018" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.709505388" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.726257433" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>

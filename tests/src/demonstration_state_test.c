@@ -10,19 +10,19 @@
 
 #include "utils/common_state_assert.h"
 
-static const uint64_t pictKI[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
-                                   0b0100000000000000000000000000000000000000000000000000000000000000,
-                                   0b0010000000000000000000000000000000000000000000000000000000000000,
-                                   0b0001000000000000000000000000000000000000000000000000000000000000 };
+static const uint64_t pictureSample[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
+                                          0b0100000000000000000000000000000000000000000000000000000000000000,
+                                          0b0010000000000000000000000000000000000000000000000000000000000000,
+                                          0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const pictureData_t picture = { .dataBuffer = pictKI, .rowCount = 4 };
+static const pictureData_t picture = { .dataBuffer = pictureSample, .rowCount = 4 };
 
 static void givenDemoModeState_demoModeState_transitionToIdleState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
                                      .picture                 = NULL,
                                      .demoLoopCount           = 0,
-                                     .valveOpenCounter        = -1,
+                                     .valveOpenCounter        = 0,
                                      .currentStateStatus      = Success };
 
     assertClosedValves();

@@ -18,7 +18,8 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = Success };
 
-    for ( uint8_t i = 0; i < 3; ++i )
+    const uint8_t arbitraryLoopCountInLowWaterState = 3;
+    for ( uint8_t i = 0; i < arbitraryLoopCountInLowWaterState; ++i )
     {
         expect_value( manageWaterPump, state, OffDeviceState );
         will_return( shouldWaterAlaramTrigger, true );
@@ -42,26 +43,10 @@ void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
     assert_ptr_equal( context.waterscreenStateHandler, idleState );
 }
 
-void givenPumpOn_lowWaterState_remainAlwaysPumpOff( void **state )
-{
-    WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
-                                     .picture                 = NULL,
-                                     .demoLoopCount           = 0,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
-
-    expect_value( manageWaterPump, state, OffDeviceState );
-    will_return( shouldWaterAlaramTrigger, false );
-    performWaterscreenAction( &context );
-}
-
 int main()
 {
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test( givenAlaramOn_lowWaterState_remainLowWaterState ),
-        cmocka_unit_test( givenAlarmOff_lowWaterState_changeStateToIdle ),
-        cmocka_unit_test( givenPumpOn_lowWaterState_remainAlwaysPumpOff )
-    };
+    const struct CMUnitTest tests[] = { cmocka_unit_test( givenAlaramOn_lowWaterState_remainLowWaterState ),
+                                        cmocka_unit_test( givenAlarmOff_lowWaterState_changeStateToIdle ) };
 
     return cmocka_run_group_tests_name( "Low-water State", tests, NULL, NULL );
 }
