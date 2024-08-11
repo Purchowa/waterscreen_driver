@@ -12,14 +12,14 @@
 #include "validation.h"
 #include "WiFiCfg.h"
 
-#include "wlan_mwm.h"
+#include "wlan/wlan_mwm.h"
 #include <fsl_common.h>
 #include <serial_mwm.h>
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = NULL,
                                           .picture                         = NULL,
-                                          .demoLoopCount                   = 1,
+                                          .demoLoopCount                   = 4,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Fail };
 

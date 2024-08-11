@@ -135,6 +135,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/spi_transfer}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/rtos_tasks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/cjson}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/wlan}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1540524650" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.4634256" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -385,10 +387,13 @@
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="external_communication"/>
 						<entry excluding="external" flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos"/>
 						<entry excluding="gpio|waterscreen_state|rtos_tasks|config|external|spi_transfer" flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry excluding="WiFiCfg-example.h" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/config"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry excluding="wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/cjson"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/wlan"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/gpio"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/rtos_tasks"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/spi_transfer"/>
@@ -525,6 +530,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers/freertos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/serial_mwm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/rtos_tasks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/wlan}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1980096545" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.optimization.flags.253072128" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-fno-common" valueType="string"/>
@@ -724,10 +730,13 @@
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="external_communication"/>
 						<entry excluding="external" flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos"/>
 						<entry excluding="gpio|waterscreen_state|rtos_tasks|config|external|spi_transfer" flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/config"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry excluding="wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/cjson"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/wlan"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/gpio"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/rtos_tasks"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/spi_transfer"/>
