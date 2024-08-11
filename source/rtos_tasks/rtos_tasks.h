@@ -17,7 +17,7 @@
 #define MSEC_TO_TICK( msec ) ( (uint32_t)( msec ) * (uint32_t)configTICK_RATE_HZ / 1000uL )
 #endif
 
-#define HMI_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 2 ) // Software Time must have the highest priority.
+#define HMI_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 2 ) // Software Timer must have the highest priority.
 #define HMI_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE + 100 )
 
 #define WIFI_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 1 )

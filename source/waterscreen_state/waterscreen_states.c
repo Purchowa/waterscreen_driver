@@ -1,9 +1,9 @@
 #include "waterscreen_states.h"
-#include "pictures.h"
-#include "power_control.h"
-#include "sensors_control.h"
-#include "spi_transfer/spi_transfer.h"
 #include "waterscreen_state_context.h"
+#include "pictures.h"
+#include "gpio/power_control.h"
+#include "gpio/sensors_control.h"
+#include "spi_transfer/spi_transfer.h"
 
 #include <assert.h>
 
@@ -61,8 +61,7 @@ void presentationState( WaterscreenContext_t *context )
 
     if ( context->valveOpenCounter < 0 )
     {
-        changeWaterscreenState( context, demoModeState );
-        /* TODO: go back to previous state. Not necessarily demoMode (might be standard or HTTP picture) */
+        goBackToPreviousWaterscreenState( context );
     }
     else
     {

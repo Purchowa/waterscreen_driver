@@ -16,11 +16,12 @@
 #include <fsl_common.h>
 #include <serial_mwm.h>
 
-static WaterscreenContext_t s_context = { .waterscreenStateHandler = idleState,
-                                          .picture                 = NULL,
-                                          .demoLoopCount           = 1,
-                                          .valveOpenCounter        = 0,
-                                          .currentStateStatus      = kStatus_Fail };
+static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
+                                          .previousWaterscreenStateHandler = NULL,
+                                          .picture                         = NULL,
+                                          .demoLoopCount                   = 1,
+                                          .valveOpenCounter                = 0,
+                                          .currentStateStatus              = kStatus_Fail };
 
 static void initSerialMWM()
 {

@@ -12,7 +12,7 @@
 #include "board.h"
 #include "fsl_common.h"
 
-#include "valves_spi_cfg.h"
+#include "config/valves_spi_cfg.h"
 #include "rtos_tasks/rtos_tasks.h"
 
 int main()
@@ -41,8 +41,8 @@ int main()
     spi_master_config_t valvesMasterConfig = { 0 };
     SPI_MasterGetDefaultConfig( &valvesMasterConfig );
     uint32_t srcFreq                             = VALVES_SPI_MASTER_CLK_FREQ;
-    valvesMasterConfig.sselNum                   = ( spi_ssel_t )VALVES_SPI_SSEL;
-    valvesMasterConfig.sselPol                   = ( spi_spol_t )VALVES_SPI_SPOL;
+    valvesMasterConfig.sselNum                   = (spi_ssel_t)VALVES_SPI_SSEL;
+    valvesMasterConfig.sselPol                   = (spi_spol_t)VALVES_SPI_SPOL;
     valvesMasterConfig.delayConfig.transferDelay = 1;
     valvesMasterConfig.direction                 = kSPI_LsbFirst; // Least significant bit.
     valvesMasterConfig.baudRate_Bps              = 12000000; // 12 MHz

@@ -129,12 +129,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/startup}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers/freertos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/component/serial_mwm}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/waterscreen_state}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/config}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/gpio}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/spi_transfer}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/external}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_prototype/source/rtos_tasks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/waterscreen_state}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/gpio}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/spi_transfer}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/rtos_tasks}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.1540524650" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.4634256" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -743,21 +743,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="waterscreen_prototype.null.1278791741" name="waterscreen_prototype" projectType="com.crt.advproject.projecttype.exe"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1521917317;com.crt.advproject.config.exe.release.1521917317.;com.crt.advproject.gas.exe.release.111589223;com.crt.advproject.assembler.input.243589721">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1521917317;com.crt.advproject.config.exe.release.1521917317.;com.crt.advproject.gcc.exe.release.1479904726;com.crt.advproject.compiler.input.1112011437">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.754586422;com.crt.advproject.config.exe.debug.754586422.;com.crt.advproject.gcc.exe.debug.1160880117;com.crt.advproject.compiler.input.1697128268">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.754586422;com.crt.advproject.config.exe.debug.754586422.;com.crt.advproject.gas.exe.debug.1402471912;com.crt.advproject.assembler.input.2134295664">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="com.nxp.mcuxpresso.core.datamodels">
 		<sdkName>SDK_2.x_LPCXpresso55S69</sdkName>
@@ -808,4 +793,19 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.754586422;com.crt.advproject.config.exe.debug.754586422.;com.crt.advproject.gas.exe.debug.1402471912;com.crt.advproject.assembler.input.2134295664">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.754586422;com.crt.advproject.config.exe.debug.754586422.;com.crt.advproject.gcc.exe.debug.1160880117;com.crt.advproject.compiler.input.1697128268">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1521917317;com.crt.advproject.config.exe.release.1521917317.;com.crt.advproject.gcc.exe.release.1479904726;com.crt.advproject.compiler.input.1112011437">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.release.1521917317;com.crt.advproject.config.exe.release.1521917317.;com.crt.advproject.gas.exe.release.111589223;com.crt.advproject.assembler.input.243589721">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

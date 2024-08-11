@@ -54,7 +54,7 @@ static void givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures(
         assert_int_equal( context.valveOpenCounter, lastIndexFromPicture );
 
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
-        for ( int8_t i = 0; i <= lastIndexFromPicture; ++i )
+        for ( int8_t j = 0; j <= lastIndexFromPicture; ++j )
         {
             expect_any( sendDataToValves, *data );
             expect_any( manageWaterPump, state );

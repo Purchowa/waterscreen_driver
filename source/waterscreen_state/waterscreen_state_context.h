@@ -1,10 +1,3 @@
-/*
- * waterscreen_state_context.h
- *
- *  Created on: 16 maj 2024
- *      Author: purch
- */
-
 #ifndef WATERSCREEN_STATE_CONTEXT_H_
 #define WATERSCREEN_STATE_CONTEXT_H_
 
@@ -22,13 +15,16 @@ typedef void ( *waterscreenStateFunction_t )( struct WaterscreenContext * );
 typedef struct WaterscreenContext
 {
     waterscreenStateFunction_t waterscreenStateHandler;
+    waterscreenStateFunction_t previousWaterscreenStateHandler;
     const pictureData_t       *picture;
-    uint8_t                    demoLoopCount;
+    const uint8_t              demoLoopCount;
     int32_t                    valveOpenCounter;
     status_t                   currentStateStatus;
 } WaterscreenContext_t;
 
+
 void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState );
 void performWaterscreenAction( WaterscreenContext_t *context );
+void goBackToPreviousWaterscreenState( WaterscreenContext_t *context );
 
 #endif /* WATERSCREEN_STATE_CONTEXT_H_ */
