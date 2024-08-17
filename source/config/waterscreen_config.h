@@ -11,7 +11,8 @@ typedef enum
 {
     Standard,
     Demo,
-    Service
+    Service,
+    SIZE
 } WaterscreenMode_t;
 
 typedef struct
@@ -20,7 +21,7 @@ typedef struct
     bool              isWorkingDuringWeekends;
     uint16_t          workTimeInStandardMode;
     uint16_t          idleTimeInStandardMode;
-    uint8_t           customPictureSize;
+    uint16_t          customPictureSize;
     uint64_t          customPicture[MAX_CUSTOM_PICTURE_LENGTH];
 } WaterscreenConfig_t;
 
