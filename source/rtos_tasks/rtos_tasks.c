@@ -17,11 +17,11 @@
 #include <serial_mwm.h>
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
-                                          .previousWaterscreenStateHandler = NULL,
+                                          .previousWaterscreenStateHandler = idleState,
                                           .picture                         = NULL,
                                           .demoLoopCount                   = 4,
                                           .valveOpenCounter                = 0,
-                                          .currentStateStatus              = kStatus_Fail };
+                                          .currentStateStatus              = kStatus_Success };
 
 static void initSerialMWM()
 {
@@ -75,7 +75,7 @@ void wifiTask( void *params )
 
     for ( ;; )
     {
-        wlan_state();
+        // wlan_state();
         vTaskDelay( MSEC_TO_TICK( 1000 ) );
     }
 }
@@ -83,5 +83,5 @@ void wifiTask( void *params )
 void swMainTimerCallback( TimerHandle_t xTimer )
 {
     performWaterscreenAction( &s_context );
-    validateWaterscreenStatus( &s_context );
+    logWaterscreenStatus( &s_context );
 }

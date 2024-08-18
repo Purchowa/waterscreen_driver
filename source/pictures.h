@@ -19,6 +19,6 @@ typedef struct
 /**
  * \return non-owning pointer to picture structure
  **/
-pictureData_t *getPicture();
+const pictureData_t *getPicture();
 
 #endif /* PICTURES_H_ */

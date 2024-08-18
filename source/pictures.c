@@ -232,7 +232,7 @@ static const pictureData_t pictureData[PICTURE_COUNT] = {
     { .rowCount = sizeof( pictPumpkin ) / sizeof( *pictPumpkin ), .dataBuffer = pictPumpkin },
     { .rowCount = sizeof( pictKI ) / sizeof( *pictKI ), .dataBuffer = pictKI } };
 
-pictureData_t *getPicture()
+const pictureData_t *getPicture()
 {
     static uint8_t pictureIndex = 0;
 
