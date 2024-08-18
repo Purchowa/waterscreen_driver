@@ -3,12 +3,8 @@
 
 #include "logging_levels.h"
 
-#ifndef LIBRARY_LOG_NAME
-#define LIBRARY_LOG_NAME "WaterscreenDriver"
-#endif
-
-#ifndef LIBRARY_LOG_LEVEL
-#define LIBRARY_LOG_LEVEL LOG_DEBUG
+#ifndef LOG_LEVEL
+#define LOG_LEVEL LOG_DEBUG
 #endif
 
 #include "logging.h"

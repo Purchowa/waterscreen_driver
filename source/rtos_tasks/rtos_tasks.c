@@ -11,6 +11,7 @@
 #include "waterscreen_state_context.h"
 #include "validation.h"
 #include "WiFiCfg.h"
+#include "logging_config.h"
 
 #include "wlan/wlan_mwm.h"
 #include <fsl_common.h>
@@ -25,29 +26,37 @@ static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idl
 
 static void initSerialMWM()
 {
-    PRINTF( "Initializing...\r\n" );
+    LogInfo( "Initializing serial MWM" );
     int ret = mwm_init();
     if ( ret < 0 )
     {
-        PRINTF( "Could not initialize Serial MWM, error: %d\r\n", ret );
+        LogError( "Could not initialize Serial MWM, error: %d", ret );
         while ( 1 )
             ;
     }
     ret = wlan_get_state();
     if ( ret == MWM_INITIALIZED )
     {
-        PRINTF( "Starting WLAN...\r\n" );
+        LogInfo( "Starting WLAN" );
         ret = mwm_wlan_start();
         if ( ret < 0 )
         {
-            PRINTF( "Could not start WLAN subsystem, error: %d\r\n", ret );
+            LogError( "Could not start WLAN subsystem, error: %d", ret );
             while ( 1 )
                 ;
         }
     }
     wlan_config( AP_SSID, AP_PASSPHRASE, AP_SECURITY_MODE );
-    while ( wlan_get_state() != MWM_CONNECTED )
-        ;
+
+    int currentWlanState = wlan_get_state();
+    while ( currentWlanState != MWM_CONNECTED )
+    {
+        if ( wlan_get_state() != currentWlanState )
+            LogDebug( "WLAN didn't connect. Current state: %d", currentWlanState );
+
+        currentWlanState = wlan_get_state();
+    }
+
     wlan_state();
 }
 
@@ -75,7 +84,7 @@ void wifiTask( void *params )
 
     for ( ;; )
     {
-        // wlan_state();
+        logWlanStatus();
         vTaskDelay( MSEC_TO_TICK( 1000 ) );
     }
 }
