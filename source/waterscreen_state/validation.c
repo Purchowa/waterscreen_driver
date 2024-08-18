@@ -20,7 +20,7 @@ typedef struct
     const char                *value;
 } pair_t;
 
-static const char *getCurrentStateName( WaterscreenContext_t *context )
+static const char *getCurrentStateName( const WaterscreenContext_t *context )
 {
     static const pair_t statesMap[STATE_COUNT] = { { .key = demoModeState, .value = "demo mode" },
                                                    { presentationState, "presentation" },
@@ -37,7 +37,7 @@ static const char *getCurrentStateName( WaterscreenContext_t *context )
     return unknwonState;
 }
 
-void logWaterscreenStatus( WaterscreenContext_t *context )
+void logWaterscreenStatus( const WaterscreenContext_t *context )
 {
     if ( context->currentStateStatus == kStatus_Fail )
         LogError( "SPI transfer failed" );

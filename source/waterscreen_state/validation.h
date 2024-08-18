@@ -3,6 +3,6 @@
 
 #include "waterscreen_state_context.h"
 
-void logWaterscreenStatus( WaterscreenContext_t *context );
+void logWaterscreenStatus( const WaterscreenContext_t *context );
 
 #endif /* VALIDATION_H_ */
