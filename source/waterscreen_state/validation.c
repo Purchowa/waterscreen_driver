@@ -7,8 +7,7 @@
 #include <fsl_common.h>
 #include <stdint.h>
 
-#define WATERSCREEN_STATE_COUNT 4
-#define WLAN_STATE_COUNT        7
+#define WATERSCREEN_STATE_COUNT 5
 
 #define UNKNOWN_STATE "unknown"
 
@@ -23,7 +22,8 @@ static const char *getCurrentStateName( const WaterscreenContext_t *context )
     static const pair_t statesMap[WATERSCREEN_STATE_COUNT] = { { .key = demoModeState, .value = "demo mode" },
                                                                { presentationState, "presentation" },
                                                                { idleState, "idle" },
-                                                               { lowWaterState, "low water" } };
+                                                               { lowWaterState, "low water" },
+                                                               { standardModeState, "standard mode" } };
 
     for ( uint8_t i = 0; i < WATERSCREEN_STATE_COUNT; ++i )
     {

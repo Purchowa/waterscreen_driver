@@ -7,6 +7,8 @@
 
 #include <assert.h>
 
+void standardModeState( WaterscreenContext_t *context ) {}
+
 static inline uint16_t lastElementIndex( const pictureData_t *picture )
 {
     assert( picture );
@@ -41,7 +43,6 @@ void checkSensorsSubState( WaterscreenContext_t *context )
     {
         // Post waterAlaram to API.
         closeValvesSubState( context );
-        context->currentStateStatus = 1; // TODO: Do I need this status?
         changeWaterscreenState( context, lowWaterState );
     }
 
