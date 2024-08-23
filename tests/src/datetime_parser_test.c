@@ -20,7 +20,7 @@ static bool compareDatetime( const Datetime_t *first, const Datetime_t *second )
     return areEqual;
 }
 
-void givenDateHeader_datetimeParser_returnTrue( void ** )
+void givenDateHeader_datetimeParser_returnTrue()
 {
     const char *datetimeHeader = "Fri, 01 Jan 2019 23:59:00";
 
@@ -32,7 +32,7 @@ void givenDateHeader_datetimeParser_returnTrue( void ** )
     assert_true( compareDatetime( &expectedDatetime, &datetime ) );
 }
 
-void givenEmptyHeader_datetimeParser_returnFalse( void ** )
+void givenEmptyHeader_datetimeParser_returnFalse()
 {
     const char *datetimeHeader = "";
 
@@ -40,7 +40,7 @@ void givenEmptyHeader_datetimeParser_returnFalse( void ** )
     assert_false( getDatetimeFromDateHeader( datetimeHeader, &datetime ) );
 }
 
-void givenInvalidHeader_datetimeParser_returnFalse( void ** )
+void givenInvalidHeader_datetimeParser_returnFalse()
 {
     const char *datetimeHeader = "whatever";
 
@@ -48,10 +48,34 @@ void givenInvalidHeader_datetimeParser_returnFalse( void ** )
     assert_false( getDatetimeFromDateHeader( datetimeHeader, &datetime ) );
 }
 
-void givenNullHeader_datetimeParser_returnFalse( void ** )
+void givenNullHeader_datetimeParser_returnFalse()
 {
     Datetime_t datetime;
     assert_false( getDatetimeFromDateHeader( NULL, &datetime ) );
+}
+
+void givenSummerTime_datetimeParser_returnTrueAndLocalDatetime()
+{
+    const char *datetimeHeader = "Fri, 23 Apr 2024 15:08:32";
+
+    Datetime_t       datetime;
+    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = 4, .day = 23, .weekday = Friday },
+                                          .time = { .hour = 17, .minute = 8, .second = 32 } };
+
+    assert_true( getLocalDatetimeFromDateHeader( datetimeHeader, &datetime ) );
+    assert_true( compareDatetime( &expectedDatetime, &datetime ) );
+}
+
+void givenWinterTime_datetimeParser_returnTrueAndLocalDatetime()
+{
+    const char *datetimeHeader = "Fri, 1 Nov 2024 15:08:32";
+
+    Datetime_t       datetime;
+    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = 11, .day = 1, .weekday = Friday },
+                                          .time = { .hour = 16, .minute = 8, .second = 32 } };
+
+    assert_true( getLocalDatetimeFromDateHeader( datetimeHeader, &datetime ) );
+    assert_true( compareDatetime( &expectedDatetime, &datetime ) );
 }
 
 int main()
@@ -59,7 +83,9 @@ int main()
     const struct CMUnitTest tests[] = { cmocka_unit_test( givenDateHeader_datetimeParser_returnTrue ),
                                         cmocka_unit_test( givenEmptyHeader_datetimeParser_returnFalse ),
                                         cmocka_unit_test( givenInvalidHeader_datetimeParser_returnFalse ),
-                                        cmocka_unit_test( givenNullHeader_datetimeParser_returnFalse ) };
+                                        cmocka_unit_test( givenNullHeader_datetimeParser_returnFalse ),
+                                        cmocka_unit_test( givenSummerTime_datetimeParser_returnTrueAndLocalDatetime ),
+                                        cmocka_unit_test( givenWinterTime_datetimeParser_returnTrueAndLocalDatetime ) };
 
     return cmocka_run_group_tests_name( "Date HTTP header parser", tests, NULL, NULL );
 }

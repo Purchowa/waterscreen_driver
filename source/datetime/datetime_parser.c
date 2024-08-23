@@ -70,4 +70,24 @@ bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
     return true;
 }
 
+#define MARCH_VALUE    3
+#define NOVEMBER_VALUE 11
+
+#define GMT_1 1
+#define GMT_2 2
+
+bool getLocalDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
+{
+    const bool wasParsed = getDatetimeFromDateHeader( datetimeStr, datetime );
+    if ( !wasParsed )
+        return false;
+
+    if ( MARCH_VALUE < datetime->date.month && datetime->date.month < NOVEMBER_VALUE )
+        datetime->time.hour += GMT_2;
+    else
+        datetime->time.hour += GMT_1;
+
+    return true;
+}
+
 #endif /* DATETIME_PARSER_C_ */

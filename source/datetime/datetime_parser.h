@@ -6,5 +6,6 @@
 #include <stdbool.h>
 
 bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime );
+bool getLocalDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime );
 
 #endif /* DATETIME_PARSER_H_ */
