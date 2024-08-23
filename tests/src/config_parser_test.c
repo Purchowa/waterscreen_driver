@@ -1,6 +1,5 @@
 #include <stdarg.h>
 #include <setjmp.h>
-#include <stddef.h>
 #include <cmocka.h>
 
 #include "config/waterscreen_config.h"
@@ -10,19 +9,19 @@
 
 static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenConfig_t *second )
 {
-    bool isEqual = true;
+    bool areEqual = true;
 
-    isEqual &= first->mode == second->mode;
-    isEqual &= first->isWorkingDuringWeekends == second->isWorkingDuringWeekends;
-    isEqual &= first->workTimeInStandardMode == second->workTimeInStandardMode;
-    isEqual &= first->idleTimeInStandardMode == second->idleTimeInStandardMode;
-    isEqual &= first->customPictureSize == second->customPictureSize;
+    areEqual &= first->mode == second->mode;
+    areEqual &= first->isWorkingDuringWeekends == second->isWorkingDuringWeekends;
+    areEqual &= first->workTimeInStandardMode == second->workTimeInStandardMode;
+    areEqual &= first->idleTimeInStandardMode == second->idleTimeInStandardMode;
+    areEqual &= first->customPictureSize == second->customPictureSize;
 
-    if ( isEqual )
-        isEqual &= !memcmp( first->customPicture, second->customPicture,
-                            sizeof( *first->customPicture ) * first->customPictureSize );
+    if ( areEqual )
+        areEqual &= !memcmp( first->customPicture, second->customPicture,
+                             sizeof( *first->customPicture ) * first->customPictureSize );
 
-    return isEqual;
+    return areEqual;
 }
 
 void givenRawValidJson_configParser_fillConfigStructure( void ** )

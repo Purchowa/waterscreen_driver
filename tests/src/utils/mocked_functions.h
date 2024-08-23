@@ -16,6 +16,6 @@ status_t sendDataToValves( const uint64_t *data );
 bool shouldWaterPumpTrigger();
 bool shouldWaterAlaramTrigger();
 
-pictureData_t *getPicture();
+const pictureData_t *getPicture();
 
 #endif

@@ -14,6 +14,7 @@ set(EMBEDDED_DIRS
         ${PROJ_DIR}/source/waterscreen_state
         ${PROJ_DIR}/source/external_communication
         ${PROJ_DIR}/source/external
+        ${PROJ_DIR}/source/datetime
 )
 
 set(EMBEDDED_SRC
@@ -29,6 +30,8 @@ set(EMBEDDED_SRC
         ${PROJ_DIR}/source/external/cjson/cjson.c
         ${PROJ_DIR}/source/external_communication/waterscreen_config_parser.h
         ${PROJ_DIR}/source/external_communication/waterscreen_config_parser.c
+        ${PROJ_DIR}/source/datetime/datetime_parser.h
+        ${PROJ_DIR}/source/datetime/datetime_parser.c
 )
 
 SET(TEST_UTILS_SRC
@@ -57,3 +60,4 @@ generate_test("idleStateTest" "src/idle_state_test.c")
 generate_test("sensorsTest" "src/sensors_test.c")
 generate_test("valvesTest" "src/valves_test.c")
 generate_test("configParserTest" "src/config_parser_test.c")
+generate_test("datetimeParserTest" "src/datetime_parser_test.c")
