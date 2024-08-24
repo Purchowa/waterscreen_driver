@@ -12,6 +12,6 @@
  * @return false if parsing failed (`config` might be left in invalid state).
  * @return true if parsing was successful
  */
-bool loadFromRawJsonIntoConfig( const char *cfgJson, WaterscreenConfig_t *config );
+bool fromJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config );
 
 #endif /* WATERSCREEN_CONFIG_PARSER_H_ */

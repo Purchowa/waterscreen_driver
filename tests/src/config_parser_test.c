@@ -37,7 +37,7 @@ void givenRawValidJson_configParser_fillConfigStructure( void ** )
                                                  .customPicture           = { 0, 0, 24, 1567 } };
 
     WaterscreenConfig_t config;
-    assert_true( loadFromRawJsonIntoConfig( sampleJson, &config ) );
+    assert_true( fromJsonToWaterscreenCfg( sampleJson, &config ) );
     assert_true( compareConfigs( &expectedConfig, &config ) );
 }
 
@@ -48,12 +48,12 @@ void givenInvlaidMode_configParser_returnFalse( void ** )
     const char *invlaidMode_lower =
         "{\"mode\":-1,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
-    assert_false( loadFromRawJsonIntoConfig( invlaidMode_lower, &config ) );
+    assert_false( fromJsonToWaterscreenCfg( invlaidMode_lower, &config ) );
 
     const char *invlaidMode_higher =
         "{\"mode\":3,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
-    assert_false( loadFromRawJsonIntoConfig( invlaidMode_higher, &config ) );
+    assert_false( fromJsonToWaterscreenCfg( invlaidMode_higher, &config ) );
 }
 
 void givenInvalidSize_configParser_returnFalse( void ** )
@@ -63,12 +63,12 @@ void givenInvalidSize_configParser_returnFalse( void ** )
     const char *invlaidSize_lower =
         "{\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "-1,\"data\":[0,0,24,1567]}}";
-    assert_false( loadFromRawJsonIntoConfig( invlaidSize_lower, &config ) );
+    assert_false( fromJsonToWaterscreenCfg( invlaidSize_lower, &config ) );
 
     const char *invlaidSize_higher =
         "{\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "65,\"data\":[0,0,24,1567]}}";
-    assert_false( loadFromRawJsonIntoConfig( invlaidSize_higher, &config ) );
+    assert_false( fromJsonToWaterscreenCfg( invlaidSize_higher, &config ) );
 }
 
 int main()

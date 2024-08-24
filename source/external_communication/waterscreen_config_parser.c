@@ -54,7 +54,7 @@ static bool parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config )
     return true;
 }
 
-bool loadFromRawJsonIntoConfig( const char *cfgJson, WaterscreenConfig_t *config )
+bool fromJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config )
 {
     cJSON     *configJson            = cJSON_Parse( cfgJson );
     const bool wasSuccessfullyParsed = parseJsonConfig( configJson, config );
