@@ -1,19 +1,15 @@
-/*
- * hmi_task.c
- *
- *  Created on: 2 cze 2024
- *      Author: purch
- */
-
 #include "rtos_tasks.h"
+
 #include "button_control.h"
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
-#include "validation.h"
-#include "WiFiCfg.h"
-#include "logging_config.h"
 
-#include "wlan/wlan_mwm.h"
+#include "external_communication/weather_api.h"
+#include "external_communication/wlan_adapter.h"
+#include "status_logging.h"
+
+#include "logging_config.h"
+#include "external/wlan/wlan_mwm.h"
 #include <fsl_common.h>
 #include <serial_mwm.h>
 
@@ -24,41 +20,10 @@ static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idl
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success };
 
-static void initSerialMWM()
-{
-    LogInfo( "Initializing serial MWM" );
-    int ret = mwm_init();
-    if ( ret < 0 )
-    {
-        LogError( "Could not initialize Serial MWM, error: %d", ret );
-        while ( 1 )
-            ;
-    }
-    ret = wlan_get_state();
-    if ( ret == MWM_INITIALIZED )
-    {
-        LogInfo( "Starting WLAN" );
-        ret = mwm_wlan_start();
-        if ( ret < 0 )
-        {
-            LogError( "Could not start WLAN subsystem, error: %d", ret );
-            while ( 1 )
-                ;
-        }
-    }
-    wlan_config( AP_SSID, AP_PASSPHRASE, AP_SECURITY_MODE );
+static Weather_t s_weather;
 
-    int currentWlanState = wlan_get_state();
-    while ( currentWlanState != MWM_CONNECTED )
-    {
-        if ( wlan_get_state() != currentWlanState )
-            LogDebug( "WLAN didn't connect. Current state: %d", currentWlanState );
+static Datetime_t s_datetime;
 
-        currentWlanState = wlan_get_state();
-    }
-
-    wlan_state();
-}
 
 void hmiTask( void *params )
 {
@@ -81,6 +46,13 @@ void hmiTask( void *params )
 void wifiTask( void *params )
 {
     initSerialMWM();
+
+    const WeatherApiStatusCode_t errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
+    if ( errorCode != Success )
+        LogError( "Request for weather failed. Code: %d", errorCode );
+
+    logWeather( &s_weather );
+    logDatetime( &s_datetime );
 
     for ( ;; )
     {
