@@ -3,6 +3,7 @@
 #include "datetime/datetime_parser.h"
 #include "weather_parser.h"
 
+#include "config/WiFiCfg.h"
 #include "external/wlan/wlan_mwm.h"
 
 #include <string.h>
@@ -40,9 +41,7 @@ WeatherApiStatusCode_t getWeatherAndDatetime( Weather_t *weather, Datetime_t *da
     static char getBuffer[GET_BUFFER_LEN];
     memset( getBuffer, 0, GET_BUFFER_LEN );
 
-    http_GET( "api.openweathermap.org/data/2.5/"
-              "weather?q=Tarnow,pl&APPID=306962d7f66ca10907a917cbb38a87bf&units=metric",
-              getBuffer );
+    http_GET( WEATHER_API_URL, getBuffer );
 
     size_t requestLen = strlen( getBuffer );
     if ( requestLen == CONVERSION_FAILED_VALUE )

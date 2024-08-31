@@ -1,9 +1,8 @@
 #ifndef STATUS_LOGGING_H_
 #define STATUS_LOGGING_H_
 
-struct WaterscreenContext_t;
-struct Weather_t;
-struct Datetime_t;
+#include "datetime/datetime_types.h"
+#include "waterscreen_state/waterscreen_state_context.h"
 
 void logWaterscreenStatus( const WaterscreenContext_t *context );
 void logWlanStatus();

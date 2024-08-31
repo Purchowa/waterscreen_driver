@@ -3,11 +3,13 @@
 #include "button_control.h"
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
+#include "config/waterscreen_config.h"
 
 #include "external_communication/weather_api.h"
 #include "external_communication/wlan_adapter.h"
 #include "status_logging.h"
 
+#include "datetime/rtc_provider.h"
 #include "logging_config.h"
 #include "external/wlan/wlan_mwm.h"
 #include <fsl_common.h>
@@ -47,16 +49,25 @@ void wifiTask( void *params )
 {
     initSerialMWM();
 
-    const WeatherApiStatusCode_t errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
-    if ( errorCode != Success )
+    WeatherApiStatusCode_t errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
+    while ( errorCode != Success )
+    {
         LogError( "Request for weather failed. Code: %d", errorCode );
+        vTaskDelay( MSEC_TO_TICK( 10000 ) );
+        errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
+    }
 
     logWeather( &s_weather );
     logDatetime( &s_datetime );
+    setRTCDatetime( &s_datetime );
 
     for ( ;; )
     {
         logWlanStatus();
+
+        getRTCDatetime( &s_datetime );
+        logDatetime( &s_datetime );
+
         vTaskDelay( MSEC_TO_TICK( 1000 ) );
     }
 }

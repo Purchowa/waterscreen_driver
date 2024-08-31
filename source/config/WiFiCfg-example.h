@@ -15,4 +15,6 @@ AP_SECURITY_MODE:
 #define AP_PASSPHRASE    ""
 #define AP_SECURITY_MODE ""
 
+#define WEATHER_API_URL "api.openweathermap.org/data/2.5/weather?q=<location>,pl&APPID=<your_appid>&units=metric"
+
 #endif /* WIFICFG_EXAMPLE_H_ */

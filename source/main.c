@@ -1,3 +1,7 @@
+#include "config/valves_spi_cfg.h"
+#include "rtos_tasks/rtos_tasks.h"
+#include "datetime/rtc_provider.h"
+
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -11,9 +15,6 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_common.h"
-
-#include "config/valves_spi_cfg.h"
-#include "rtos_tasks/rtos_tasks.h"
 
 int main()
 {
@@ -37,6 +38,7 @@ int main()
     SystemCoreClockUpdate();
 
 
+    initRTC();
     // SPI Master configuration
     spi_master_config_t valvesMasterConfig = { 0 };
     SPI_MasterGetDefaultConfig( &valvesMasterConfig );
