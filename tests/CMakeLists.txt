@@ -22,7 +22,6 @@ set(EMBEDDED_SRC
         ${PROJ_DIR}/source/gpio/power_control.h
         ${PROJ_DIR}/source/gpio/sensors_control.h
         ${PROJ_DIR}/source/pictures.h
-        ${PROJ_DIR}/source/waterscreen_state/validation.h
         ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.h
         ${PROJ_DIR}/source/waterscreen_state/waterscreen_states.c
         ${PROJ_DIR}/source/waterscreen_state/waterscreen_state_context.h
@@ -34,6 +33,8 @@ set(EMBEDDED_SRC
         ${PROJ_DIR}/source/external_communication/weather_parser.c
         ${PROJ_DIR}/source/datetime/datetime_parser.h
         ${PROJ_DIR}/source/datetime/datetime_parser.c
+        ${PROJ_DIR}/source/datetime/datetime_types.h
+        ${PROJ_DIR}/source/datetime/rtc_provider.h
 )
 
 SET(TEST_UTILS_SRC
@@ -59,6 +60,8 @@ generate_test("presentationStateTest" "src/presentation_state_test.c")
 generate_test("demonstrationStateTest" "src/demonstration_state_test.c")
 generate_test("lowWaterStateTest" "src/low_water_state_test.c")
 generate_test("idleStateTest" "src/idle_state_test.c")
+generate_test("standardStateTest" "src/standard_state_test.c")
+
 generate_test("sensorsTest" "src/sensors_test.c")
 generate_test("valvesTest" "src/valves_test.c")
 generate_test("configParserTest" "src/config_parser_test.c")

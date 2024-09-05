@@ -70,8 +70,10 @@ bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
     return true;
 }
 
-#define MARCH_VALUE    3
-#define NOVEMBER_VALUE 11
+#define JANUARY  1
+#define FEBRUARY 2
+#define MARCH    3
+#define NOVEMBER 11
 
 #define GMT_1 1
 #define GMT_2 2
@@ -82,12 +84,34 @@ bool getLocalDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *dateti
     if ( !wasParsed )
         return false;
 
-    if ( MARCH_VALUE < datetime->date.month && datetime->date.month < NOVEMBER_VALUE )
+    if ( MARCH < datetime->date.month && datetime->date.month < NOVEMBER )
         datetime->time.hour += GMT_2;
     else
         datetime->time.hour += GMT_1;
 
     return true;
+}
+
+
+/**
+ * Mathematical formula for getting day of the week based on date in Gregorian clendar - `Zeller's congruence`
+ */
+Weekday_t getDayOfTheWeek( const uint16_t year, const uint8_t month, const uint8_t day )
+{
+    uint16_t y = year;
+    uint8_t  m = month;
+    if ( month == JANUARY || month == FEBRUARY )
+    {
+        m += MONTH_COUNT;
+        --y;
+    }
+    const uint16_t k = y % 100;
+    const uint16_t j = y / 100;
+
+    const uint8_t h = day + 13 * ( m + 1 ) / 5 + k + k / 4 + j / 4 + 5 * j;
+
+    const Weekday_t dayOfTheWeek = ( h + 5 ) % 7;
+    return dayOfTheWeek;
 }
 
 #endif /* DATETIME_PARSER_C_ */

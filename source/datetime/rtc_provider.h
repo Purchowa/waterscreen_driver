@@ -3,8 +3,8 @@
 
 #include "datetime/datetime_types.h"
 
-void initRTC();
-void setRTCDatetime( const Datetime_t *datetime );
-void getRTCDatetime( Datetime_t *datetime );
+void       initRTC();
+void       setRTCDatetime( const Datetime_t *datetime );
+Datetime_t getRTCDatetime();
 
 #endif /* RTC_PROVIDER_H_ */

@@ -78,6 +78,13 @@ void givenWinterTime_datetimeParser_returnTrueAndLocalDatetime()
     assert_true( compareDatetime( &expectedDatetime, &datetime ) );
 }
 
+void givenDates_getDayOfTheWeek_returnProperDayOfTheWeek()
+{
+    assert_true( getDayOfTheWeek( 2024, 9, 1 ) == Sunday );
+    assert_true( getDayOfTheWeek( 2024, 1, 1 ) == Monday );
+    assert_true( getDayOfTheWeek( 2024, 2, 29 ) == Thursday );
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = { cmocka_unit_test( givenDateHeader_datetimeParser_returnTrue ),
@@ -85,7 +92,8 @@ int main()
                                         cmocka_unit_test( givenInvalidHeader_datetimeParser_returnFalse ),
                                         cmocka_unit_test( givenNullHeader_datetimeParser_returnFalse ),
                                         cmocka_unit_test( givenSummerTime_datetimeParser_returnTrueAndLocalDatetime ),
-                                        cmocka_unit_test( givenWinterTime_datetimeParser_returnTrueAndLocalDatetime ) };
+                                        cmocka_unit_test( givenWinterTime_datetimeParser_returnTrueAndLocalDatetime ),
+                                        cmocka_unit_test( givenDates_getDayOfTheWeek_returnProperDayOfTheWeek ) };
 
     return cmocka_run_group_tests_name( "Date HTTP header parser", tests, NULL, NULL );
 }
