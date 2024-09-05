@@ -24,6 +24,7 @@ typedef struct WaterscreenContext
 
 
 void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState );
+void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState );
 void performWaterscreenAction( WaterscreenContext_t *context );
 void goBackToPreviousWaterscreenState( WaterscreenContext_t *context );
 

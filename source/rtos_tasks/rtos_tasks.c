@@ -33,13 +33,12 @@ void hmiTask( void *params )
     {
         if ( isS3ButtonPressed() && s_context.waterscreenStateHandler == idleState )
         {
-            changeWaterscreenState( &s_context, demoModeState );
+            forceChangeWaterscreenState( &s_context, demoModeState );
         }
 
         if ( isS2ButtonPressed() )
         {
-            closeValvesSubState( &s_context );
-            changeWaterscreenState( &s_context, idleState );
+            forceChangeWaterscreenState( &s_context, idleState );
         }
     }
     vTaskSuspend( NULL ); // Basically kill task.
