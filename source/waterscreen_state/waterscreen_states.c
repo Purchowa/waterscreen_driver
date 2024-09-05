@@ -4,10 +4,16 @@
 #include "gpio/power_control.h"
 #include "gpio/sensors_control.h"
 #include "spi_transfer/spi_transfer.h"
+#include "datetime/datetime_types.h"
+#include "datetime/rtc_provider.h"
 
 #include <assert.h>
 
-void standardModeState( WaterscreenContext_t *context ) {}
+void standardModeState( WaterscreenContext_t *context )
+{
+    Datetime_t datetime;
+    getRTCDatetime( &datetime );
+}
 
 static inline uint16_t lastElementIndex( const pictureData_t *picture )
 {

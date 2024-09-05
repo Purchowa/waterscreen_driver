@@ -5,6 +5,7 @@
 #include "spi_transfer.h"
 #include "waterscreen_state_context.h"
 #include "pictures.h"
+#include "rtc_provider.h"
 
 /* Redeclarations for better redability */
 
@@ -17,5 +18,8 @@ bool shouldWaterPumpTrigger();
 bool shouldWaterAlaramTrigger();
 
 const pictureData_t *getPicture();
+
+void       will_return_datetime( const Datetime_t datetime );
+Datetime_t getRTCDatetime();
 
 #endif

@@ -1,8 +1,7 @@
 #include "mocked_functions.h"
 
-#include <stdarg.h>
+#include <stdint.h>
 #include <setjmp.h>
-#include <stddef.h>
 #include <cmocka.h>
 
 void manageValvePower( DeviceState_t state )
@@ -33,4 +32,26 @@ bool shouldWaterAlaramTrigger()
 const pictureData_t *getPicture()
 {
     return mock_ptr_type( pictureData_t * );
+}
+
+// Unfortunatelly cmocka doesn't provide functionality for mocking user-defined non-ptr objects.
+static Datetime_t mockedDatetime;
+static bool       wasMocked = false;
+
+void will_return_datetime( const Datetime_t datetime )
+{
+    wasMocked      = true;
+    mockedDatetime = datetime;
+}
+
+static const Datetime_t *get_mocked_datetime()
+{
+    assert_true( wasMocked );
+    wasMocked = false;
+    return &mockedDatetime;
+}
+
+Datetime_t getRTCDatetime()
+{
+    return *get_mocked_datetime();
 }
