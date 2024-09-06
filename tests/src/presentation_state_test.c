@@ -17,21 +17,21 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
                                           0b0010000000000000000000000000000000000000000000000000000000000000,
                                           0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const pictureData_t picture = { .dataBuffer = pictureSample, .rowCount = 4 };
+static const pictureDataView_t picture = { .data = pictureSample, .size = 4 };
 
 static void givenPicture_presentationState_printBottomUp( void **state )
 {
     will_return( getPicture, &picture );
-    const pictureData_t *mockedPicture = getPicture();
+    const pictureDataView_t *mockedPicture = getPicture();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
                                      .picture                 = mockedPicture,
                                      .demoLoopCount           = 0,
-                                     .valveOpenCounter        = mockedPicture->rowCount - 1,
+                                     .valveOpenCounter        = mockedPicture->size - 1,
                                      .currentStateStatus      = Success };
-    for ( int8_t i = mockedPicture->rowCount - 1; 0 <= i; --i )
+    for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )
     { // Print picture
-        expect_value( sendDataToValves, *data, mockedPicture->dataBuffer[i] );
+        expect_value( sendDataToValves, *data, mockedPicture->data[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlaramTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );

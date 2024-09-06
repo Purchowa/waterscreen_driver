@@ -16,7 +16,7 @@ typedef struct WaterscreenContext
 {
     waterscreenStateFunction_t waterscreenStateHandler;
     waterscreenStateFunction_t previousWaterscreenStateHandler;
-    const pictureData_t       *picture;
+    const pictureDataView_t       *picture;
     const uint8_t              demoLoopCount; // Delete in future
     int32_t                    valveOpenCounter;
     status_t                   currentStateStatus;

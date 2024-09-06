@@ -17,7 +17,7 @@ status_t sendDataToValves( const uint64_t *data );
 bool shouldWaterPumpTrigger();
 bool shouldWaterAlaramTrigger();
 
-const pictureData_t *getPicture();
+const pictureDataView_t *getPicture();
 
 void       will_return_datetime( const Datetime_t datetime );
 Datetime_t getRTCDatetime();

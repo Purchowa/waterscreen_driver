@@ -17,7 +17,7 @@ typedef enum
 
 typedef struct
 {
-    WaterscreenMode_t mode;
+    WaterscreenMode_t mode; // TODO: do I need this information for the whole time?
     bool              isWorkingDuringWeekends;
     uint16_t          workTimeInStandardMode;
     uint16_t          idleTimeInStandardMode;

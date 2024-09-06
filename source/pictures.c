@@ -228,15 +228,15 @@ const uint64_t pictKI[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
-static const pictureData_t pictureData[PICTURE_COUNT] = {
+static const pictureDataView_t pictureData[PICTURE_COUNT] = {
     { .rowCount = sizeof( pictPumpkin ) / sizeof( *pictPumpkin ), .dataBuffer = pictPumpkin },
     { .rowCount = sizeof( pictKI ) / sizeof( *pictKI ), .dataBuffer = pictKI } };
 
-const pictureData_t *getPicture()
+const pictureDataView_t *getPicture()
 {
     static uint8_t pictureIndex = 0;
 
-    const pictureData_t *currentPicture = &pictureData[pictureIndex];
+    const pictureDataView_t *currentPicture = &pictureData[pictureIndex];
     pictureIndex                        = ( pictureIndex + 1 ) % PICTURE_COUNT;
 
     return currentPicture;

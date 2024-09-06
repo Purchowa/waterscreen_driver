@@ -1,10 +1,3 @@
-/*
- * pictures.h
- *
- *  Created on: 14 maj 2024
- *      Author: purch
- */
-
 #ifndef PICTURES_H_
 #define PICTURES_H_
 
@@ -12,13 +5,13 @@
 
 typedef struct
 {
-    const uint8_t   rowCount;
-    const uint64_t *dataBuffer;
-} pictureData_t;
+    const uint8_t   size;
+    const uint64_t *data;
+} pictureDataView_t;
 
 /**
  * \return non-owning pointer to picture structure
  **/
-const pictureData_t *getPicture();
+const pictureDataView_t *getPicture();
 
 #endif /* PICTURES_H_ */

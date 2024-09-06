@@ -29,9 +29,9 @@ bool shouldWaterAlaramTrigger()
     return mock_type( bool );
 }
 
-const pictureData_t *getPicture()
+const pictureDataView_t *getPicture()
 {
-    return mock_ptr_type( pictureData_t * );
+    return mock_ptr_type( pictureDataView_t * );
 }
 
 // Unfortunatelly cmocka doesn't provide functionality for mocking user-defined non-ptr objects.
