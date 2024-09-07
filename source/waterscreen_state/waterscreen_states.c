@@ -23,22 +23,10 @@ static inline uint16_t lastElementIndex( const pictureDataView_t *picture )
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    static uint8_t pictureCounter = 0;
-
-    if ( pictureCounter < context->demoLoopCount )
-    {
-        ++pictureCounter;
-        context->picture          = getPicture();
-        context->valveOpenCounter = lastElementIndex( context->picture );
-        manageValvePower( OnDeviceState );
-        changeWaterscreenState( context, presentationState );
-    }
-    else
-    {
-        pictureCounter = 0;
-        closeValvesSubState( context );
-        changeWaterscreenState( context, idleState );
-    }
+    context->picture          = getPicture();
+    context->valveOpenCounter = lastElementIndex( context->picture );
+    manageValvePower( OnDeviceState );
+    changeWaterscreenState( context, presentationState );
 }
 
 void checkSensorsSubState( WaterscreenContext_t *context )

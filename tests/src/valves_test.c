@@ -10,11 +10,8 @@
 
 static void givenAnyState_closeValveSubState_turnValvesOffRemainTheSameState( void **state )
 {
-    WaterscreenContext_t context = { .waterscreenStateHandler = NULL,
-                                     .picture                 = NULL,
-                                     .demoLoopCount           = 0,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
+    WaterscreenContext_t context = {
+        .waterscreenStateHandler = NULL, .picture = NULL, .valveOpenCounter = 0, .currentStateStatus = Success };
 
     assertClosedValves();
     closeValvesSubState( &context );

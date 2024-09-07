@@ -17,33 +17,18 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
 
 static const pictureDataView_t picture = { .data = pictureSample, .size = 4 };
 
-static void givenDemoModeState_demoModeState_transitionToIdleState( void **state )
+static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
 {
-    WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
-                                     .picture                 = NULL,
-                                     .demoLoopCount           = 0,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
-
-    assertClosedValves();
-    performWaterscreenAction( &context );
-
-    assert_ptr_equal( context.waterscreenStateHandler, idleState );
-}
-
-static void givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures( void **state )
-{
-    static const int32_t endOfDemoCounterValue = -1;
-    static const uint8_t lastIndexFromPicture  = 3;
-    static const uint8_t loopCount             = 3;
+    static const int32_t endOfDemoCounterValue   = -1;
+    static const uint8_t lastIndexFromPicture    = 3;
+    static const uint8_t mockedInfiniteLoopCount = 32;
 
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
                                      .picture                 = NULL,
-                                     .demoLoopCount           = loopCount,
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = Success };
 
-    for ( int8_t i = 0; i < loopCount; ++i )
+    for ( int8_t i = 0; i < mockedInfiniteLoopCount; ++i )
     {
         expect_value( manageValvePower, state, OnDeviceState );
         assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
@@ -72,19 +57,12 @@ static void givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures(
         expect_any( manageWaterPump, state );
         performWaterscreenAction( &context );
     }
-    assert_int_equal( context.valveOpenCounter, endOfDemoCounterValue );
-    assertClosedValves();
-    assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
-    performWaterscreenAction( &context );
-
-    assert_ptr_equal( context.waterscreenStateHandler, idleState );
 }
 
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test( givenDemoModeState_demoModeState_transitionToIdleState ),
-        cmocka_unit_test( givenDemoModeStateWithLoopCount_demoModeState_printMultiplePictures ),
+        cmocka_unit_test( givenDemoModeState_demoModeState_printInfinitelyManyPictures ),
     };
 
     return cmocka_run_group_tests_name( "Demonstration State", tests, NULL, NULL );

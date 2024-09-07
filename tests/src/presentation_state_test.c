@@ -26,7 +26,6 @@ static void givenPicture_presentationState_printBottomUp( void **state )
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
                                      .picture                 = mockedPicture,
-                                     .demoLoopCount           = 0,
                                      .valveOpenCounter        = mockedPicture->size - 1,
                                      .currentStateStatus      = Success };
     for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )

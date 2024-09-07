@@ -14,7 +14,6 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
                                      .picture                 = NULL,
-                                     .demoLoopCount           = 0,
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = Success };
 
@@ -32,7 +31,6 @@ void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
                                      .picture                 = NULL,
-                                     .demoLoopCount           = 0,
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = Success };
 
