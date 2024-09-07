@@ -2,7 +2,9 @@
 
 #define PICTURE_COUNT 2
 
-const uint64_t pictPumpkin[] = {
+#define MAX_CUSTOM_PICTURE_LENGTH 64
+
+static const uint64_t pictPumpkin[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -70,7 +72,7 @@ const uint64_t pictPumpkin[] = {
 };
 
 
-const uint64_t pictKI[] = {
+static const uint64_t pictKI[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000100000000000000000000000000000000000011111111111111,
     0b0000000000001100000000000000000000000000000000000011111111111111,
@@ -229,15 +231,25 @@ const uint64_t pictKI[] = {
 };
 
 static const pictureDataView_t pictureData[PICTURE_COUNT] = {
-    { .rowCount = sizeof( pictPumpkin ) / sizeof( *pictPumpkin ), .dataBuffer = pictPumpkin },
-    { .rowCount = sizeof( pictKI ) / sizeof( *pictKI ), .dataBuffer = pictKI } };
+    { .size = sizeof( pictPumpkin ) / sizeof( *pictPumpkin ), .data = pictPumpkin },
+    { .size = sizeof( pictKI ) / sizeof( *pictKI ), .data = pictKI } };
 
-const pictureDataView_t *getPicture()
+const pictureDataView_t *getPictureView()
 {
     static uint8_t pictureIndex = 0;
 
     const pictureDataView_t *currentPicture = &pictureData[pictureIndex];
-    pictureIndex                        = ( pictureIndex + 1 ) % PICTURE_COUNT;
+    pictureIndex                            = ( pictureIndex + 1 ) % PICTURE_COUNT;
 
     return currentPicture;
+}
+
+static uint64_t userCustomPicture[MAX_CUSTOM_PICTURE_LENGTH];
+
+customPictureDataSpan_t *getCustomPictureSpan()
+{
+    static customPictureDataSpan_t view = {
+        .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 0, .data = userCustomPicture };
+
+    return &view;
 }

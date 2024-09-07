@@ -29,7 +29,7 @@ bool shouldWaterAlaramTrigger()
     return mock_type( bool );
 }
 
-const pictureDataView_t *getPicture()
+const pictureDataView_t *getPictureView()
 {
     return mock_ptr_type( pictureDataView_t * );
 }

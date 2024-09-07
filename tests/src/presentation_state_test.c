@@ -21,11 +21,11 @@ static const pictureDataView_t picture = { .data = pictureSample, .size = 4 };
 
 static void givenPicture_presentationState_printBottomUp( void **state )
 {
-    will_return( getPicture, &picture );
-    const pictureDataView_t *mockedPicture = getPicture();
+    will_return( getPictureView, &picture );
+    const pictureDataView_t *mockedPicture = getPictureView();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
-                                     .picture                 = mockedPicture,
+                                     .pictureView             = mockedPicture,
                                      .valveOpenCounter        = mockedPicture->size - 1,
                                      .currentStateStatus      = Success };
     for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )

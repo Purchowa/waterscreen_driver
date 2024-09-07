@@ -12,9 +12,9 @@ static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenC
     bool areEqual = true;
 
     areEqual &= first->mode == second->mode;
-    areEqual &= first->isWorkingDuringWeekends == second->isWorkingDuringWeekends;
-    areEqual &= first->workTimeInStandardMode == second->workTimeInStandardMode;
-    areEqual &= first->idleTimeInStandardMode == second->idleTimeInStandardMode;
+    areEqual &= first->standardModeConfig.isWorkingDuringWeekends == second->standardModeConfig.isWorkingDuringWeekends;
+    areEqual &= first->standardModeConfig.workTimeInStandardMode == second->standardModeConfig.workTimeInStandardMode;
+    areEqual &= first->standardModeConfig.idleTimeInStandardMode == second->standardModeConfig.idleTimeInStandardMode;
     areEqual &= first->customPictureSize == second->customPictureSize;
 
     if ( areEqual )
@@ -29,12 +29,15 @@ void givenRawValidJson_configParser_fillConfigStructure()
 
     const char *sampleJson = "{\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
                              "4,\"data\":[0,0,24,1567]}}";
-    const WaterscreenConfig_t expectedConfig = { .mode                    = Service,
-                                                 .isWorkingDuringWeekends = true,
-                                                 .workTimeInStandardMode  = 10,
-                                                 .idleTimeInStandardMode  = 5,
-                                                 .customPictureSize       = 4,
-                                                 .customPicture           = { 0, 0, 24, 1567 } };
+    const WaterscreenConfig_t expectedConfig = { .mode = Service,
+                                                 .standardModeConfig =
+                                                     {
+                                                         .isWorkingDuringWeekends = true,
+                                                         .workTimeInStandardMode  = 10,
+                                                         .idleTimeInStandardMode  = 5,
+                                                     },
+                                                 .customPictureSize = 4,
+                                                 .customPicture     = { 0, 0, 24, 1567 } };
 
     WaterscreenConfig_t config;
     assert_true( fromJsonToWaterscreenCfg( sampleJson, &config ) );
@@ -73,12 +76,15 @@ void givenInvalidSize_configParser_returnTrueAndClamp()
     const char *invlaidSize_lower =
         "{\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "-1,\"data\":[0,0,24,1567]}}";
-    WaterscreenConfig_t expectedConfig = { .mode                    = Service,
-                                           .isWorkingDuringWeekends = true,
-                                           .workTimeInStandardMode  = 10,
-                                           .idleTimeInStandardMode  = 5,
-                                           .customPictureSize       = 0,
-                                           .customPicture           = { 0, 0, 24, 1567 } };
+    WaterscreenConfig_t expectedConfig = { .mode = Service,
+                                           .standardModeConfig =
+                                               {
+                                                   .isWorkingDuringWeekends = true,
+                                                   .workTimeInStandardMode  = 10,
+                                                   .idleTimeInStandardMode  = 5,
+                                               },
+                                           .customPictureSize = 0,
+                                           .customPicture     = { 0, 0, 24, 1567 } };
 
     assert_true( fromJsonToWaterscreenCfg( invlaidSize_lower, &configLower ) );
     assert_true( compareConfigs( &expectedConfig, &configLower ) );

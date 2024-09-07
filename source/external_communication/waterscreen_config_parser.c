@@ -24,17 +24,19 @@ static bool parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config )
     const cJSON *enableWeekends = cJSON_GetObjectItemCaseSensitive( cfgJson, "enableWeekends" );
     if ( !cJSON_IsBool( enableWeekends ) )
         return false;
-    config->isWorkingDuringWeekends = enableWeekends->valueint;
+
+    StandardModeConfig_t *standardCfg    = &config->standardModeConfig;
+    standardCfg->isWorkingDuringWeekends = enableWeekends->valueint;
 
     const cJSON *workTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "workTime" );
     if ( !cJSON_IsNumber( workTime ) )
         return false;
-    config->workTimeInStandardMode = clamp_uint16( workTime->valueint, 0, MAX_WORK_TIME );
+    standardCfg->workTimeInStandardMode = clamp_uint16( workTime->valueint, 0, MAX_WORK_TIME );
 
     const cJSON *idleTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "idleTime" );
     if ( !cJSON_IsNumber( idleTime ) )
         return false;
-    config->idleTimeInStandardMode = clamp_uint16( idleTime->valueint, 0, MAX_IDLE_TIME );
+    standardCfg->idleTimeInStandardMode = clamp_uint16( idleTime->valueint, 0, MAX_IDLE_TIME );
 
     const cJSON *pictureObject = cJSON_GetObjectItemCaseSensitive( cfgJson, "picture" );
     if ( !cJSON_IsObject( pictureObject ) )

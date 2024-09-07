@@ -17,7 +17,7 @@
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = idleState,
-                                          .picture                         = NULL,
+                                          .pictureView                     = NULL,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success };
 

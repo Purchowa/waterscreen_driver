@@ -15,16 +15,16 @@ void standardModeState( WaterscreenContext_t *context )
     getRTCDatetime( &datetime );
 }
 
-static inline uint16_t lastElementIndex( const pictureDataView_t *picture )
+static inline uint16_t lastElementIndex( const pictureDataView_t *pictureView )
 {
-    assert( picture );
-    return ( picture->size - 1 );
+    assert( pictureView );
+    return ( pictureView->size - 1 );
 }
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->picture          = getPicture();
-    context->valveOpenCounter = lastElementIndex( context->picture );
+    context->pictureView      = getPictureView();
+    context->valveOpenCounter = lastElementIndex( context->pictureView );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
 }
@@ -60,7 +60,7 @@ void presentationState( WaterscreenContext_t *context )
     }
     else
     {
-        const status_t status       = sendDataToValves( &context->picture->data[context->valveOpenCounter--] );
+        const status_t status       = sendDataToValves( &context->pictureView->data[context->valveOpenCounter--] );
         context->currentStateStatus = status;
     }
 }
