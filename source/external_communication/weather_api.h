@@ -15,6 +15,7 @@ typedef enum
     DatetimeParsingError
 } WeatherApiStatusCode_t;
 
-WeatherApiStatusCode_t getWeatherAndDatetime( Weather_t *weather, Datetime_t *datetime );
+WeatherApiStatusCode_t getDatetime( Datetime_t *datetime );
+WeatherApiStatusCode_t getWeather( Weather_t *weather );
 
 #endif /* WEATHER_API_H_ */

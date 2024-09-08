@@ -6,7 +6,8 @@
 
 #include "config/logging_config.h"
 #include "wlan/wlan_mwm.h"
-#include "waterscreen_states.h"
+#include "waterscreen_state/waterscreen_states.h"
+#include "waterscreen_state/standard_mode_state.h"
 
 #include <fsl_common.h>
 #include <stdint.h>

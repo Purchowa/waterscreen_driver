@@ -12,7 +12,7 @@
 void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClosedValves( void **state )
 {
     WaterscreenContext_t context = {
-        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = Success };
+        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = SuccessSPI };
 
     assertClosedValves();
     will_return( shouldWaterAlaramTrigger, true );
@@ -26,7 +26,7 @@ void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClose
 void givenAlarmOnPumpOn_checkSensorsSubState_transitionToLowWaterStateWithClosedValves( void **state )
 {
     WaterscreenContext_t context = {
-        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = Success };
+        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = SuccessSPI };
 
     assertClosedValves();
     will_return( shouldWaterAlaramTrigger, true );
@@ -40,7 +40,7 @@ void givenAlarmOnPumpOn_checkSensorsSubState_transitionToLowWaterStateWithClosed
 void givenAlarmOffPumpOff_checkSensorsSubState_remainInitialStateWithOpenValves( void **state )
 {
     WaterscreenContext_t context = {
-        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = Success };
+        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = SuccessSPI };
 
     will_return( shouldWaterAlaramTrigger, false );
     will_return( shouldWaterPumpTrigger, false );
@@ -53,7 +53,7 @@ void givenAlarmOffPumpOff_checkSensorsSubState_remainInitialStateWithOpenValves(
 void givenAlarmOffPumpOn_checkSensorsSubState_remainInitialStateWithOpenValves( void **state )
 {
     WaterscreenContext_t context = {
-        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = Success };
+        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = SuccessSPI };
 
     will_return( shouldWaterAlaramTrigger, false );
     will_return( shouldWaterPumpTrigger, true );

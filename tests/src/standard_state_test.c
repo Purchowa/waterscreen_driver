@@ -4,17 +4,19 @@
 
 #include "utils/mocked_functions.h"
 
-#include "waterscreen_state_context.h"
-#include "waterscreen_state/waterscreen_states.h"
+#include "waterscreen_state/standard_mode_state.h"
+#include "datetime/datetime_types.h"
 
 void givenWeekendWithoutEnabledWeekends_standardModeState_doNothing()
 {
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
-    const Datetime_t     datetime = { .date = { .year = 2024, .month = 11, .day = 1, .weekday = Friday },
-                                      .time = { .hour = 16, .minute = 8, .second = 32 } };
+    const Datetime_t     datetime = { .date = { .year = 2024, .month = 9, .day = 7, .weekday = Saturday },
+                                      .time = { .hour = 0, .minute = 0, .second = 0 } };
 
     will_return_datetime( datetime );
     performWaterscreenAction( &context );
+
+    assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
 }
 
 int main()

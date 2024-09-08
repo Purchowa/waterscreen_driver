@@ -15,7 +15,7 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
                                      .pictureView             = NULL,
                                      .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
+                                     .currentStateStatus      = SuccessSPI };
 
     const uint8_t arbitraryLoopCountInLowWaterState = 3;
     for ( uint8_t i = 0; i < arbitraryLoopCountInLowWaterState; ++i )
@@ -32,7 +32,7 @@ void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
     WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
                                      .pictureView             = NULL,
                                      .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
+                                     .currentStateStatus      = SuccessSPI };
 
     expect_value( manageWaterPump, state, OffDeviceState );
     will_return( shouldWaterAlaramTrigger, false );

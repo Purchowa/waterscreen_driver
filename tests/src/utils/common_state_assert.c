@@ -13,5 +13,5 @@ void assertClosedValves()
 {
     expect_value( manageValvePower, state, OffDeviceState );
     expect_value( sendDataToValves, *data, 0 );
-    will_return( sendDataToValves, Success );
+    will_return( sendDataToValves, SuccessSPI );
 }

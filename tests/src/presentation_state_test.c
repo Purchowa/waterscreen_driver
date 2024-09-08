@@ -6,7 +6,6 @@
 #include "pictures.h"
 
 #include "power_control.h"
-#include "spi_transfer.h"
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
 
@@ -19,22 +18,22 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
 
 static const pictureDataView_t picture = { .data = pictureSample, .size = 4 };
 
-static void givenPicture_presentationState_printBottomUp( void **state )
+static void givenPicture_presentationState_printBottomUp()
 {
-    will_return( getPictureView, &picture );
-    const pictureDataView_t *mockedPicture = getPictureView();
+    will_return( getEachPictureView, &picture );
+    const pictureDataView_t *mockedPicture = getEachPictureView();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
                                      .pictureView             = mockedPicture,
                                      .valveOpenCounter        = mockedPicture->size - 1,
-                                     .currentStateStatus      = Success };
+                                     .currentStateStatus      = SuccessSPI };
     for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )
     { // Print picture
         expect_value( sendDataToValves, *data, mockedPicture->data[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlaramTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );
-        will_return( sendDataToValves, Success );
+        will_return( sendDataToValves, SuccessSPI );
         performWaterscreenAction( &context );
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
     }

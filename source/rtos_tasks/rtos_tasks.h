@@ -1,10 +1,3 @@
-/*
- * hmi_task.h
- *
- *  Created on: 2 cze 2024
- *      Author: purch
- */
-
 #ifndef RTOS_TASKS_H_
 #define RTOS_TASKS_H_
 
@@ -21,7 +14,7 @@
 #define HMI_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE + 100 )
 
 #define WIFI_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 1 )
-#define WIFI_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE + 300 )
+#define WIFI_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE + 512 )
 
 #define SW_TIMER_PERIOD_MS MSEC_TO_TICK( 14 )
 

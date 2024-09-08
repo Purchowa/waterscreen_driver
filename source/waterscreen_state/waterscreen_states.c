@@ -9,13 +9,8 @@
 
 #include <assert.h>
 
-void standardModeState( WaterscreenContext_t *context )
-{
-    Datetime_t datetime;
-    getRTCDatetime( &datetime );
-}
 
-static inline uint16_t lastElementIndex( const pictureDataView_t *pictureView )
+static inline uint8_t lastElementIndex( const pictureDataView_t *pictureView )
 {
     assert( pictureView );
     return ( pictureView->size - 1 );
@@ -23,7 +18,7 @@ static inline uint16_t lastElementIndex( const pictureDataView_t *pictureView )
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->pictureView      = getPictureView();
+    context->pictureView      = getEachPictureView();
     context->valveOpenCounter = lastElementIndex( context->pictureView );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );

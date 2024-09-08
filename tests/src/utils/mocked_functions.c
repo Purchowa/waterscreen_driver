@@ -29,7 +29,7 @@ bool shouldWaterAlaramTrigger()
     return mock_type( bool );
 }
 
-const pictureDataView_t *getPictureView()
+const pictureDataView_t *getEachPictureView()
 {
     return mock_ptr_type( pictureDataView_t * );
 }
@@ -54,4 +54,12 @@ static const Datetime_t *get_mocked_datetime()
 Datetime_t getRTCDatetime()
 {
     return *get_mocked_datetime();
+}
+
+WeatherApiStatusCode_t getWeather( Weather_t *weather )
+{
+    assert_non_null( weather );
+
+    mock_ptr_type( Weather_t * );
+    mock_type( WeatherApiStatusCode_t );
 }

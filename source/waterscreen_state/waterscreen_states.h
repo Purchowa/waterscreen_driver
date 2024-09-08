@@ -4,7 +4,6 @@
 
 #include "waterscreen_state_context.h"
 
-void standardModeState( WaterscreenContext_t * );
 void demoModeState( WaterscreenContext_t * );
 void checkSensorsSubState( WaterscreenContext_t * );
 void presentationState( WaterscreenContext_t * );

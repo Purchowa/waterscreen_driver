@@ -26,13 +26,13 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
                                      .pictureView             = NULL,
                                      .valveOpenCounter        = 0,
-                                     .currentStateStatus      = Success };
+                                     .currentStateStatus      = SuccessSPI };
 
     for ( int8_t i = 0; i < mockedInfiniteLoopCount; ++i )
     {
         expect_value( manageValvePower, state, OnDeviceState );
         assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
-        will_return( getPictureView, &picture );
+        will_return( getEachPictureView, &picture );
         performWaterscreenAction( &context );
 
         assert_ptr_equal( context.pictureView, &picture );
@@ -43,7 +43,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
         {
             expect_any( sendDataToValves, *data );
             expect_any( manageWaterPump, state );
-            will_return( sendDataToValves, Success );
+            will_return( sendDataToValves, SuccessSPI );
             will_return( shouldWaterAlaramTrigger, false );
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );

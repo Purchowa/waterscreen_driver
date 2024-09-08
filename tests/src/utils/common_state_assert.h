@@ -3,7 +3,7 @@
 
 typedef enum
 {
-    Success,
+    SuccessSPI,
     InvalidArgument,
     Timeout
 } ReturnCodes_t;

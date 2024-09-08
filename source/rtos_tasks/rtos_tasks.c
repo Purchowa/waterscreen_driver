@@ -43,17 +43,34 @@ void hmiTask( void *params )
     vTaskSuspend( NULL ); // Basically kill task.
 }
 
+static void requestWeather()
+{
+    WeatherApiStatusCode_t weatherErrorCode = getWeather( &s_weather );
+    while ( weatherErrorCode != Success )
+    {
+        LogError( "Request for weather failed. Code: %d", weatherErrorCode );
+        vTaskDelay( MSEC_TO_TICK( 10000 ) );
+        weatherErrorCode = getWeather( &s_weather );
+    }
+}
+
+static void requestDatetime()
+{
+    WeatherApiStatusCode_t datetimeErrorCode = getDatetime( &s_datetime );
+    while ( datetimeErrorCode != Success )
+    {
+        LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
+        vTaskDelay( MSEC_TO_TICK( 10000 ) );
+        datetimeErrorCode = getDatetime( &s_datetime );
+    }
+}
+
 void wifiTask( void *params )
 {
     initSerialMWM();
 
-    WeatherApiStatusCode_t errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
-    while ( errorCode != Success )
-    {
-        LogError( "Request for weather failed. Code: %d", errorCode );
-        vTaskDelay( MSEC_TO_TICK( 10000 ) );
-        errorCode = getWeatherAndDatetime( &s_weather, &s_datetime );
-    }
+    requestWeather();
+    requestDatetime();
 
     logWeather( &s_weather );
     logDatetime( &s_datetime );
@@ -63,7 +80,7 @@ void wifiTask( void *params )
     {
         logWlanStatus();
 
-        getRTCDatetime( &s_datetime );
+        s_datetime = getRTCDatetime();
         logDatetime( &s_datetime );
 
         vTaskDelay( MSEC_TO_TICK( 1000 ) );

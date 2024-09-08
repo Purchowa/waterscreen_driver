@@ -234,7 +234,7 @@ static const pictureDataView_t pictureData[PICTURE_COUNT] = {
     { .size = sizeof( pictPumpkin ) / sizeof( *pictPumpkin ), .data = pictPumpkin },
     { .size = sizeof( pictKI ) / sizeof( *pictKI ), .data = pictKI } };
 
-const pictureDataView_t *getPictureView()
+const pictureDataView_t *getEachPictureView()
 {
     static uint8_t pictureIndex = 0;
 
