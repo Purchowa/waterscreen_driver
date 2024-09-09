@@ -1,6 +1,6 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
-#include "pictures.h"
+#include "picture_managment/picture_logic.h"
 #include "gpio/power_control.h"
 #include "gpio/sensors_control.h"
 #include "spi_transfer/spi_transfer.h"

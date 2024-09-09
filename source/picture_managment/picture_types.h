@@ -1,5 +1,5 @@
-#ifndef PICTURES_H_
-#define PICTURES_H_
+#ifndef PICTURE_TYPES_H_
+#define PICTURE_TYPES_H_
 
 #include "datetime/datetime_types.h"
 #include "external_communication/weather_types.h"
@@ -19,9 +19,4 @@ typedef struct
     uint64_t     *data;
 } customPictureDataSpan_t;
 
-const pictureDataView_t *getEachPictureView();
-const pictureDataView_t *getOccasionalPictureView( const Date_t *, const WeatherCondition_t );
-
-customPictureDataSpan_t *getCustomPictureSpan();
-
-#endif /* PICTURES_H_ */
+#endif /* PICTURE_TYPES_H_ */

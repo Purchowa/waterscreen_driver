@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <cmocka.h>
 
-#include "pictures.h"
+#include "picture_managment/picture_logic.h"
 
 #include "power_control.h"
 #include "waterscreen_state_context.h"

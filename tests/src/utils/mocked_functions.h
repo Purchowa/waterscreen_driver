@@ -4,7 +4,7 @@
 #include "power_control.h"
 #include "spi_transfer.h"
 #include "waterscreen_state_context.h"
-#include "pictures.h"
+#include "picture_managment/picture_logic.h"
 #include "rtc_provider.h"
 #include "weather_api.h"
 

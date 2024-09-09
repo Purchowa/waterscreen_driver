@@ -1,7 +1,7 @@
 #ifndef WATERSCREEN_STATE_CONTEXT_H_
 #define WATERSCREEN_STATE_CONTEXT_H_
 
-#include "pictures.h"
+#include "picture_managment/picture_types.h"
 
 #include <stdbool.h>
 #include <stdint.h>

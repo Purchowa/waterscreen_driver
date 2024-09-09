@@ -15,6 +15,7 @@ set(EMBEDDED_DIRS
         ${PROJ_DIR}/source/external_communication
         ${PROJ_DIR}/source/external
         ${PROJ_DIR}/source/datetime
+        ${PROJ_DIR}/source/picture_managment
 )
 
 SET(TEST_UTILS_SRC
