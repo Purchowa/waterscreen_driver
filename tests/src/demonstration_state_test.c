@@ -15,7 +15,7 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
                                           0b0010000000000000000000000000000000000000000000000000000000000000,
                                           0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const pictureDataView_t picture = { .data = pictureSample, .size = 4 };
+static const PictureDataView_t picture = { .data = pictureSample, .size = 4 };
 
 static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
 {

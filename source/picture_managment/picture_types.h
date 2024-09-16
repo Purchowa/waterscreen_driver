@@ -6,17 +6,20 @@
 
 #include <stdint.h>
 
+typedef uint64_t pictureRow_t;
+typedef uint16_t pictureCharacter_t;
+
 typedef struct
 {
-    const uint8_t   size;
-    const uint64_t *data;
-} pictureDataView_t;
+    const uint8_t       size;
+    const pictureRow_t *data;
+} PictureDataView_t;
 
 typedef struct
 {
     const uint8_t capacity;
     uint8_t       size;
-    uint64_t     *data;
-} customPictureDataSpan_t;
+    pictureRow_t *data;
+} CustomPictureDataSpan_t;
 
 #endif /* PICTURE_TYPES_H_ */

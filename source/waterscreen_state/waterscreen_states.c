@@ -10,16 +10,10 @@
 #include <assert.h>
 
 
-static inline uint8_t lastElementIndex( const pictureDataView_t *pictureView )
-{
-    assert( pictureView );
-    return ( pictureView->size - 1 );
-}
-
 void demoModeState( WaterscreenContext_t *context )
 {
     context->pictureView      = getEachPictureView();
-    context->valveOpenCounter = lastElementIndex( context->pictureView );
+    context->valveOpenCounter = getLastPictureIndex( context->pictureView );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
 }

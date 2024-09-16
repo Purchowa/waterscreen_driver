@@ -3,6 +3,9 @@
 #include "datetime/datetime_types.h"
 #include "datetime/rtc_provider.h"
 #include "external_communication/weather_api.h"
+#include "waterscreen_state/waterscreen_states.h"
+#include "gpio/power_control.h"
+#include "picture_managment/picture_logic.h"
 
 #include <assert.h>
 
@@ -63,4 +66,9 @@ void standardModeState( WaterscreenContext_t *context )
         return;
 
     const Weather_t weather = requestWeather();
+
+    context->pictureView      = getOccasionalPictureView( &datetime, weather.weatherCondition );
+    context->valveOpenCounter = getLastPictureIndex( context->pictureView );
+    manageValvePower( OnDeviceState );
+    changeWaterscreenState( context, presentationState );
 }
