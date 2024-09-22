@@ -1,8 +1,9 @@
 #ifndef PICTURE_DATA_H_
 #define PICTURE_DATA_H_
 
-#include "picture_data_constants.h"
-#include "picture_types.h"
+#include "picture_management/picture_data_constants.h"
+#include "picture_management/picture_types.h"
+
 #include "external_communication/weather_types.h"
 
 

@@ -6,10 +6,10 @@
 
 #include "gpio/power_control.h"
 
-#include "picture_managment/picture_logic_utils.h"
-#include "picture_managment/standard_mode_picture_logic.h"
-
 #include "external_communication/weather_api.h"
+
+#include "picture_management/picture_logic_utils.h"
+#include "picture_management/standard_mode_picture_logic.h"
 
 #include <assert.h>
 
@@ -17,13 +17,13 @@
 #define WORK_RANGE_FROM 7
 #define WORK_RANGE_TO   18
 
-static StandardModeConfig_t standardModeCfg = {
+static StandardModeConfig_t s_standardModeCfg = {
     .isWorkingDuringWeekends = false, .workTimeInStandardMode = 1, .idleTimeInStandardMode = 1 };
 
 void setStandardModeConfig( const StandardModeConfig_t *newCfg )
 {
     assert( newCfg );
-    standardModeCfg = *newCfg;
+    s_standardModeCfg = *newCfg;
 }
 
 static inline bool isCurrentlyWeekend( const Date_t *date )
@@ -38,8 +38,9 @@ static inline bool isTimeInWorkRange( const Time_t *time )
 
 static inline bool isIdleTime( const Time_t *time )
 {
-    return ( time->minute % ( standardModeCfg.workTimeInStandardMode + standardModeCfg.idleTimeInStandardMode ) + 1 <=
-             standardModeCfg.workTimeInStandardMode );
+    return ( time->minute % ( s_standardModeCfg.workTimeInStandardMode + s_standardModeCfg.idleTimeInStandardMode ) +
+                 1 <=
+             s_standardModeCfg.workTimeInStandardMode );
 }
 
 static Weather_t requestWeather()
@@ -61,7 +62,7 @@ void standardModeState( WaterscreenContext_t *context )
 {
     const Datetime_t datetime = getRTCDatetime();
 
-    if ( standardModeCfg.isWorkingDuringWeekends && !isCurrentlyWeekend( &datetime.date ) )
+    if ( s_standardModeCfg.isWorkingDuringWeekends && !isCurrentlyWeekend( &datetime.date ) )
         return;
 
     if ( !isTimeInWorkRange( &datetime.time ) )

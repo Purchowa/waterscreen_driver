@@ -1,4 +1,4 @@
-#include "picture_logic_utils.h"
+#include "picture_management/picture_logic_utils.h"
 
 #include <assert.h>
 

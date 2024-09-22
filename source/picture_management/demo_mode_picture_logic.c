@@ -1,6 +1,7 @@
-#include "demo_mode_picture_logic.h"
-
 #include "picture_data.h"
+
+#include "picture_management/demo_mode_picture_logic.h"
+#include "picture_management/picture_data.h"
 
 #include <assert.h>
 

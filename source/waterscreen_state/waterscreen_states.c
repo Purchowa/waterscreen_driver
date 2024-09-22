@@ -1,8 +1,7 @@
+#include <picture_management/demo_mode_picture_logic.h>
+#include <picture_management/picture_logic_utils.h>
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
-
-#include "picture_managment/demo_mode_picture_logic.h"
-#include "picture_managment/picture_logic_utils.h"
 
 #include "gpio/power_control.h"
 #include "gpio/sensors_control.h"

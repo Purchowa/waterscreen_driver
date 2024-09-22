@@ -1,4 +1,4 @@
-#include <picture_data.h>
+#include "picture_management/picture_data.h"
 
 #define STATIC_ARRAY_SIZE( array )     ( sizeof( array ) / sizeof( *array ) )
 #define CREATE_PICTURE_VIEW( picture ) { .size = STATIC_ARRAY_SIZE( picture ), .data = picture }

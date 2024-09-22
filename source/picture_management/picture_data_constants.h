@@ -10,14 +10,6 @@
 
 #define CHARACTER_TO_PICTURE_ROW_COUNT 24
 
-#define HOUR_TENS_SHIFT 49
-#define HOUR_ONES_SHIFT 34
-
-#define COLON_SHIFT 24
-
-#define MINUTE_TENS_SHIFT 14
-#define MINUTE_ONES_SHIFT 1
-
 typedef enum
 {
     ZeroIdx,

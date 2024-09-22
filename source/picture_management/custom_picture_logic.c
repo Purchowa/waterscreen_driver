@@ -1,7 +1,8 @@
-#include "picture_data.h"
+#include "picture_management/custom_picture_logic.h"
+#include "picture_management/picture_data.h"
 
 #include <assert.h>
-#include <custom_picture_logic.h>
+
 
 static uint64_t s_userCustomPicture[MAX_CUSTOM_PICTURE_LENGTH];
 
