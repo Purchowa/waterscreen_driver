@@ -2,7 +2,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#include "utils/mocked_functions.h"
+#include "mocks/datetime_mocks.h"
 
 #include "waterscreen_state/standard_mode_state.h"
 #include "datetime/datetime_types.h"

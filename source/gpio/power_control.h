@@ -1,10 +1,3 @@
-/*
- * power_control.h
- *
- *  Created on: 18 maj 2024
- *      Author: purch
- */
-
 #ifndef POWER_CONTROL_H_
 #define POWER_CONTROL_H_
 

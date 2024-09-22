@@ -1,7 +1,7 @@
 #include "common_state_assert.h"
 
 #include "waterscreen_states.h"
-#include "mocked_functions.h"
+#include "../mocks/digital_signaling_mocks.h"
 
 #include <stdarg.h>
 #include <setjmp.h>
