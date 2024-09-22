@@ -1,13 +1,18 @@
 #include "standard_mode_state.h"
+#include "waterscreen_state/waterscreen_states.h"
 
 #include "datetime/datetime_types.h"
 #include "datetime/rtc_provider.h"
-#include "external_communication/weather_api.h"
-#include "waterscreen_state/waterscreen_states.h"
+
 #include "gpio/power_control.h"
-#include "picture_managment/picture_logic.h"
+
+#include "picture_managment/picture_logic_utils.h"
+#include "picture_managment/standard_mode_picture_logic.h"
+
+#include "external_communication/weather_api.h"
 
 #include <assert.h>
+
 
 #define WORK_RANGE_FROM 7
 #define WORK_RANGE_TO   18

@@ -1,13 +1,13 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
-#include "picture_managment/picture_logic.h"
+
+#include "picture_managment/demo_mode_picture_logic.h"
+#include "picture_managment/picture_logic_utils.h"
+
 #include "gpio/power_control.h"
 #include "gpio/sensors_control.h"
-#include "spi_transfer/spi_transfer.h"
-#include "datetime/datetime_types.h"
-#include "datetime/rtc_provider.h"
 
-#include <assert.h>
+#include "spi_transfer/spi_transfer.h"
 
 
 void demoModeState( WaterscreenContext_t *context )

@@ -35,4 +35,10 @@ typedef struct
     Time_t time;
 } Datetime_t;
 
+typedef struct
+{
+    uint8_t day;
+    uint8_t month;
+} ShortDate_t;
+
 #endif /* DATETIME_TYPES_H_ */

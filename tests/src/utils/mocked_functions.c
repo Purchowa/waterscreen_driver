@@ -34,6 +34,14 @@ const PictureDataView_t *getEachPictureView()
     return mock_ptr_type( PictureDataView_t * );
 }
 
+const PictureDataView_t *getOccasionalPictureView( const Datetime_t *datetime, const WeatherCondition_t condition )
+{
+    assert_non_null( datetime );
+    assert_true( 0 < condition && condition < WEATHER_CONDITION_SIZE );
+
+    return mock_ptr_type( PictureDataView_t * );
+}
+
 // Unfortunatelly cmocka doesn't provide functionality for mocking user-defined non-ptr objects.
 static Datetime_t mockedDatetime;
 static bool       wasMocked = false;

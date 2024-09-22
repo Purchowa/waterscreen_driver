@@ -43,25 +43,25 @@ endfunction()
 enable_testing()
 
 generate_test("presentation_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("demonstration_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("low_water_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("idle_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("standard_state_test"
-        "waterscreen_state/standard_mode_state.c;waterscreen_state/waterscreen_state_context.c;waterscreen_state/waterscreen_states.c")
+        "waterscreen_state/standard_mode_state.c;waterscreen_state/waterscreen_state_context.c;waterscreen_state/waterscreen_states.c;picture_managment/picture_logic_utils.c")
 
 generate_test("sensors_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("valves_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c")
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_managment/picture_logic_utils.c")
 
 generate_test("config_parser_test"
         "external_communication/waterscreen_config_parser.c;external/cjson/cjson.c")

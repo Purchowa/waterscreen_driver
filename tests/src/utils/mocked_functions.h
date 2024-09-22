@@ -4,7 +4,7 @@
 #include "power_control.h"
 #include "spi_transfer.h"
 #include "waterscreen_state_context.h"
-#include "picture_managment/picture_logic.h"
+#include "picture_managment/demo_mode_picture_logic.h"
 #include "weather_api.h"
 
 /* Redeclarations for better redability */
@@ -18,6 +18,7 @@ bool shouldWaterPumpTrigger();
 bool shouldWaterAlaramTrigger();
 
 const PictureDataView_t *getEachPictureView();
+const PictureDataView_t *getOccasionalPictureView( const Datetime_t *, const WeatherCondition_t );
 
 void       will_return_datetime( const Datetime_t datetime );
 Datetime_t getRTCDatetime();

@@ -1,4 +1,4 @@
-#include "picture_logic.h"
+#include "standard_mode_picture_logic.h"
 
 #include "picture_data.h"
 
@@ -6,16 +6,11 @@
 #include <assert.h>
 
 
-const PictureDataView_t *getEachPictureView()
+typedef enum
 {
-    static size_t s_pictureIndex = 0;
-
-    assert( s_pictureIndex < PICTURE_COUNT );
-    const PictureDataView_t *currentPictureViewPtr = &g_allPictures[s_pictureIndex];
-    s_pictureIndex                                 = ( s_pictureIndex + 1 ) % PICTURE_COUNT;
-
-    return currentPictureViewPtr;
-}
+    PictureGetterLoop,
+    PictureGetterEndLoop
+} PictureGetterLoopStatus_t;
 
 static PictureDataView_t s_timePictureView = { .size = CHARACTER_TO_PICTURE_ROW_COUNT, .data = NULL };
 
@@ -31,7 +26,8 @@ static uint8_t extractTensFromNumber( const uint8_t number )
     return ( number / ONES_EXTRACTOR ) % TENS_EXTRACTOR;
 }
 
-static const PictureDataView_t *getCurrentTimeAsPicture( const Datetime_t *datetime, const WeatherCondition_t )
+static PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataView_t **const picture,
+                                                          const Datetime_t *datetime, const WeatherCondition_t )
 {
     memset( g_timePicture, 0, sizeof( *g_timePicture ) * CHARACTER_TO_PICTURE_ROW_COUNT );
 
@@ -55,32 +51,43 @@ static const PictureDataView_t *getCurrentTimeAsPicture( const Datetime_t *datet
 
     s_timePictureView.data = g_timePicture;
 
-    return &s_timePictureView;
+    *picture = &s_timePictureView;
+
+    return PictureGetterEndLoop;
 }
 
-static const PictureDataView_t *getWeatherAsPicture( const Datetime_t *, const WeatherCondition_t weatherCondition )
+static PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataView_t **const picture, const Datetime_t *,
+                                                      const WeatherCondition_t        weatherCondition )
 {
-    return &g_weatherPictures[weatherCondition];
+    *picture = &g_weatherPictures[weatherCondition];
+
+    return PictureGetterEndLoop;
 }
 
-static const PictureDataView_t *getStandardModePicture( const Datetime_t *, const WeatherCondition_t )
+// static PictureGetterLoopStatus_t getSeasonalPicture( const Datetime_t *datetime, const WeatherCondition_t ) {}
+
+static PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **const picture, const Datetime_t *,
+                                                         const WeatherCondition_t )
 {
     static size_t s_standardPictureIndex = 0;
 
     assert( s_standardPictureIndex < STANDARD_MODE_STATIC_PICTURE_COUNT );
-    const PictureDataView_t *standardPictureViewPtr = &g_standardModePictures[s_standardPictureIndex];
+    *picture = &g_standardModePictures[s_standardPictureIndex++];
 
-    s_standardPictureIndex = ( s_standardPictureIndex + 1 ) % STANDARD_MODE_STATIC_PICTURE_COUNT;
+    if ( STANDARD_MODE_STATIC_PICTURE_COUNT <= s_standardPictureIndex )
+    {
+        s_standardPictureIndex = 0;
+        return PictureGetterEndLoop;
+    }
 
-    return standardPictureViewPtr;
+    return PictureGetterLoop;
 }
 
-typedef const PictureDataView_t *( *pictureGetterFun_t )( const Datetime_t *, const WeatherCondition_t );
+typedef PictureGetterLoopStatus_t ( *pictureGetterFun_t )( const PictureDataView_t **const, const Datetime_t *,
+                                                           const WeatherCondition_t );
 
 static const pictureGetterFun_t s_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT] = {
-    getStandardModePicture, getWeatherAsPicture,    getCurrentTimeAsPicture, getStandardModePicture,
-    getStandardModePicture, getStandardModePicture, getStandardModePicture,  getStandardModePicture,
-    getStandardModePicture, getCurrentTimeAsPicture };
+    getWeatherAsPicture, getCurrentTimeAsPicture, getStandardModePicture, getCurrentTimeAsPicture };
 
 const PictureDataView_t *getOccasionalPictureView( const Datetime_t        *datetime,
                                                    const WeatherCondition_t weatherCondition )
@@ -90,24 +97,13 @@ const PictureDataView_t *getOccasionalPictureView( const Datetime_t        *date
     assert( s_callCounter < STANDARD_MODE_PICTURE_GETTER_COUNT );
     const pictureGetterFun_t pictureGetterFun = s_pictureGetterFunctions[s_callCounter];
 
-    s_callCounter = ( s_callCounter + 1 ) % STANDARD_MODE_PICTURE_GETTER_COUNT;
+    const PictureDataView_t        *pictureView  = NULL;
+    const PictureGetterLoopStatus_t getterStatus = pictureGetterFun( &pictureView, datetime, weatherCondition );
 
-    return pictureGetterFun( datetime, weatherCondition );
-}
+    if ( getterStatus == PictureGetterEndLoop )
+    {
+        s_callCounter = ( s_callCounter + 1 ) % STANDARD_MODE_PICTURE_GETTER_COUNT;
+    }
 
-static uint64_t s_userCustomPicture[MAX_CUSTOM_PICTURE_LENGTH];
-
-CustomPictureDataSpan_t *getCustomPictureSpan()
-{
-    static CustomPictureDataSpan_t view = {
-        .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 0, .data = s_userCustomPicture };
-
-    return &view;
-}
-
-uint8_t getLastPictureIndex( const PictureDataView_t *picture )
-{
-    assert( picture );
-
-    return picture->size - 1;
+    return pictureView;
 }

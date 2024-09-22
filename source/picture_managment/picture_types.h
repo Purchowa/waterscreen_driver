@@ -22,4 +22,16 @@ typedef struct
     pictureRow_t *data;
 } CustomPictureDataSpan_t;
 
+typedef struct
+{
+    const ShortDate_t dateFrom;
+    const ShortDate_t dateTo;
+} SpecialDaysInterval_t;
+
+typedef struct
+{
+    SpecialDaysInterval_t interval;
+
+} SpecialDaysInfo_t;
+
 #endif /* PICTURE_TYPES_H_ */
