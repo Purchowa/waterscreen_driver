@@ -1,4 +1,5 @@
 #include "datetime_mocks.h"
+#include "datetime/rtc_provider.h"
 
 #include <stdbool.h>
 #include <setjmp.h>

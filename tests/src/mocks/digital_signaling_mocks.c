@@ -1,4 +1,7 @@
-#include "digital_signaling_mocks.h"
+#include "power_control.h"
+#include "spi_transfer.h"
+#include "sensors_control.h"
+#include "spi_transfer.h"
 
 #include <setjmp.h>
 #include <cmocka.h>
