@@ -21,7 +21,7 @@
 
 
 const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT] = {
-    getWeatherAsPicture, getCurrentTimeAsPicture, getStandardModePicture, getCurrentTimeAsPicture };
+    getWeatherAsPicture, getCurrentTimeAsPicture, getSeasonalPicture, getStandardModePicture, getCurrentTimeAsPicture };
 
 static uint8_t extractOnesFromNumber( const uint8_t number )
 {
