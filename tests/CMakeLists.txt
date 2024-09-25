@@ -86,5 +86,5 @@ generate_test("weather_parser_test"
         "")
 
 generate_test("picture_logic_standard_mode_getters"
-        "picture_management/standard_mode_picture_getters.c"
-        "picture_data_mock.c")
+        "picture_management/standard_mode_picture_getters.c;datetime/datetime_utils.c"
+        "picture_data_mocks.c")

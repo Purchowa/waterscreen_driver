@@ -1,4 +1,4 @@
-#include "picture_managment/demo_mode_picture_logic.h"
+#include "picture_management/demo_mode_picture_logic.h"
 
 #include <setjmp.h>
 #include <cmocka.h>

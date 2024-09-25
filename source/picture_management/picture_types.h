@@ -22,6 +22,19 @@ typedef struct
     pictureRow_t *data;
 } CustomPictureDataSpan_t;
 
+#define PICTURE_VIEW_SPAN_CAPACITY 16
+typedef struct
+{
+    const uint8_t           size;
+    const PictureDataView_t data[PICTURE_VIEW_SPAN_CAPACITY];
+} PictureViewSpan_t;
+
+typedef struct
+{
+    const ShortDate_t       seasonDateStart;
+    const PictureDataView_t pictureView;
+} SeasonsInfo_t;
+
 typedef struct
 {
     const ShortDate_t dateFrom;

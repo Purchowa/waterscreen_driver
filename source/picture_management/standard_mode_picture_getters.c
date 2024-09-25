@@ -1,7 +1,7 @@
 #include "picture_data.h"
 
-#include "picture_management/picture_data.h"
 #include "picture_management/standard_mode_picture_getters.h"
+#include "datetime/datetime_utils.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -68,19 +68,39 @@ PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataView_t **con
 PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataView_t **const picture, const Datetime_t *,
                                                const WeatherCondition_t        weatherCondition )
 {
+    assert( 0 <= weatherCondition && weatherCondition < WEATHER_CONDITION_SIZE );
+
     *picture = &g_weatherPictures[weatherCondition];
 
     return PictureGetterEndLoop;
 }
 
-// PictureGetterLoopStatus_t getSeasonalPicture( const Datetime_t *datetime, const WeatherCondition_t ) {}
+PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataView_t **const picture, const Datetime_t *datetime,
+                                              const WeatherCondition_t )
+{
+    const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
+
+    int32_t i = 0;
+    for ( ; i < SEASONS_COUNT; ++i )
+    {
+        const Comparison_t compareResult = compareShortDates( currentShortDate, g_seasonsInfo[i].seasonDateStart );
+        if ( compareResult == SecondIsBigger )
+            break;
+    }
+
+    if ( i - 1 < 0 )
+        i = SEASONS_COUNT;
+
+    *picture = &g_seasonsInfo[i - 1].pictureView;
+
+    return PictureGetterEndLoop;
+}
 
 PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **const picture, const Datetime_t *,
                                                   const WeatherCondition_t )
 {
     static size_t s_standardPictureIndex = 0;
 
-    assert( s_standardPictureIndex < STANDARD_MODE_STATIC_PICTURE_COUNT );
     *picture = &g_standardModePictures[s_standardPictureIndex++];
 
     if ( STANDARD_MODE_STATIC_PICTURE_COUNT <= s_standardPictureIndex )

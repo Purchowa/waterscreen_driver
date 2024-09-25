@@ -23,6 +23,9 @@ PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataView_t **con
 PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataView_t **const, const Datetime_t *,
                                                const WeatherCondition_t );
 
+PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataView_t **const, const Datetime_t *,
+                                              const WeatherCondition_t );
+
 PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **const, const Datetime_t *,
                                                   const WeatherCondition_t );
 

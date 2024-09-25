@@ -3,7 +3,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#include "picture_managment/demo_mode_picture_logic.h"
+#include "picture_management/demo_mode_picture_logic.h"
 
 WeatherApiStatusCode_t getWeather( Weather_t *weather )
 {

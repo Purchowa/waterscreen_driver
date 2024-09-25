@@ -7,7 +7,7 @@
 #include "spi_transfer.h"
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
-#include "picture_managment/picture_logic_utils.h"
+#include "picture_management/picture_logic_utils.h"
 
 #include "utils/common_state_assert.h"
 

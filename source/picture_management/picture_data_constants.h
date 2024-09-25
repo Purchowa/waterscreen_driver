@@ -10,6 +10,8 @@
 
 #define CHARACTER_TO_PICTURE_ROW_COUNT 24
 
+#define SEASONS_COUNT 4
+
 typedef enum
 {
     ZeroIdx,
@@ -25,5 +27,6 @@ typedef enum
     ColonIdx,
     CHARACTER_TO_PICTURE_MAP_SIZE
 } CharacterToPictureMapIndex_t;
+
 
 #endif /* PICTURE_DATA_CONSTANTS_H_ */
