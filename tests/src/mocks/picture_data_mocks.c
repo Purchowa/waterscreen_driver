@@ -1,8 +1,11 @@
 #include "picture_data.h"
 #include "picture_data_mocks.h"
 
+// Mocks to assert non-null
+static const pictureRow_t      s_mockedPicture[]   = { 1 };
+static const PictureDataView_t s_mockedPictureView = { .size = 1, .data = s_mockedPicture };
 
-const PictureDataView_t g_allPictures[PICTURE_COUNT] = {};
+const PictureDataView_t g_allPictures[ALL_PICTURE_COUNT] = {};
 
 const PictureDataView_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
 
@@ -45,10 +48,19 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = {};
 
 const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
-    { .seasonDateStart = { .day = 20, .month = March }, .pictureView = { .size = MOCKED_SPRING_SIZE } },     // Spring
-    { .seasonDateStart = { .day = 21, .month = June }, .pictureView = { .size = MOCKED_SUMMER_SIZE } },      // Summer
-    { .seasonDateStart = { .day = 22, .month = September }, .pictureView = { .size = MOCKED_AUTUMN_SIZE } }, // Autumn
-    { .seasonDateStart = { .day = 21, .month = December }, .pictureView = { .size = MOCKED_WINTER_SIZE } }   // Winter
+    { .seasonDateStart = { .day = 20, .month = March },
+      .pictureView     = { .size = MOCKED_SPRING_SIZE, .data = s_mockedPicture } }, // Spring
+
+    { .seasonDateStart = { .day = 21, .month = June },
+      .pictureView     = { .size = MOCKED_SUMMER_SIZE, .data = s_mockedPicture } }, // Summer
+
+    { .seasonDateStart = { .day = 22, .month = September },
+      .pictureView     = { .size = MOCKED_AUTUMN_SIZE, .data = s_mockedPicture } }, // Autumn
+
+    { .seasonDateStart = { .day = 21, .month = December },
+      .pictureView     = { .size = MOCKED_WINTER_SIZE, .data = s_mockedPicture } }  // Winter
 };
 
-const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {};
+const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
+    { .range       = { .from = { .day = 1, .month = 1 }, .to = { .day = 1, .month = 1 } },
+      .pictureSpan = { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = { s_mockedPictureView } } } };

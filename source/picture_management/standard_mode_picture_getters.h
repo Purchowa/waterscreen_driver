@@ -11,7 +11,8 @@
 typedef enum
 {
     PictureGetterLoop,
-    PictureGetterEndLoop
+    PictureGetterEndLoop,
+    NoAvailablePicture
 } PictureGetterLoopStatus_t;
 
 typedef PictureGetterLoopStatus_t ( *pictureGetterFun_t )( const PictureDataView_t **const, const Datetime_t *,

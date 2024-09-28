@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 
 
 #define ONES_EXTRACTOR 10
@@ -19,9 +20,12 @@
 #define MINUTE_TENS_SHIFT 14
 #define MINUTE_ONES_SHIFT 1
 
+#define NOT_FOUND -1
+
 
 const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT] = {
-    getWeatherAsPicture, getCurrentTimeAsPicture, getSeasonalPicture, getStandardModePicture, getCurrentTimeAsPicture };
+    getWeatherAsPicture,    getCurrentTimeAsPicture, getSeasonalPicture,
+    getStandardModePicture, getHolidaysPicture,      getCurrentTimeAsPicture };
 
 static uint8_t extractOnesFromNumber( const uint8_t number )
 {
@@ -96,17 +100,50 @@ PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataView_t **const pi
     return PictureGetterEndLoop;
 }
 
+static bool isDateInClosedRange( const ShortDate_t date, const HolidaysRange_t *range )
+{
+    const Comparison_t fromComparison = compareShortDates( date, range->from );
+    const Comparison_t toComparison   = compareShortDates( date, range->to );
+
+    return ( ( fromComparison == FirstIsBigger || fromComparison == Equal ) &&
+             ( toComparison == SecondIsBigger || toComparison == Equal ) );
+}
+
+static int32_t tryToFindMatchingHoliday( const Datetime_t *datetime )
+{
+    const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
+
+    for ( size_t i = 0; i < HOLIDAYS_COUNT; ++i )
+    {
+        if ( isDateInClosedRange( currentShortDate, &g_holidaysInfo[i].range ) )
+        {
+            return i;
+        }
+    }
+
+    return NOT_FOUND;
+}
+
 PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataView_t **const picture, const Datetime_t *datetime,
                                               const WeatherCondition_t )
 {
-    static size_t s_holidayPictureCounter = 0;
+    static size_t  s_holidayPictureCounter = 0;
+    static int32_t s_foundHolidaySpanIndex = NOT_FOUND;
 
-    const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
+    if ( s_foundHolidaySpanIndex == NOT_FOUND )
+    {
+        s_foundHolidaySpanIndex = tryToFindMatchingHoliday( datetime );
 
+        if ( s_foundHolidaySpanIndex == NOT_FOUND )
+            return NoAvailablePicture;
+    }
 
-    if ( g_holidaysInfo[0].pictureSpan.size <= s_holidayPictureCounter )
+    *picture = &g_holidaysInfo[s_foundHolidaySpanIndex].pictureSpan.data[s_holidayPictureCounter++];
+
+    if ( g_holidaysInfo[s_foundHolidaySpanIndex].pictureSpan.size <= s_holidayPictureCounter )
     {
         s_holidayPictureCounter = 0;
+        s_foundHolidaySpanIndex = NOT_FOUND;
         return PictureGetterEndLoop;
     }
 

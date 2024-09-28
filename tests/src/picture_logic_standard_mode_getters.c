@@ -50,7 +50,7 @@ void givenTime_getCurrentTimeAsPicture_returnEndLoopAndProvideTimePicture()
 
 void givenLowerRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
-    const PictureDataView_t *pictureDataViewPtr;
+    const PictureDataView_t *pictureDataViewPtr   = NULL;
     const Datetime_t         datetime             = { .date = { .month = January, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
@@ -59,11 +59,12 @@ void givenLowerRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
     assert_int_equal( pictureDataViewPtr->size, MOCKED_WINTER_SIZE );
+    assert_non_null( pictureDataViewPtr );
 }
 
 void givenHigherRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
-    const PictureDataView_t *pictureDataViewPtr;
+    const PictureDataView_t *pictureDataViewPtr   = NULL;
     const Datetime_t         datetime             = { .date = { .month = December, .day = 29 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
@@ -72,11 +73,12 @@ void givenHigherRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
     assert_int_equal( pictureDataViewPtr->size, MOCKED_WINTER_SIZE );
+    assert_non_null( pictureDataViewPtr );
 }
 
 void givenDateEqualToSummer_getSeasonalPicture_returnSummerMockedSize()
 {
-    const PictureDataView_t *pictureDataViewPtr;
+    const PictureDataView_t *pictureDataViewPtr   = NULL;
     const Datetime_t         datetime             = { .date = { .month = June, .day = 21 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
@@ -85,11 +87,12 @@ void givenDateEqualToSummer_getSeasonalPicture_returnSummerMockedSize()
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
     assert_int_equal( pictureDataViewPtr->size, MOCKED_SUMMER_SIZE );
+    assert_non_null( pictureDataViewPtr );
 }
 
 void givenDateInRangeOfAutumn_getSeasonalPicture_returnAutumnMockedSize()
 {
-    const PictureDataView_t *pictureDataViewPtr;
+    const PictureDataView_t *pictureDataViewPtr = NULL;
     const Datetime_t         datetime             = { .date = { .month = October, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
@@ -98,6 +101,7 @@ void givenDateInRangeOfAutumn_getSeasonalPicture_returnAutumnMockedSize()
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
     assert_int_equal( pictureDataViewPtr->size, MOCKED_AUTUMN_SIZE );
+    assert_non_null( pictureDataViewPtr );
 }
 
 int main()
