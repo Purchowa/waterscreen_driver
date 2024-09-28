@@ -1522,8 +1522,33 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = { 0 };
 
 const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
-    { .seasonDateStart = { .day = 20, .month = 3 }, .pictureView = CREATE_PICTURE_VIEW( s_rose ) },      // Spring
-    { .seasonDateStart = { .day = 21, .month = 6 }, .pictureView = CREATE_PICTURE_VIEW( s_sun ) },       // Summer
-    { .seasonDateStart = { .day = 22, .month = 9 }, .pictureView = CREATE_PICTURE_VIEW( s_leaf ) },      // Autumn
-    { .seasonDateStart = { .day = 21, .month = 12 }, .pictureView = CREATE_PICTURE_VIEW( s_snowflake ) } // Winter
+    { .seasonDateStart = { .day = 20, .month = March }, .pictureView = CREATE_PICTURE_VIEW( s_rose ) },        // Spring
+    { .seasonDateStart = { .day = 21, .month = June }, .pictureView = CREATE_PICTURE_VIEW( s_sun ) },          // Summer
+    { .seasonDateStart = { .day = 22, .month = September }, .pictureView = CREATE_PICTURE_VIEW( s_leaf ) },    // Autumn
+    { .seasonDateStart = { .day = 21, .month = December }, .pictureView = CREATE_PICTURE_VIEW( s_snowflake ) } // Winter
+};
+
+const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
+    { .range       = { .from = { .day = 14, .month = February }, .to = { .day = 14, .month = February } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_rose ), CREATE_PICTURE_VIEW( s_heart ) },
+                       .size = 2 } }, // Valentines day
+
+    { .range       = { .from = { .day = 21, .month = March }, .to = { .day = 1, .month = May } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_easterEgg ), CREATE_PICTURE_VIEW( s_rabbit ) },
+                       .size = 2 } }, // Easter
+
+    { .range       = { .from = { .day = 3, .month = May }, .to = { .day = 7, .month = May } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_poland ), CREATE_PICTURE_VIEW( s_mourning ) },
+                       .size = 2 } },                                              // Feast of the Constitution
+
+    { .range       = { .from = { .day = 1, .month = November }, .to = { .day = 3, .month = November } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_candle ) }, .size = 1 } }, // All Saint's Day
+
+    { .range       = { .from = { .day = 11, .month = November }, .to = { .day = 15, .month = November } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_poland ), CREATE_PICTURE_VIEW( s_eagle ) },
+                       .size = 2 } }, // Independence Day
+
+    { .range       = { .from = { .day = 5, .month = December }, .to = { .day = 7, .month = January } },
+      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_christmasTree ), CREATE_PICTURE_VIEW( s_gift ) },
+                       .size = 2 } }, // Christmas
 };

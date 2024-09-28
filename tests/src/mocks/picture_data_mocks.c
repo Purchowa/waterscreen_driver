@@ -45,8 +45,10 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = {};
 
 const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
-    { .seasonDateStart = { .day = 20, .month = 3 }, .pictureView = { .size = MOCKED_SPRING_SIZE } }, // Spring
-    { .seasonDateStart = { .day = 21, .month = 6 }, .pictureView = { .size = MOCKED_SUMMER_SIZE } }, // Summer
-    { .seasonDateStart = { .day = 22, .month = 9 }, .pictureView = { .size = MOCKED_AUTUMN_SIZE } }, // Autumn
-    { .seasonDateStart = { .day = 21, .month = 12 }, .pictureView = { .size = MOCKED_WINTER_SIZE } } // Winter
+    { .seasonDateStart = { .day = 20, .month = March }, .pictureView = { .size = MOCKED_SPRING_SIZE } },     // Spring
+    { .seasonDateStart = { .day = 21, .month = June }, .pictureView = { .size = MOCKED_SUMMER_SIZE } },      // Summer
+    { .seasonDateStart = { .day = 22, .month = September }, .pictureView = { .size = MOCKED_AUTUMN_SIZE } }, // Autumn
+    { .seasonDateStart = { .day = 21, .month = December }, .pictureView = { .size = MOCKED_WINTER_SIZE } }   // Winter
 };
+
+const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {};

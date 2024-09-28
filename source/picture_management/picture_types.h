@@ -22,7 +22,7 @@ typedef struct
     pictureRow_t *data;
 } CustomPictureDataSpan_t;
 
-#define PICTURE_VIEW_SPAN_CAPACITY 16
+#define PICTURE_VIEW_SPAN_CAPACITY 8
 typedef struct
 {
     const uint8_t           size;
@@ -37,14 +37,14 @@ typedef struct
 
 typedef struct
 {
-    const ShortDate_t dateFrom;
-    const ShortDate_t dateTo;
-} SpecialDaysInterval_t;
+    const ShortDate_t from;
+    const ShortDate_t to;
+} HolidaysRange_t;
 
 typedef struct
 {
-    SpecialDaysInterval_t interval;
-
-} SpecialDaysInfo_t;
+    const HolidaysRange_t   range;
+    const PictureViewSpan_t pictureSpan;
+} HolidaysInfo_t;
 
 #endif /* PICTURE_TYPES_H_ */

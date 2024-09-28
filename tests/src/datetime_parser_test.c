@@ -25,7 +25,7 @@ void givenDateHeader_datetimeParser_returnTrue()
     const char *datetimeHeader = "Fri, 01 Jan 2019 23:59:00";
 
     Datetime_t       datetime;
-    const Datetime_t expectedDatetime = { .date = { .year = 2019, .month = 1, .day = 1, .weekday = Friday },
+    const Datetime_t expectedDatetime = { .date = { .year = 2019, .month = January, .day = 1, .weekday = Friday },
                                           .time = { .hour = 23, .minute = 59, .second = 0 } };
 
     assert_true( getDatetimeFromDateHeader( datetimeHeader, &datetime ) );
@@ -59,7 +59,7 @@ void givenSummerTime_datetimeParser_returnTrueAndLocalDatetime()
     const char *datetimeHeader = "Fri, 23 Apr 2024 15:08:32";
 
     Datetime_t       datetime;
-    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = 4, .day = 23, .weekday = Friday },
+    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = April, .day = 23, .weekday = Friday },
                                           .time = { .hour = 17, .minute = 8, .second = 32 } };
 
     assert_true( getLocalDatetimeFromDateHeader( datetimeHeader, &datetime ) );
@@ -71,7 +71,7 @@ void givenWinterTime_datetimeParser_returnTrueAndLocalDatetime()
     const char *datetimeHeader = "Fri, 1 Nov 2024 15:08:32";
 
     Datetime_t       datetime;
-    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = 11, .day = 1, .weekday = Friday },
+    const Datetime_t expectedDatetime = { .date = { .year = 2024, .month = November, .day = 1, .weekday = Friday },
                                           .time = { .hour = 16, .minute = 8, .second = 32 } };
 
     assert_true( getLocalDatetimeFromDateHeader( datetimeHeader, &datetime ) );
@@ -80,9 +80,9 @@ void givenWinterTime_datetimeParser_returnTrueAndLocalDatetime()
 
 void givenDates_getDayOfTheWeek_returnProperDayOfTheWeek()
 {
-    assert_true( getDayOfTheWeek( 2024, 9, 1 ) == Sunday );
-    assert_true( getDayOfTheWeek( 2024, 1, 1 ) == Monday );
-    assert_true( getDayOfTheWeek( 2024, 2, 29 ) == Thursday );
+    assert_true( getDayOfTheWeek( 2024, September, 1 ) == Sunday );
+    assert_true( getDayOfTheWeek( 2024, January, 1 ) == Monday );
+    assert_true( getDayOfTheWeek( 2024, February, 29 ) == Thursday );
 }
 
 int main()

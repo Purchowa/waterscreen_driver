@@ -96,6 +96,23 @@ PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataView_t **const pi
     return PictureGetterEndLoop;
 }
 
+PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataView_t **const picture, const Datetime_t *datetime,
+                                              const WeatherCondition_t )
+{
+    static size_t s_holidayPictureCounter = 0;
+
+    const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
+
+
+    if ( g_holidaysInfo[0].pictureSpan.size <= s_holidayPictureCounter )
+    {
+        s_holidayPictureCounter = 0;
+        return PictureGetterEndLoop;
+    }
+
+    return PictureGetterLoop;
+}
+
 PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **const picture, const Datetime_t *,
                                                   const WeatherCondition_t )
 {

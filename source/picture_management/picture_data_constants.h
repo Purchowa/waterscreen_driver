@@ -10,7 +10,8 @@
 
 #define CHARACTER_TO_PICTURE_ROW_COUNT 24
 
-#define SEASONS_COUNT 4
+#define SEASONS_COUNT  4
+#define HOLIDAYS_COUNT 6
 
 typedef enum
 {

@@ -9,10 +9,11 @@
 #define DATE_STRS_LEN       4 // Size includes null-terminantion
 #define DATETIME_ARGS_COUNT 7
 
-#define MONTH_COUNT   12
-#define WEEKDAY_COUNT 7
-
 #define NOT_FOUND_VALUE -1
+
+#define GMT_1 1
+#define GMT_2 2
+
 
 static const char monthMap[MONTH_COUNT][DATE_STRS_LEN] = {
     { "Jan" }, { "Feb" }, { "Mar" }, { "Apr" }, { "May" }, { "Jun" },
@@ -70,21 +71,13 @@ bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
     return true;
 }
 
-#define JANUARY  1
-#define FEBRUARY 2
-#define MARCH    3
-#define NOVEMBER 11
-
-#define GMT_1 1
-#define GMT_2 2
-
 bool getLocalDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
 {
     const bool wasParsed = getDatetimeFromDateHeader( datetimeStr, datetime );
     if ( !wasParsed )
         return false;
 
-    if ( MARCH < datetime->date.month && datetime->date.month < NOVEMBER )
+    if ( March < datetime->date.month && datetime->date.month < November )
         datetime->time.hour += GMT_2;
     else
         datetime->time.hour += GMT_1;
@@ -100,7 +93,7 @@ Weekday_t getDayOfTheWeek( const uint16_t year, const uint8_t month, const uint8
 {
     uint16_t y = year;
     uint8_t  m = month;
-    if ( month == JANUARY || month == FEBRUARY )
+    if ( month == January || month == February )
     {
         m += MONTH_COUNT;
         --y;

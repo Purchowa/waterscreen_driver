@@ -51,7 +51,7 @@ void givenTime_getCurrentTimeAsPicture_returnEndLoopAndProvideTimePicture()
 void givenLowerRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
     const PictureDataView_t *pictureDataViewPtr;
-    const Datetime_t         datetime             = { .date = { .month = 1, .day = 10 } };
+    const Datetime_t         datetime             = { .date = { .month = January, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus =
@@ -64,7 +64,7 @@ void givenLowerRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 void givenHigherRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
     const PictureDataView_t *pictureDataViewPtr;
-    const Datetime_t         datetime             = { .date = { .month = 12, .day = 29 } };
+    const Datetime_t         datetime             = { .date = { .month = December, .day = 29 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus =
@@ -77,7 +77,7 @@ void givenHigherRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 void givenDateEqualToSummer_getSeasonalPicture_returnSummerMockedSize()
 {
     const PictureDataView_t *pictureDataViewPtr;
-    const Datetime_t         datetime             = { .date = { .month = 6, .day = 21 } };
+    const Datetime_t         datetime             = { .date = { .month = June, .day = 21 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus =
@@ -90,7 +90,7 @@ void givenDateEqualToSummer_getSeasonalPicture_returnSummerMockedSize()
 void givenDateInRangeOfAutumn_getSeasonalPicture_returnAutumnMockedSize()
 {
     const PictureDataView_t *pictureDataViewPtr;
-    const Datetime_t         datetime             = { .date = { .month = 10, .day = 10 } };
+    const Datetime_t         datetime             = { .date = { .month = October, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus =
