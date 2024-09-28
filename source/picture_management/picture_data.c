@@ -1532,7 +1532,7 @@ const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
       .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_rose ), CREATE_PICTURE_VIEW( s_heart ) },
                        .size = 2 } }, // Valentines day
 
-    { .range       = { .from = { .day = 21, .month = March }, .to = { .day = 1, .month = May } },
+    { .range       = { .from = { .day = 22, .month = March }, .to = { .day = 25, .month = April } },
       .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_easterEgg ), CREATE_PICTURE_VIEW( s_rabbit ) },
                        .size = 2 } }, // Easter
 
@@ -1547,7 +1547,7 @@ const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
       .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_poland ), CREATE_PICTURE_VIEW( s_eagle ) },
                        .size = 2 } }, // Independence Day
 
-    { .range       = { .from = { .day = 5, .month = December }, .to = { .day = 7, .month = January } },
+    { .range       = { .from = { .day = 5, .month = December }, .to = { .day = 29, .month = December } },
       .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_christmasTree ), CREATE_PICTURE_VIEW( s_gift ) },
                        .size = 2 } }, // Christmas
 };

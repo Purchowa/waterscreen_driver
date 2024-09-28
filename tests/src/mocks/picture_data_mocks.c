@@ -2,8 +2,7 @@
 #include "picture_data_mocks.h"
 
 // Mocks to assert non-null
-static const pictureRow_t      s_mockedPicture[]   = { 1 };
-static const PictureDataView_t s_mockedPictureView = { .size = 1, .data = s_mockedPicture };
+static const pictureRow_t s_mockedPicture[] = { 1 };
 
 const PictureDataView_t g_allPictures[ALL_PICTURE_COUNT] = {};
 
@@ -62,5 +61,13 @@ const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
 };
 
 const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
-    { .range       = { .from = { .day = 1, .month = 1 }, .to = { .day = 1, .month = 1 } },
-      .pictureSpan = { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = { s_mockedPictureView } } } };
+    { .range       = { .from = { .day = 1, .month = January }, .to = { .day = 1, .month = January } },
+      .pictureSpan = { .size = 1, .data = { { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
+
+    { .range       = { .from = { .day = 1, .month = February }, .to = { .day = 2, .month = March } },
+      .pictureSpan = { .size = 1, .data = { { .size = NORMAL_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
+
+    { .range       = { .from = { .day = 15, .month = March }, .to = { .day = 20, .month = March } },
+      .pictureSpan = { .size = 2,
+                       .data = { { .size = MULTIPLE_PICTURES_MOCKED_SIZE_0, .data = s_mockedPicture },
+                                 { .size = MULTIPLE_PICTURES_MOCKED_SIZE_1, .data = s_mockedPicture } } } } };
