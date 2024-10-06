@@ -8,3 +8,8 @@ uint8_t getLastPictureIndex( const PictureDataView_t *picture )
 
     return picture->size - 1;
 }
+
+size_t cyclicIncrement( const size_t index, const size_t limit )
+{
+    return ( index + 1 ) % limit;
+}

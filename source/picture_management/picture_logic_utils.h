@@ -6,4 +6,6 @@
 
 uint8_t getLastPictureIndex( const PictureDataView_t *picture );
 
+size_t cyclicIncrement( const size_t index, const size_t limit );
+
 #endif /* PICTURE_LOGIC_UTILS_H_ */

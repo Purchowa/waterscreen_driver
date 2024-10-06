@@ -10,7 +10,7 @@
 void givenWeekendWithoutEnabledWeekends_standardModeState_doNothing()
 {
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
-    const Datetime_t     datetime = { .date = { .year = 2024, .month = 9, .day = 7, .weekday = Saturday },
+    const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 7, .weekday = Saturday },
                                       .time = { .hour = 0, .minute = 0, .second = 0 } };
 
     will_return_datetime( datetime );

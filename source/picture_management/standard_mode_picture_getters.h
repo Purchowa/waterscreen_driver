@@ -36,4 +36,9 @@ PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **cons
 
 extern const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT];
 
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataView_t **const dataView,
+                                                    const Datetime_t        *datetime,
+                                                    const WeatherCondition_t weatherCondition );
+
+
 #endif /* STANDARD_MODE_PICTURE_GETTERS_H_ */

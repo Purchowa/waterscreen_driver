@@ -100,6 +100,12 @@ PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataView_t **const pi
     return PictureGetterEndLoop;
 }
 
+/**
+ * Function will only compare correctly for a date range that falls within the same year.
+ * @param date - {day, month}
+ * @param range - holiday closed range [from, to]
+ * @return true if date is in 'range', false otherwise
+ */
 static bool isDateInClosedRange( const ShortDate_t date, const HolidaysRange_t *range )
 {
     const Comparison_t fromComparison = compareShortDates( date, range->from );
@@ -164,4 +170,11 @@ PictureGetterLoopStatus_t getStandardModePicture( const PictureDataView_t **cons
     }
 
     return PictureGetterLoop;
+}
+
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataView_t **const dataView,
+                                                    const Datetime_t        *datetime,
+                                                    const WeatherCondition_t weatherCondition )
+{
+    return g_pictureGetterFunctions[getterIndex]( dataView, datetime, weatherCondition );
 }

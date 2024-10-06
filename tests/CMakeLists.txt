@@ -85,6 +85,10 @@ generate_test("weather_parser_test"
         "external_communication/weather_parser.c;external/cjson/cjson.c"
         "")
 
-generate_test("picture_logic_standard_mode_getters"
+generate_test("picture_logic_standard_mode_getters_test"
         "picture_management/standard_mode_picture_getters.c;datetime/datetime_utils.c"
         "picture_data_mocks.c")
+
+generate_test("picture_logic_standard_mode_test"
+        "picture_management/standard_mode_picture_logic.c"
+        "")
