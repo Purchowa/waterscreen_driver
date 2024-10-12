@@ -51,26 +51,18 @@ int main()
     SPI_MasterInit( VALVES_SPI_MASTER, &valvesMasterConfig, srcFreq );
     // ---
 
-    TimerHandle_t swTimerHandle =
-        xTimerCreate( "WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, NULL, swMainTimerCallback );
-    if ( swTimerHandle )
+    if ( xTaskCreate( waterscreenActionTask, "WaterScreenActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
+                      WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )
     {
-        if ( xTimerStart( swTimerHandle, 0 ) != pdPASS )
-        {
-            PRINTF( "[RTOS]-Timer: start command could not be sent to the timer command queue\r\n" );
-        }
-    }
-    else
-    {
-        PRINTF( "[RTOS]-Timer: insufficient FreeRTOS heap remaining to allocate the timer\r\n" );
+        PRINTF( "[RTOS]-Task: WaterScreenAction task creation failed!\r\n" );
     }
 
-    if ( xTaskCreate( hmiTask, "hmiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL ) != pdPASS )
+    if ( xTaskCreate( hmiTask, "HmiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: HMI task creation failed!.\r\n" );
     }
 
-    if ( xTaskCreate( wifiTask, "wifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
+    if ( xTaskCreate( wifiTask, "WiFiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WIFI task creation failed!.\r\n" );
     }

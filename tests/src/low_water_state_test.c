@@ -29,16 +29,17 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
 
 void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
 {
-    WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
-                                     .pictureView             = NULL,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = SuccessSPI };
+    WaterscreenContext_t context = { .waterscreenStateHandler         = lowWaterState,
+                                     .previousWaterscreenStateHandler = demoModeState,
+                                     .pictureView                     = NULL,
+                                     .valveOpenCounter                = 0,
+                                     .currentStateStatus              = SuccessSPI };
 
     expect_value( manageWaterPump, state, OffDeviceState );
     will_return( shouldWaterAlaramTrigger, false );
     performWaterscreenAction( &context );
 
-    assert_ptr_equal( context.waterscreenStateHandler, idleState );
+    assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
 }
 
 int main()

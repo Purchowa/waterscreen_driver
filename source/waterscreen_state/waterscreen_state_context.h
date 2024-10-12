@@ -1,9 +1,12 @@
 #ifndef WATERSCREEN_STATE_CONTEXT_H_
 #define WATERSCREEN_STATE_CONTEXT_H_
 
-#include <picture_management/picture_types.h>
+#include "picture_management/picture_types.h"
+#include "rtos_tasks/rtos_time_defines.h"
+
 #include <stdbool.h>
 #include <stdint.h>
+
 
 typedef int32_t status_t;
 
@@ -18,6 +21,7 @@ typedef struct WaterscreenContext
     const PictureDataView_t   *pictureView;
     int32_t                    valveOpenCounter;
     status_t                   currentStateStatus;
+    delayMs_t                  currentStateDelay;
 } WaterscreenContext_t;
 
 

@@ -1,5 +1,5 @@
-#include <picture_management/demo_mode_picture_logic.h>
-#include <picture_management/picture_logic_utils.h>
+#include "picture_management/demo_mode_picture_logic.h"
+#include "picture_management/picture_logic_utils.h"
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
 
@@ -46,11 +46,13 @@ void presentationState( WaterscreenContext_t *context )
     {
         closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
+        context->currentStateDelay = BETWEEN_PICTURES_DELAY_MS;
     }
     else
     {
         const status_t status       = sendDataToValves( &context->pictureView->data[context->valveOpenCounter--] );
         context->currentStateStatus = status;
+        context->currentStateDelay  = PRESENTING_DELAY_MS;
     }
 }
 
@@ -66,8 +68,9 @@ void closeValvesSubState( WaterscreenContext_t *context )
 
 void idleState( WaterscreenContext_t *context )
 {
-    // Check for days, weeks, post to API, even the timer might be here lower.
     checkSensorsSubState( context );
+
+    context->currentStateDelay = SECOND_MS;
 }
 
 void lowWaterState( WaterscreenContext_t *context )
@@ -75,6 +78,11 @@ void lowWaterState( WaterscreenContext_t *context )
     manageWaterPump( OffDeviceState );
     if ( !shouldWaterAlaramTrigger() )
     {
-        changeWaterscreenState( context, idleState );
+        goBackToPreviousWaterscreenState( context );
+        context->currentStateDelay = 5 * SECOND_MS;
+    }
+    else
+    {
+        context->currentStateDelay = SECOND_MS;
     }
 }

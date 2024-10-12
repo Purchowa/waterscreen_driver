@@ -42,7 +42,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
 
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 6, .weekday = Friday },
-                                      .time = { .hour = 7, .minute = 1, .second = 0 } };
+                                      .time = { .hour = 7, .minute = 1, .second = 5 } };
 
     const Weather_t expectedWeather = { .temperature = 31, .pressure = 1024, .weatherCondition = Clear };
 
@@ -56,12 +56,31 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
     assert_ptr_equal( context.waterscreenStateHandler, presentationState );
 }
 
+void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing()
+{
+    const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = true,
+                                       .workTimeInStandardMode  = 1,
+                                       .idleTimeInStandardMode  = 1,
+                                       .workRange               = { .from = 7, .to = 18 } };
+    setStandardModeConfig( &cfg );
+
+    WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
+    const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 6, .weekday = Friday },
+                                      .time = { .hour = 20, .minute = 0, .second = 0 } };
+
+    will_return_datetime( datetime );
+    performWaterscreenAction( &context );
+
+    assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test( givenWeekendWithoutEnabledWeekends_standardModeState_doNothing ),
         cmocka_unit_test(
             givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndChangeToPresentationState ),
+        cmocka_unit_test( givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing ),
     };
 
     return cmocka_run_group_tests_name( "Standard mode state test ", tests, NULL, NULL );

@@ -13,14 +13,17 @@
 #include "datetime/rtc_provider.h"
 #include "logging_config.h"
 #include "external/wlan/wlan_mwm.h"
+
 #include <fsl_common.h>
 #include <serial_mwm.h>
+
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = idleState,
                                           .pictureView                     = NULL,
                                           .valveOpenCounter                = 0,
-                                          .currentStateStatus              = kStatus_Success };
+                                          .currentStateStatus              = kStatus_Success,
+                                          .currentStateDelay               = SECOND_MS };
 
 static Weather_t s_weather;
 
@@ -49,7 +52,7 @@ static void requestWeather()
     while ( weatherErrorCode != Success )
     {
         LogError( "Request for weather failed. Code: %d", weatherErrorCode );
-        vTaskDelay( pdMS_TO_TICKS( 10000 ) );
+        vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
         weatherErrorCode = getWeather( &s_weather );
     }
 }
@@ -60,7 +63,7 @@ static void requestDatetime()
     while ( datetimeErrorCode != Success )
     {
         LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
-        vTaskDelay( pdMS_TO_TICKS( 10000 ) );
+        vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
         datetimeErrorCode = getDatetime( &s_datetime );
     }
 }
@@ -76,19 +79,25 @@ void wifiTask( void *params )
     logDatetime( &s_datetime );
     setRTCDatetime( &s_datetime );
 
-    forceChangeWaterscreenState( &s_context, idleState );
+    forceChangeWaterscreenState( &s_context, standardModeState );
 
     for ( ;; )
     {
         logWlanStatus();
 
-        vTaskDelay( pdMS_TO_TICKS( 1000 ) );
+        vTaskDelay( pdMS_TO_TICKS( SECOND_MS ) );
     }
 }
 
-void swMainTimerCallback( TimerHandle_t xTimer )
+void waterscreenActionTask( void *params )
 {
-    performWaterscreenAction( &s_context );
-    logWaterscreenStatus( &s_context );
-}
+    TickType_t lastWakeTime = xTaskGetTickCount();
 
+    for ( ;; )
+    {
+        performWaterscreenAction( &s_context );
+        logWaterscreenStatus( &s_context );
+
+        vTaskDelayUntil( &lastWakeTime, pdMS_TO_TICKS( s_context.currentStateDelay ) );
+    }
+}

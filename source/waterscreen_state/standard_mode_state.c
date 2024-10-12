@@ -14,7 +14,7 @@
 #include <assert.h>
 
 
-static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = false,
+static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = true,
                                                   .workTimeInStandardMode  = 1,
                                                   .idleTimeInStandardMode  = 1,
                                                   .workRange               = { .from = 7, .to = 24 } };
@@ -69,7 +69,8 @@ void standardModeState( WaterscreenContext_t *context )
     if ( isIdleTime( &datetime.time ) )
         return;
 
-    const Weather_t weather = requestWeather();
+    const Weather_t weather =
+        requestWeather(); // TODO: requesting weather every working hour would be better for network
 
     context->pictureView      = getOccasionalPictureView( &datetime, weather.weatherCondition );
     context->valveOpenCounter = getLastPictureIndex( context->pictureView );
