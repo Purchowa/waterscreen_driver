@@ -15,13 +15,9 @@
 
 #define SW_TIMER_PERIOD_MS pdMS_TO_TICKS( 14 )
 
-#define WATCHDOG_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 2 )
-#define WATCHDOG_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE )
-
 void hmiTask( void *params );
 void wifiTask( void *params );
 void swMainTimerCallback( TimerHandle_t xTimer );
-void watchdogTask( void *params );
 
 
 #endif /* RTOS_TASKS_H_ */
