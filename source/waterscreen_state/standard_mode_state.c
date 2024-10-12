@@ -14,11 +14,10 @@
 #include <assert.h>
 
 
-#define WORK_RANGE_FROM 7
-#define WORK_RANGE_TO   18
-
-static StandardModeConfig_t s_standardModeCfg = {
-    .isWorkingDuringWeekends = false, .workTimeInStandardMode = 1, .idleTimeInStandardMode = 1 };
+static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = false,
+                                                  .workTimeInStandardMode  = 1,
+                                                  .idleTimeInStandardMode  = 1,
+                                                  .workRange               = { .from = 7, .to = 24 } };
 
 void setStandardModeConfig( const StandardModeConfig_t *newCfg )
 {
@@ -28,12 +27,12 @@ void setStandardModeConfig( const StandardModeConfig_t *newCfg )
 
 static inline bool isCurrentlyWeekend( const Date_t *date )
 {
-    return ( Saturday == date->weekday && date->weekday == Sunday );
+    return ( Saturday == date->weekday || date->weekday == Sunday );
 }
 
 static inline bool isTimeInWorkRange( const Time_t *time )
 {
-    return ( WORK_RANGE_FROM <= time->hour && time->hour <= WORK_RANGE_TO );
+    return ( s_standardModeCfg.workRange.from <= time->hour && time->hour <= s_standardModeCfg.workRange.to );
 }
 
 static inline bool isIdleTime( const Time_t *time )
@@ -47,12 +46,11 @@ static Weather_t requestWeather()
 {
     Weather_t weather;
 
-    // TODO: get that status code into context.currentStateStatus
     const WeatherApiStatusCode_t code = getWeather( &weather );
     if ( code != Success )
     {
-        const Weather_t mockedWeather = { .temperature = 0.f, .pressure = 0, .weatherCondition = Clouds };
-        return mockedWeather;
+        const Weather_t defaultWeather = { .temperature = 0.f, .pressure = 1000, .weatherCondition = Clouds };
+        return defaultWeather;
     }
 
     return weather;
@@ -62,7 +60,7 @@ void standardModeState( WaterscreenContext_t *context )
 {
     const Datetime_t datetime = getRTCDatetime();
 
-    if ( s_standardModeCfg.isWorkingDuringWeekends && !isCurrentlyWeekend( &datetime.date ) )
+    if ( isCurrentlyWeekend( &datetime.date ) && !s_standardModeCfg.isWorkingDuringWeekends )
         return;
 
     if ( !isTimeInWorkRange( &datetime.time ) )

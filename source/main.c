@@ -47,19 +47,9 @@ int main()
     valvesMasterConfig.sselPol                   = (spi_spol_t)VALVES_SPI_SPOL;
     valvesMasterConfig.delayConfig.transferDelay = 1;
     valvesMasterConfig.direction                 = kSPI_LsbFirst; // Least significant bit.
-    valvesMasterConfig.baudRate_Bps              = 12000000; // 12 MHz
+    valvesMasterConfig.baudRate_Bps              = 12000000;      // 12 MHz
     SPI_MasterInit( VALVES_SPI_MASTER, &valvesMasterConfig, srcFreq );
     // ---
-    if ( xTaskCreate( hmiTask, "hmiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL ) != pdPASS )
-    {
-        PRINTF( "[RTOS]-Task: HMI task creation failed!.\r\n" );
-    }
-
-    if ( xTaskCreate( wifiTask, "wifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
-    {
-        PRINTF( "[RTOS]-Task: WIFI task creation failed!.\r\n" );
-    }
-
 
     TimerHandle_t swTimerHandle =
         xTimerCreate( "WaterLineBurstSWTimer", SW_TIMER_PERIOD_MS, pdTRUE, NULL, swMainTimerCallback );
@@ -73,6 +63,16 @@ int main()
     else
     {
         PRINTF( "[RTOS]-Timer: insufficient FreeRTOS heap remaining to allocate the timer\r\n" );
+    }
+
+    if ( xTaskCreate( hmiTask, "hmiTask", HMI_TASK_STACK_SIZE, NULL, HMI_TASK_PRIORITY, NULL ) != pdPASS )
+    {
+        PRINTF( "[RTOS]-Task: HMI task creation failed!.\r\n" );
+    }
+
+    if ( xTaskCreate( wifiTask, "wifiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
+    {
+        PRINTF( "[RTOS]-Task: WIFI task creation failed!.\r\n" );
     }
 
     vTaskStartScheduler();

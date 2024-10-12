@@ -2,7 +2,6 @@
 #define PICTURE_TYPES_H_
 
 #include "datetime/datetime_types.h"
-#include "external_communication/weather_types.h"
 
 #include <stdint.h>
 

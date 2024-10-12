@@ -56,6 +56,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
         will_return( shouldWaterAlaramTrigger, false );
         will_return( shouldWaterPumpTrigger, false );
         expect_any( manageWaterPump, state );
+        assertClosedValves();
         performWaterscreenAction( &context );
     }
 }

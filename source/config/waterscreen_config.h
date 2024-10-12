@@ -17,9 +17,16 @@ typedef enum
 
 typedef struct
 {
+    uint8_t from;
+    uint8_t to;
+} Range_t;
+
+typedef struct
+{
     bool     isWorkingDuringWeekends;
     uint16_t workTimeInStandardMode;
     uint16_t idleTimeInStandardMode;
+    Range_t  workRange;
 } StandardModeConfig_t;
 
 typedef struct

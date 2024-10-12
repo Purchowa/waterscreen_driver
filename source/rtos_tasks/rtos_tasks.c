@@ -3,6 +3,7 @@
 #include "button_control.h"
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
+#include "standard_mode_state.h"
 #include "config/waterscreen_config.h"
 
 #include "external_communication/weather_api.h"
@@ -40,7 +41,6 @@ void hmiTask( void *params )
             forceChangeWaterscreenState( &s_context, idleState );
         }
     }
-    vTaskSuspend( NULL ); // Basically kill task.
 }
 
 static void requestWeather()
@@ -49,7 +49,7 @@ static void requestWeather()
     while ( weatherErrorCode != Success )
     {
         LogError( "Request for weather failed. Code: %d", weatherErrorCode );
-        vTaskDelay( MSEC_TO_TICK( 10000 ) );
+        vTaskDelay( pdMS_TO_TICKS( 10000 ) );
         weatherErrorCode = getWeather( &s_weather );
     }
 }
@@ -60,7 +60,7 @@ static void requestDatetime()
     while ( datetimeErrorCode != Success )
     {
         LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
-        vTaskDelay( MSEC_TO_TICK( 10000 ) );
+        vTaskDelay( pdMS_TO_TICKS( 10000 ) );
         datetimeErrorCode = getDatetime( &s_datetime );
     }
 }
@@ -76,14 +76,13 @@ void wifiTask( void *params )
     logDatetime( &s_datetime );
     setRTCDatetime( &s_datetime );
 
+    forceChangeWaterscreenState( &s_context, idleState );
+
     for ( ;; )
     {
         logWlanStatus();
 
-        s_datetime = getRTCDatetime();
-        logDatetime( &s_datetime );
-
-        vTaskDelay( MSEC_TO_TICK( 1000 ) );
+        vTaskDelay( pdMS_TO_TICKS( 1000 ) );
     }
 }
 
@@ -92,3 +91,4 @@ void swMainTimerCallback( TimerHandle_t xTimer )
     performWaterscreenAction( &s_context );
     logWaterscreenStatus( &s_context );
 }
+

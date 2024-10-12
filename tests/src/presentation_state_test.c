@@ -39,10 +39,29 @@ static void givenPicture_presentationState_printBottomUp()
     }
 }
 
+static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState()
+{
+    WaterscreenContext_t context = {
+        .waterscreenStateHandler         = presentationState,
+        .previousWaterscreenStateHandler = demoModeState,
+        .valveOpenCounter                = -1,
+    };
+
+    will_return( shouldWaterPumpTrigger, false );
+    will_return( shouldWaterAlaramTrigger, false );
+    expect_value( manageWaterPump, state, OffDeviceState );
+
+    assertClosedValves();
+    performWaterscreenAction( &context );
+
+    assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test( givenPicture_presentationState_printBottomUp ),
+        cmocka_unit_test( givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState ),
     };
 
     return cmocka_run_group_tests_name( "Presentation State", tests, NULL, NULL );

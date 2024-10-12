@@ -44,6 +44,7 @@ void presentationState( WaterscreenContext_t *context )
 
     if ( context->valveOpenCounter < 0 )
     {
+        closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
     }
     else
