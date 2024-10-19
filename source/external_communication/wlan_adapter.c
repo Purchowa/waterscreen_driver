@@ -1,6 +1,6 @@
 #include "wlan_adapter.h"
+#include "wifi_cfg.h"
 
-#include "WiFiCfg.h"
 #include "logging_config.h"
 
 #include "external/wlan/wlan_mwm.h"

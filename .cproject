@@ -386,7 +386,7 @@
 							<inputType id="com.crt.advproject.compiler.input.705827547" superClass="com.crt.advproject.compiler.input"/>
 						</tool>
 					</fileInfo>
-					<fileInfo id="com.crt.advproject.config.exe.debug.754586422.1269673241" name="WiFiCfg-example.h" rcbsApplicability="disable" resourcePath="source/config/WiFiCfg-example.h" toolsToInvoke=""/>
+					<fileInfo id="com.crt.advproject.config.exe.debug.754586422.1269673241" name="WiFiCfg-example.h" rcbsApplicability="disable" resourcePath="source/config/wifi_cfg-example.h" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="aws_iot"/>

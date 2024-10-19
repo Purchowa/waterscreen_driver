@@ -3,7 +3,7 @@
 #include "datetime/datetime_parser.h"
 #include "weather_parser.h"
 
-#include "config/WiFiCfg.h"
+#include "config/wifi_cfg.h"
 #include "external/wlan/wlan_mwm.h"
 
 #include <string.h>
