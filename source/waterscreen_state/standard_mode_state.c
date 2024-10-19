@@ -42,6 +42,12 @@ static inline bool isIdleTime( const Time_t *time )
              s_standardModeCfg.workTimeInStandardMode );
 }
 
+static inline bool isWorkingConditionSatisfied( const Datetime_t *datetime )
+{
+    return ( !isCurrentlyWeekend( &datetime->date ) || s_standardModeCfg.isWorkingDuringWeekends ) &&
+        isTimeInWorkRange( &datetime->time ) && !isIdleTime( &datetime->time );
+}
+
 static Weather_t requestWeather()
 {
     Weather_t weather;
@@ -60,20 +66,18 @@ void standardModeState( WaterscreenContext_t *context )
 {
     const Datetime_t datetime = getRTCDatetime();
 
-    if ( isCurrentlyWeekend( &datetime.date ) && !s_standardModeCfg.isWorkingDuringWeekends )
+    if ( !isWorkingConditionSatisfied( &datetime ) )
+    {
+        manageValvePower( OffDeviceState );
         return;
-
-    if ( !isTimeInWorkRange( &datetime.time ) )
-        return;
-
-    if ( isIdleTime( &datetime.time ) )
-        return;
+    }
 
     const Weather_t weather =
         requestWeather(); // TODO: requesting weather every working hour would be better for network
 
     context->pictureView      = getOccasionalPictureView( &datetime, weather.weatherCondition );
     context->valveOpenCounter = getLastPictureIndex( context->pictureView );
+
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
 }
