@@ -1,5 +1,6 @@
 #include "waterscreen_state_context.h"
 
+#include "gpio/power_control.h"
 #include "waterscreen_states.h"
 
 
@@ -11,6 +12,7 @@ void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunc
 
 void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState )
 {
+    manageValvePower( OffDeviceState );
     closeValvesSubState( context );
     changeWaterscreenState( context, newState );
 }

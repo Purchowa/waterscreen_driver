@@ -24,6 +24,7 @@ void checkSensorsSubState( WaterscreenContext_t *context )
     if ( isWaterAlarmTriggered )
     {
         // Post waterAlaram to API.
+        manageValvePower( OffDeviceState );
         closeValvesSubState( context );
         changeWaterscreenState( context, lowWaterState );
     }
@@ -62,8 +63,6 @@ void closeValvesSubState( WaterscreenContext_t *context )
 
     const status_t status       = sendDataToValves( &closeValves );
     context->currentStateStatus = status;
-
-    manageValvePower( OffDeviceState );
 }
 
 void idleState( WaterscreenContext_t *context )

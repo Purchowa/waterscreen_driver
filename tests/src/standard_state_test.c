@@ -15,7 +15,7 @@
 static const pictureRow_t      s_mockedSingleRow = 128;
 static const PictureDataView_t s_expectedPicture = { .size = 1, .data = &s_mockedSingleRow };
 
-void givenWeekendWithoutEnabledWeekends_standardModeState_doNothing()
+void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
 {
     const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = false,
                                        .workTimeInStandardMode  = 1,
@@ -27,6 +27,7 @@ void givenWeekendWithoutEnabledWeekends_standardModeState_doNothing()
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 7, .weekday = Saturday } };
 
     will_return_datetime( datetime );
+    expect_value( manageValvePower, state, OffDeviceState );
     performWaterscreenAction( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
@@ -56,7 +57,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
     assert_ptr_equal( context.waterscreenStateHandler, presentationState );
 }
 
-void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing()
+void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePower()
 {
     const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = true,
                                        .workTimeInStandardMode  = 1,
@@ -69,6 +70,7 @@ void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing(
                                       .time = { .hour = 20, .minute = 0, .second = 0 } };
 
     will_return_datetime( datetime );
+    expect_value( manageValvePower, state, OffDeviceState );
     performWaterscreenAction( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
@@ -77,10 +79,10 @@ void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing(
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test( givenWeekendWithoutEnabledWeekends_standardModeState_doNothing ),
+        cmocka_unit_test( givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower ),
         cmocka_unit_test(
             givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndChangeToPresentationState ),
-        cmocka_unit_test( givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_doNothing ),
+        cmocka_unit_test( givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePower ),
     };
 
     return cmocka_run_group_tests_name( "Standard mode state test ", tests, NULL, NULL );

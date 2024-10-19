@@ -18,6 +18,7 @@ void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClose
     will_return( shouldWaterAlaramTrigger, true );
     will_return( shouldWaterPumpTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
+    expect_value( manageValvePower, state, OffDeviceState );
     checkSensorsSubState( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, lowWaterState );
@@ -32,6 +33,7 @@ void givenAlarmOnPumpOn_checkSensorsSubState_transitionToLowWaterStateWithClosed
     will_return( shouldWaterAlaramTrigger, true );
     will_return( shouldWaterPumpTrigger, true );
     expect_value( manageWaterPump, state, OffDeviceState );
+    expect_value( manageValvePower, state, OffDeviceState );
     checkSensorsSubState( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, lowWaterState );
