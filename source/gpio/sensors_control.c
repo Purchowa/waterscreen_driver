@@ -1,10 +1,3 @@
-/*
- * sensors_control.c
- *
- *  Created on: 23 maj 2024
- *      Author: purch
- */
-
 #ifndef SENSORS_CONTROL_C_
 #define SENSORS_CONTROL_C_
 

@@ -12,5 +12,6 @@
 
 bool isS3ButtonPressed();
 bool isS2ButtonPressed();
+bool isS1ButtonPressed();
 
 #endif /* BUTTON_CONTROL_H_ */

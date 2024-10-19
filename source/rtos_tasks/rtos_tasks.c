@@ -34,12 +34,20 @@ void hmiTask( void *params )
 {
     for ( ;; )
     {
-        if ( isS3ButtonPressed() && s_context.waterscreenStateHandler == idleState )
+        // USER
+        if ( isS3ButtonPressed() )
         {
             forceChangeWaterscreenState( &s_context, demoModeState );
         }
 
+        // WAKEUP
         if ( isS2ButtonPressed() )
+        {
+            forceChangeWaterscreenState( &s_context, standardModeState );
+        }
+
+        // ISP
+        if ( isS1ButtonPressed() )
         {
             forceChangeWaterscreenState( &s_context, idleState );
         }

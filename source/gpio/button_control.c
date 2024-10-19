@@ -20,3 +20,9 @@ bool isS2ButtonPressed()
     return ( GPIO_PinRead( BOARD_INITBUTTONSPINS_S2_GPIO, BOARD_INITBUTTONSPINS_S2_PORT,
                            BOARD_INITBUTTONSPINS_S2_PIN ) == 0 );
 }
+
+bool isS1ButtonPressed()
+{
+    return ( GPIO_PinRead( BOARD_INITBUTTONSPINS_S1_GPIO, BOARD_INITBUTTONSPINS_S1_PORT,
+                           BOARD_INITBUTTONSPINS_S1_PIN ) == 0 );
+}
