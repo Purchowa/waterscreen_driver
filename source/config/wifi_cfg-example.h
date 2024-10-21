@@ -17,4 +17,6 @@ AP_SECURITY_MODE:
 
 #define WEATHER_API_URL "api.openweathermap.org/data/2.5/weather?q=<location>,pl&APPID=<your_appid>&units=metric"
 
+#define WATERSCREEN_CONFIG_API_URL ""
+
 #endif /* WIFICFG_EXAMPLE_H_ */
