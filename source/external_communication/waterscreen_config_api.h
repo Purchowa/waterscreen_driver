@@ -4,6 +4,9 @@
 #include "http_return_codes.h"
 #include "config/waterscreen_config.h"
 
-HttpReturnCodes_t getWaterscreenConfigFromApi( WaterscreenConfig_t *config );
+#include <stdbool.h>
+
+
+HttpReturnCodes_t getWaterscreenConfigFromApi( WaterscreenConfig_t *config, bool ignoreWasReadFlag );
 
 #endif /* WATERSCREEN_CONFIG_API_H_ */

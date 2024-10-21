@@ -83,11 +83,11 @@ static void requestDatetime()
     }
 }
 
-static void waterscreenConfigGetter()
+static void requestWaterscreenConfig( bool isInitialRequest )
 {
     static WaterscreenConfig_t waterscreenConfig = {};
 
-    HttpReturnCodes_t cfgReturnCode = getWaterscreenConfigFromApi( &waterscreenConfig );
+    HttpReturnCodes_t cfgReturnCode = getWaterscreenConfigFromApi( &waterscreenConfig, isInitialRequest );
     switch ( cfgReturnCode )
     {
     case Http_Success:
@@ -110,6 +110,7 @@ void wifiTask( void * )
 
     requestWeather();
     requestDatetime();
+    requestWaterscreenConfig( true );
 
     setRTCDatetime( &s_datetime );
 
@@ -120,7 +121,7 @@ void wifiTask( void * )
     for ( ;; )
     {
         logWlanStatus();
-        waterscreenConfigGetter();
+        requestWaterscreenConfig( false );
 
         vTaskDelay( pdMS_TO_TICKS( 5 * SECOND_MS ) );
     }

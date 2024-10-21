@@ -11,17 +11,20 @@ static uint16_t clamp_uint16( const int32_t value, const uint16_t min, const uin
     return max < lower ? max : lower;
 }
 
-static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config )
+static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest )
 {
     if ( cfgJson == NULL )
         return Http_WaterscreenConfigParsingError;
 
-    const cJSON *wasConfigRead = cJSON_GetObjectItemCaseSensitive( cfgJson, "wasRead" );
-    if ( !cJSON_IsBool( wasConfigRead ) )
-        return Http_WaterscreenConfigParsingError;
+    if ( !isInitialRequest )
+    {
+        const cJSON *wasConfigRead = cJSON_GetObjectItemCaseSensitive( cfgJson, "wasRead" );
+        if ( !cJSON_IsBool( wasConfigRead ) )
+            return Http_WaterscreenConfigParsingError;
 
-    if ( wasConfigRead->valueint )
-        return Http_WaterscreenConfigNoUpdate;
+        if ( wasConfigRead->valueint )
+            return Http_WaterscreenConfigNoUpdate;
+    }
 
     const cJSON *mode = cJSON_GetObjectItemCaseSensitive( cfgJson, "mode" );
     if ( !cJSON_IsNumber( mode ) || !( Mode_Standard <= mode->valueint && mode->valueint < Mode_SIZE ) )
@@ -77,10 +80,10 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     return Http_Success;
 }
 
-HttpReturnCodes_t fromJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config )
+HttpReturnCodes_t fromJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest )
 {
     cJSON                  *configJson  = cJSON_Parse( cfgJson );
-    const HttpReturnCodes_t parsingCode = parseJsonConfig( configJson, config );
+    const HttpReturnCodes_t parsingCode = parseJsonConfig( configJson, config, isInitialRequest );
     cJSON_Delete( configJson );
 
     return parsingCode;
