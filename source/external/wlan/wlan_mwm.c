@@ -436,7 +436,7 @@ void http_POST( const char *reqdata, char *respdata, char *contdata )
     }
 }
 
-void http_GET( const char *reqdata, char *respdata )
+void http_GET( const char *reqdata, const char *authorization, char *respdata )
 {
     char hostname[HOSTNAME_LEN] = { 0 };
 
@@ -482,7 +482,12 @@ void http_GET( const char *reqdata, char *respdata )
     }
 
     char request[256];
-    sprintf( request, "GET http://%s HTTP/1.0\r\nHost: %s\r\n\r\n", reqdata, hostname );
+
+    if ( authorization )
+        sprintf( request, "GET http://%s HTTP/1.0\r\nAuthorization: %s\r\nHost: %s\r\n\r\n", reqdata, authorization,
+                 hostname );
+    else
+        sprintf( request, "GET http://%s HTTP/1.0\r\nHost: %s\r\n\r\n", reqdata, hostname );
 
     data_len = strlen( request );
     ret      = mwm_send( s, request, data_len );

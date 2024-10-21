@@ -23,7 +23,7 @@ void wlan_reboot();
 void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode );
 void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode );
 void http_POST( const char *reqdata, char *respdata, char *contdata );
-void http_GET( const char *reqdata, char *respdata );
+void http_GET( const char *reqdata, const char *authorization, char *respdata );
 void http_head_parser( char *headData, char *parseVal, char *keyVal );
 
 #endif /* WLAN_MWM_H_ */

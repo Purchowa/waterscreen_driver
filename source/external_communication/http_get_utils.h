@@ -8,6 +8,6 @@
 
 char *getClearedHttpGETBuffer();
 
-bool httpGET_receiveContent( char **destContent, const char *apiUrl );
+bool httpGET_receiveContent( char **destContent, const char *authorization, const char *apiUrl );
 
 #endif /* HTTP_GET_BUFFER_H_ */

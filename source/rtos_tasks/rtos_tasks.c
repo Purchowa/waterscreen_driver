@@ -83,40 +83,24 @@ static void requestDatetime()
     }
 }
 
-static void waterscreenConfigGetterTask( void * )
+static void waterscreenConfigGetter()
 {
     static WaterscreenConfig_t waterscreenConfig = {};
-    for ( ;; )
+
+    HttpReturnCodes_t cfgReturnCode = getWaterscreenConfigFromApi( &waterscreenConfig );
+    switch ( cfgReturnCode )
     {
-        HttpReturnCodes_t cfgReturnCode = getWaterscreenConfigFromApi( &waterscreenConfig );
-        switch ( cfgReturnCode )
+    case Http_Success:
         {
-        case Http_Success:
-            {
-                LogInfo( "Water-screen configuration updated!" );
+            LogInfo( "Water-screen configuration updated!" );
 
-                forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
-                s_standardModeCfg = waterscreenConfig.standardModeConfig;
-                initStandardModeConfig( &s_standardModeCfg );
-                break;
-            }
-        case Http_WaterscreenConfigNoUpdate:
-            {
-                LogInfo( "Water-screen configuration wasn't updated" );
-                break;
-            }
-        case Http_WaterscreenConfigParsingError:
-            {
-                LogError( "Request for water-screen configuration failed. Code: %d", cfgReturnCode );
-                break;
-            }
-
-        default:
-            LogError( "Unknown return code. Code: %d", cfgReturnCode );
+            forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
+            s_standardModeCfg = waterscreenConfig.standardModeConfig;
+            initStandardModeConfig( &s_standardModeCfg );
+            break;
         }
-
-        LogInfo( "Size left: %d", (uint32_t)uxTaskGetStackHighWaterMark( NULL ) );
-        vTaskDelay( pdMS_TO_TICKS( WATERSCREEN_CONFIG_GET_INTERVAL ) );
+    default:
+        LogInfo( "Water-screen configuration request. Code: %d", cfgReturnCode );
     }
 }
 
@@ -132,19 +116,13 @@ void wifiTask( void * )
     logWeather( &s_weather );
     logDatetime( &s_datetime );
 
-    if ( xTaskCreate( waterscreenConfigGetterTask, "ConfigGetter", WATERSCREEN_CONFIG_GETTER_TASK_STACK_SIZE, NULL,
-                      WATERSCREEN_CONFIG_GETTER_TASK_PRIORITY, NULL ) != pdPASS )
-    {
-        LogError( "Water-screen configuration getter task creation failed!" );
-    }
-
-    forceChangeWaterscreenState( &s_context, standardModeState );
 
     for ( ;; )
     {
         logWlanStatus();
-        LogInfo( "Size left: %d", (uint32_t)uxTaskGetStackHighWaterMark( NULL ) );
-        vTaskDelay( pdMS_TO_TICKS( SECOND_MS ) );
+        waterscreenConfigGetter();
+
+        vTaskDelay( pdMS_TO_TICKS( 5 * SECOND_MS ) );
     }
 }
 
@@ -158,7 +136,6 @@ void waterscreenActionTask( void *params )
         performWaterscreenAction( &s_context );
         logWaterscreenStatus( &s_context );
 
-        LogInfo( "Size left: %d", (uint32_t)uxTaskGetStackHighWaterMark( NULL ) );
         vTaskDelayUntil( &lastWakeTime, pdMS_TO_TICKS( s_context.currentStateDelay ) );
     }
 }

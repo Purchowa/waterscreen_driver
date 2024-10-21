@@ -20,11 +20,11 @@ char *getClearedHttpGETBuffer()
 }
 
 
-bool httpGET_receiveContent( char **destContent, const char *apiUrl )
+bool httpGET_receiveContent( char **destContent, const char *authorization, const char *apiUrl )
 {
     char *httpGetBuffer = getClearedHttpGETBuffer();
 
-    http_GET( apiUrl, httpGetBuffer );
+    http_GET( apiUrl, authorization, httpGetBuffer );
 
     size_t requestLen = strlen( httpGetBuffer );
     if ( requestLen == HTTP_HEAD_CONVERSION_FAILED_VALUE )

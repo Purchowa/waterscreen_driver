@@ -13,7 +13,8 @@
 HttpReturnCodes_t getWaterscreenConfigFromApi( WaterscreenConfig_t *config )
 {
     char      *configContent = NULL;
-    const bool wasReceived   = httpGET_receiveContent( &configContent, WATERSCREEN_CONFIG_API_URL );
+    const bool wasReceived =
+        httpGET_receiveContent( &configContent, WATERSCREEN_CONFIG_BASIC_AUTH_BASE64, WATERSCREEN_CONFIG_API_URL );
 
     if ( !wasReceived )
         return Http_GETError;

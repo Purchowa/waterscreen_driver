@@ -16,7 +16,7 @@
 HttpReturnCodes_t getWeather( Weather_t *weather )
 {
     char      *weatherContent = NULL;
-    const bool wasReceived    = httpGET_receiveContent( &weatherContent, WEATHER_API_URL );
+    const bool wasReceived    = httpGET_receiveContent( &weatherContent, NULL, WEATHER_API_URL );
 
     if ( !wasReceived )
         return Http_GETError;
@@ -32,7 +32,7 @@ HttpReturnCodes_t getDatetime( Datetime_t *datetime )
 {
     char *httpGetBuffer = getClearedHttpGETBuffer();
 
-    http_GET( WEATHER_API_URL, httpGetBuffer );
+    http_GET( WEATHER_API_URL, NULL, httpGetBuffer );
 
     size_t requestLen = strlen( httpGetBuffer );
     if ( requestLen == HTTP_HEAD_CONVERSION_FAILED_VALUE )
