@@ -84,7 +84,7 @@ extern uint32_t SystemCoreClock;
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION  0
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
-#define configTOTAL_HEAP_SIZE            ( (size_t)( 10240 ) )
+#define configTOTAL_HEAP_SIZE            ( (size_t)( 40 * 1024 ) )
 #define configAPPLICATION_ALLOCATED_HEAP 0
 
 /* Hook function related definitions. */
@@ -134,7 +134,7 @@ extern uint32_t SystemCoreClock;
 #define INCLUDE_vTaskDelay                  1
 #define INCLUDE_xTaskGetSchedulerState      1
 #define INCLUDE_xTaskGetCurrentTaskHandle   1
-#define INCLUDE_uxTaskGetStackHighWaterMark 0
+#define INCLUDE_uxTaskGetStackHighWaterMark 1
 #define INCLUDE_xTaskGetIdleTaskHandle      0
 #define INCLUDE_eTaskGetState               0
 #define INCLUDE_xTimerPendFunctionCall      1
