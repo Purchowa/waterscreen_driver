@@ -6,6 +6,25 @@
  */
 #include "wlan_mwm.h"
 
+#include "fsl_debug_console.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "serial_mwm.h"
+
+#include <semphr.h>
+#include <stdio.h>
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+#define MAX_WLAN_SCAN  5
+#define MWM_BUFFER_LEN 2048
+#define RXD_BUFFER_LEN 1400
+#define TXD_BUFFER_LEN 256
+#define HOSTNAME_LEN   128
+
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -20,7 +39,6 @@ static char           g_buffer[MWM_BUFFER_LEN];
 
 int wlan_get_state()
 {
-
     int ret = mwm_wlan_status();
     if ( ret < 0 )
     {
@@ -420,7 +438,6 @@ void http_POST( const char *reqdata, char *respdata, char *contdata )
 
 void http_GET( const char *reqdata, char *respdata )
 {
-
     char hostname[HOSTNAME_LEN] = { 0 };
 
     for ( int i = 0; ( ( reqdata[i] != '/' ) && ( reqdata[i] != '\0' ) && i < HOSTNAME_LEN ); i++ )
