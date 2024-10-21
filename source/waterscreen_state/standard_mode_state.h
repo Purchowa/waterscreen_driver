@@ -4,7 +4,7 @@
 #include "waterscreen_state_context.h"
 #include "config/waterscreen_config.h"
 
-void setStandardModeConfig( const StandardModeConfig_t * );
+void initStandardModeConfig( const StandardModeConfig_t * );
 
 void standardModeState( WaterscreenContext_t * );
 

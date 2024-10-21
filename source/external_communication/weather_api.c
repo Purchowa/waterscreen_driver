@@ -5,56 +5,44 @@
 
 #include "config/wifi_cfg.h"
 #include "external/wlan/wlan_mwm.h"
+#include "http_get_utils.h"
 
 #include <string.h>
+#include <assert.h>
 
-#define GET_BUFFER_LEN      2046
 #define CONTENT_LEN_STR_LEN 32
 
-#define CONVERSION_FAILED_VALUE 0
 
-static char s_getBuffer[GET_BUFFER_LEN];
-
-WeatherApiStatusCode_t getWeather( Weather_t *weather )
+HttpReturnCodes_t getWeather( Weather_t *weather )
 {
-    memset( s_getBuffer, 0, GET_BUFFER_LEN );
+    char      *weatherContent = NULL;
+    const bool wasReceived    = httpGET_receiveContent( &weatherContent, WEATHER_API_URL );
 
-    http_GET( WEATHER_API_URL, s_getBuffer );
+    if ( !wasReceived )
+        return Http_GETError;
 
-    size_t requestLen = strlen( s_getBuffer );
-    if ( requestLen == CONVERSION_FAILED_VALUE )
-        return HttpGetError;
-
-    char contentLenStr[CONTENT_LEN_STR_LEN] = { 0 };
-    http_head_parser( s_getBuffer, contentLenStr, "Content-Length:" );
-
-    size_t contentLen = atol( contentLenStr );
-    if ( contentLen == CONVERSION_FAILED_VALUE )
-        return HttpGetError;
-
-    const char *weatherContent = s_getBuffer + ( requestLen - contentLen );
-
+    assert( weatherContent );
     if ( !fromJsonIntoWeather( weatherContent, weather ) )
-        return WeatherParsingError;
+        return Http_WeatherParsingError;
 
-    return Success;
+    return Http_Success;
 }
 
-WeatherApiStatusCode_t getDatetime( Datetime_t *datetime )
+HttpReturnCodes_t getDatetime( Datetime_t *datetime )
 {
-    memset( s_getBuffer, 0, GET_BUFFER_LEN );
+    char *httpGetBuffer = getClearedHttpGETBuffer();
 
-    http_GET( WEATHER_API_URL, s_getBuffer );
+    http_GET( WEATHER_API_URL, httpGetBuffer );
 
-    size_t requestLen = strlen( s_getBuffer );
-    if ( requestLen == CONVERSION_FAILED_VALUE )
-        return HttpGetError;
+    size_t requestLen = strlen( httpGetBuffer );
+    if ( requestLen == HTTP_HEAD_CONVERSION_FAILED_VALUE )
+        return Http_GETError;
 
     char dateStr[CONTENT_LEN_STR_LEN] = { 0 };
-    http_head_parser( s_getBuffer, dateStr, "Date: " );
+    http_head_parser( httpGetBuffer, dateStr, "Date: " );
 
     if ( !getLocalDatetimeFromDateHeader( dateStr, datetime ) )
-        return DatetimeParsingError;
+        return Http_DatetimeParsingError;
 
-    return Success;
+    return Http_Success;
 }

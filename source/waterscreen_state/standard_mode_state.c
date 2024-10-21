@@ -11,18 +11,16 @@
 #include "picture_management/picture_logic_utils.h"
 #include "picture_management/standard_mode_picture_logic.h"
 
+#include <stdlib.h>
 #include <assert.h>
 
 
-static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = true,
-                                                  .workTimeInStandardMode  = 1,
-                                                  .idleTimeInStandardMode  = 1,
-                                                  .workRange               = { .from = 7, .to = 24 } };
+const static StandardModeConfig_t *s_standardModeCfg = NULL;
 
-void setStandardModeConfig( const StandardModeConfig_t *newCfg )
+void initStandardModeConfig( const StandardModeConfig_t *newCfg )
 {
     assert( newCfg );
-    s_standardModeCfg = *newCfg;
+    s_standardModeCfg = newCfg;
 }
 
 static inline bool isCurrentlyWeekend( const Date_t *date )
@@ -32,19 +30,19 @@ static inline bool isCurrentlyWeekend( const Date_t *date )
 
 static inline bool isTimeInWorkRange( const Time_t *time )
 {
-    return ( s_standardModeCfg.workRange.from <= time->hour && time->hour <= s_standardModeCfg.workRange.to );
+    return ( s_standardModeCfg->workRange.from <= time->hour && time->hour <= s_standardModeCfg->workRange.to );
 }
 
 static inline bool isIdleTime( const Time_t *time )
 {
-    return ( time->minute % ( s_standardModeCfg.workTimeInStandardMode + s_standardModeCfg.idleTimeInStandardMode ) +
+    return ( time->minute % ( s_standardModeCfg->workTimeInStandardMode + s_standardModeCfg->idleTimeInStandardMode ) +
                  1 <=
-             s_standardModeCfg.workTimeInStandardMode );
+             s_standardModeCfg->workTimeInStandardMode );
 }
 
 static inline bool isWorkingConditionSatisfied( const Datetime_t *datetime )
 {
-    return ( !isCurrentlyWeekend( &datetime->date ) || s_standardModeCfg.isWorkingDuringWeekends ) &&
+    return ( !isCurrentlyWeekend( &datetime->date ) || s_standardModeCfg->isWorkingDuringWeekends ) &&
         isTimeInWorkRange( &datetime->time ) && !isIdleTime( &datetime->time );
 }
 
@@ -52,8 +50,8 @@ static Weather_t requestWeather()
 {
     Weather_t weather;
 
-    const WeatherApiStatusCode_t code = getWeather( &weather );
-    if ( code != Success )
+    const HttpReturnCodes_t code = getWeather( &weather );
+    if ( code != Http_Success )
     {
         const Weather_t defaultWeather = { .temperature = 0.f, .pressure = 1000, .weatherCondition = Clouds };
         return defaultWeather;
@@ -64,6 +62,7 @@ static Weather_t requestWeather()
 
 void standardModeState( WaterscreenContext_t *context )
 {
+    assert( s_standardModeCfg );
     const Datetime_t datetime = getRTCDatetime();
 
     if ( !isWorkingConditionSatisfied( &datetime ) )

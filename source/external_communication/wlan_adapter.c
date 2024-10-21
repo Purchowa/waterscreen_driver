@@ -5,6 +5,9 @@
 
 #include "external/wlan/wlan_mwm.h"
 
+#include <serial_mwm.h>
+
+
 void initSerialMWM()
 {
     LogInfo( "Initializing serial MWM" );

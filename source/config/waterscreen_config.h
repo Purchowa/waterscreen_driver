@@ -1,6 +1,8 @@
 #ifndef WATERSCREEN_CONFIG_H_
 #define WATERSCREEN_CONFIG_H_
 
+#include "waterscreen_state/waterscreen_state_context.h"
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -9,10 +11,10 @@
 
 typedef enum
 {
-    Standard,
-    Demo,
-    Service,
-    SIZE
+    Mode_Standard,
+    Mode_Demo,
+    Mode_Service,
+    Mode_SIZE
 } WaterscreenMode_t;
 
 typedef struct
@@ -36,5 +38,7 @@ typedef struct
     uint8_t              customPictureSize;
     uint64_t             customPicture[MAX_CUSTOM_PICTURE_LENGTH];
 } WaterscreenConfig_t;
+
+extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];
 
 #endif /* WATERSCREEN_CONFIG_H_ */

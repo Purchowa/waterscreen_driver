@@ -21,7 +21,7 @@ void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
                                        .workTimeInStandardMode  = 1,
                                        .idleTimeInStandardMode  = 1,
                                        .workRange               = { .from = 7, .to = 18 } };
-    setStandardModeConfig( &cfg );
+    initStandardModeConfig( &cfg );
 
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 7, .weekday = Saturday } };
@@ -39,7 +39,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
                                        .workTimeInStandardMode  = 1,
                                        .idleTimeInStandardMode  = 1,
                                        .workRange               = { .from = 7, .to = 18 } };
-    setStandardModeConfig( &cfg );
+    initStandardModeConfig( &cfg );
 
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 6, .weekday = Friday },
@@ -49,7 +49,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
 
     will_return_datetime( datetime );
     will_return( getWeather, &expectedWeather );
-    will_return( getWeather, Success );
+    will_return( getWeather, Http_Success );
     will_return( getOccasionalPictureView, &s_expectedPicture );
     expect_value( manageValvePower, state, OnDeviceState );
     performWaterscreenAction( &context );
@@ -63,7 +63,7 @@ void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffVal
                                        .workTimeInStandardMode  = 1,
                                        .idleTimeInStandardMode  = 1,
                                        .workRange               = { .from = 7, .to = 18 } };
-    setStandardModeConfig( &cfg );
+    initStandardModeConfig( &cfg );
 
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 6, .weekday = Friday },

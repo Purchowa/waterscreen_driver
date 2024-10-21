@@ -31,16 +31,15 @@ void givenReadConfig_configParser_returnNoUpdate()
         "{\"wasRead\":true,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
 
-    assert_int_equal( fromJsonToWaterscreenCfg( sampleJson, &cfg ), ConfigNoUpdate );
+    assert_int_equal( fromJsonToWaterscreenCfg( sampleJson, &cfg ), Http_WaterscreenConfigNoUpdate );
 }
 
 void givenRawValidJson_configParser_fillConfigStructure()
 {
-
     const char *sampleJson =
         "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
-    const WaterscreenConfig_t expectedConfig = { .mode = Service,
+    const WaterscreenConfig_t expectedConfig = { .mode = Mode_Service,
                                                  .standardModeConfig =
                                                      {
                                                          .isWorkingDuringWeekends = true,
@@ -51,7 +50,7 @@ void givenRawValidJson_configParser_fillConfigStructure()
                                                  .customPicture     = { 0, 0, 24, 1567 } };
 
     WaterscreenConfig_t config;
-    assert_int_equal( fromJsonToWaterscreenCfg( sampleJson, &config ), ConfigSuccess );
+    assert_int_equal( fromJsonToWaterscreenCfg( sampleJson, &config ), Http_Success );
     assert_true( compareConfigs( &expectedConfig, &config ) );
 }
 
@@ -62,12 +61,12 @@ void givenInvlaidMode_configParser_returnFalse()
     const char *invlaidMode_lower =
         "{\"wasRead\":false,\"mode\":-1,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
-    assert_int_equal( fromJsonToWaterscreenCfg( invlaidMode_lower, &config ), ConfigParsingError );
+    assert_int_equal( fromJsonToWaterscreenCfg( invlaidMode_lower, &config ), Http_WaterscreenConfigParsingError );
 
     const char *invlaidMode_higher =
         "{\"wasRead\":false,\"mode\":3,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}}";
-    assert_int_equal( fromJsonToWaterscreenCfg( invlaidMode_higher, &config ), ConfigParsingError );
+    assert_int_equal( fromJsonToWaterscreenCfg( invlaidMode_higher, &config ), Http_WaterscreenConfigParsingError );
 }
 
 void givenArrayShorterThanSize_configParser_returnFalse()
@@ -77,7 +76,7 @@ void givenArrayShorterThanSize_configParser_returnFalse()
     const char *invalidArrayWithSize =
         "{\"wasRead\":false,\"mode\":0,\"enableWeekends\":true,\"workTime\":0,\"idleTime\":0,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24]}}";
-    assert_int_equal( fromJsonToWaterscreenCfg( invalidArrayWithSize, &config ), ConfigParsingError );
+    assert_int_equal( fromJsonToWaterscreenCfg( invalidArrayWithSize, &config ), Http_WaterscreenConfigParsingError );
 }
 
 void givenInvalidSize_configParser_returnTrueAndClamp()
@@ -87,7 +86,7 @@ void givenInvalidSize_configParser_returnTrueAndClamp()
     const char *invlaidSize_lower =
         "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "-1,\"data\":[0,0,24,1567]}}";
-    WaterscreenConfig_t expectedConfig = { .mode = Service,
+    WaterscreenConfig_t expectedConfig = { .mode = Mode_Service,
                                            .standardModeConfig =
                                                {
                                                    .isWorkingDuringWeekends = true,
@@ -97,7 +96,7 @@ void givenInvalidSize_configParser_returnTrueAndClamp()
                                            .customPictureSize = 0,
                                            .customPicture     = { 0, 0, 24, 1567 } };
 
-    assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_lower, &configLower ), ConfigSuccess );
+    assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_lower, &configLower ), Http_Success );
     assert_true( compareConfigs( &expectedConfig, &configLower ) );
 
     WaterscreenConfig_t configHigher;
@@ -110,7 +109,7 @@ void givenInvalidSize_configParser_returnTrueAndClamp()
     memset( expectedConfig.customPicture, 0,
             sizeof( *expectedConfig.customPicture ) * expectedConfig.customPictureSize );
 
-    assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_higher, &configHigher ), ConfigSuccess );
+    assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_higher, &configHigher ), Http_Success );
     assert_true( compareConfigs( &expectedConfig, &configHigher ) );
 }
 
