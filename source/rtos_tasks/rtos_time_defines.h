@@ -4,14 +4,15 @@
 #include <stdint.h>
 
 #define SECOND_MS 1000
-#define MINUTE_MS ( SECOND * 60 )
-#define HOUR_MS   ( SECOND * 3600 )
+#define MINUTE_MS ( SECOND_MS * 60 )
+#define HOUR_MS   ( SECOND_MS * 3600 )
 
 #define PRESENTING_DELAY_MS 16
 
 #define BETWEEN_PICTURES_DELAY_MS 500
 
-#define WATERSCREEN_CONFIG_GET_INTERVAL ( 3 * SECOND_MS )
+#define WATERSCREEN_CONFIG_GET_INTERVAL ( 5 * SECOND_MS )
+#define WEATHER_GET_INTERVAL            HOUR_MS
 
 
 typedef uint32_t delayMs_t;

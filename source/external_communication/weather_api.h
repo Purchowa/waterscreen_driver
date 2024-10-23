@@ -6,6 +6,6 @@
 
 
 const Weather_t  *getWeather();
-HttpReturnCodes_t httpGetWeather( Weather_t *weather );
+HttpReturnCodes_t httpGetWeather();
 
 #endif /* WEATHER_API_H_ */

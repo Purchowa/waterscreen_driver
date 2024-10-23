@@ -9,7 +9,14 @@
 #include <assert.h>
 
 
-HttpReturnCodes_t httpGetWeather( Weather_t *weather )
+static Weather_t s_weather;
+
+const Weather_t *getWeather()
+{
+    return &s_weather;
+}
+
+HttpReturnCodes_t httpGetWeather()
 {
     char      *weatherContent = NULL;
     const bool wasReceived    = httpGET_receiveContent( &weatherContent, NULL, WEATHER_API_URL );
@@ -18,7 +25,7 @@ HttpReturnCodes_t httpGetWeather( Weather_t *weather )
         return Http_GETError;
 
     assert( weatherContent );
-    if ( !fromJsonIntoWeather( weatherContent, weather ) )
+    if ( !fromJsonIntoWeather( weatherContent, &s_weather ) )
         return Http_WeatherParsingError;
 
     return Http_Success;

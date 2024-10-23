@@ -5,10 +5,7 @@
 
 #include "external_communication/weather_types.h"
 
-HttpReturnCodes_t httpGetWeather( Weather_t *weather )
+const Weather_t *getWeather()
 {
-    assert_non_null( weather );
-
-    *weather = *mock_ptr_type( Weather_t * );
-    return mock_type( HttpReturnCodes_t );
+    return mock_ptr_type( Weather_t * );
 }

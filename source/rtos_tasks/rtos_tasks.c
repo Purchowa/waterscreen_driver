@@ -27,10 +27,6 @@ static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idl
                                           .currentStateStatus              = kStatus_Success,
                                           .currentStateDelay               = SECOND_MS };
 
-static Weather_t s_weather;
-
-static Datetime_t s_datetime;
-
 static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = true,
                                                   .workTimeInStandardMode  = 1,
                                                   .idleTimeInStandardMode  = 1,
@@ -62,69 +58,88 @@ void hmiTask( void *params )
 
 static void requestWeather()
 {
-    HttpReturnCodes_t weatherErrorCode = httpGetWeather( &s_weather );
-    while ( weatherErrorCode != Http_Success )
+    HttpReturnCodes_t weatherErrorCode = httpGetWeather();
+    if ( weatherErrorCode != Http_Success )
     {
         LogError( "Request for weather failed. Code: %d", weatherErrorCode );
-        vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
-
-        weatherErrorCode = httpGetWeather( &s_weather );
     }
 }
 
-static void requestDatetime()
+static void requestDatetime( Datetime_t *datetime )
 {
-    HttpReturnCodes_t datetimeErrorCode = httpGetDatetime( &s_datetime );
+    HttpReturnCodes_t datetimeErrorCode = httpGetDatetime( datetime );
     while ( datetimeErrorCode != Http_Success )
     {
         LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
-        datetimeErrorCode = httpGetDatetime( &s_datetime );
+        datetimeErrorCode = httpGetDatetime( datetime );
     }
 }
 
 static void requestWaterscreenConfig( bool isInitialRequest )
 {
-    static WaterscreenConfig_t waterscreenConfig = {};
+    // TODO: workRange isn't provided from API hence it must be here as mocked value.
+    static WaterscreenConfig_t waterscreenConfig = { .standardModeConfig = { .workRange = { .from = 7, .to = 24 } } };
 
     HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
-    switch ( cfgReturnCode )
-    {
-    case Http_Success:
-        {
-            LogInfo( "Water-screen configuration updated!" );
 
-            forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
-            s_standardModeCfg = waterscreenConfig.standardModeConfig;
-            initStandardModeConfig( &s_standardModeCfg );
-            break;
-        }
-    default:
+    if ( cfgReturnCode == Http_Success )
+    {
+        LogInfo( "Water-screen configuration updated!" );
+
+        forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
+        s_standardModeCfg = waterscreenConfig.standardModeConfig;
+        initStandardModeConfig( &s_standardModeCfg );
+    }
+    else
+    {
         LogInfo( "Water-screen configuration request. Code: %d", cfgReturnCode );
     }
 }
 
+static void handleRequests()
+{
+    assert( WATERSCREEN_CONFIG_GET_INTERVAL <= WEATHER_GET_INTERVAL );
+    static uint32_t callCounter = 0;
+
+    // TODO: Find better way... This is temporary solution for problems with inter-task w-lan requests.
+    if ( WEATHER_GET_INTERVAL / WATERSCREEN_CONFIG_GET_INTERVAL <= callCounter++ )
+    {
+        const Datetime_t datetime = getRTCDatetime();
+        if ( s_standardModeCfg.workRange.from <= datetime.time.hour &&
+             datetime.time.hour <= s_standardModeCfg.workRange.to )
+        {
+            requestWeather();
+        }
+
+        callCounter = 0;
+    }
+    requestWaterscreenConfig( false );
+}
+
 void wifiTask( void * )
 {
+    Datetime_t datetime      = {};
+    delayMs_t  requestsDelay = WATERSCREEN_CONFIG_GET_INTERVAL;
+
     initSerialMWM();
 
     requestWeather();
-    requestDatetime();
+    requestDatetime( &datetime );
     requestWaterscreenConfig( true );
 
-    setRTCDatetime( &s_datetime );
+    setRTCDatetime( &datetime );
 
-    logWeather( &s_weather );
-    logDatetime( &s_datetime );
-
+    logDatetime( &datetime );
+    logWeather( getWeather() );
 
     for ( ;; )
     {
         logWlanStatus();
-        requestWaterscreenConfig( false );
+        handleRequests();
 
-        vTaskDelay( pdMS_TO_TICKS( 5 * SECOND_MS ) );
+        vTaskDelay( pdMS_TO_TICKS( requestsDelay ) );
     }
 }
 

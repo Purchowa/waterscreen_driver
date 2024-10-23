@@ -3,13 +3,12 @@
 
 #include "datetime/datetime_types.h"
 #include "datetime/rtc_provider.h"
-
-#include "gpio/power_control.h"
-
 #include "external_communication/weather_api.h"
 
 #include "picture_management/picture_logic_utils.h"
 #include "picture_management/standard_mode_picture_logic.h"
+
+#include "gpio/power_control.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -46,20 +45,6 @@ static inline bool isWorkingConditionSatisfied( const Datetime_t *datetime )
         isTimeInWorkRange( &datetime->time ) && !isIdleTime( &datetime->time );
 }
 
-static Weather_t requestWeather()
-{
-    Weather_t weather;
-
-    const HttpReturnCodes_t code = httpGetWeather( &weather );
-    if ( code != Http_Success )
-    {
-        const Weather_t defaultWeather = { .temperature = 0.f, .pressure = 1000, .weatherCondition = Clouds };
-        return defaultWeather;
-    }
-
-    return weather;
-}
-
 void standardModeState( WaterscreenContext_t *context )
 {
     assert( s_standardModeCfg );
@@ -71,10 +56,9 @@ void standardModeState( WaterscreenContext_t *context )
         return;
     }
 
-    const Weather_t weather =
-        requestWeather(); // TODO: requesting weather every working hour would be better for network
+    const Weather_t *weather = getWeather();
 
-    context->pictureView      = getOccasionalPictureView( &datetime, weather.weatherCondition );
+    context->pictureView      = getOccasionalPictureView( &datetime, weather->weatherCondition );
     context->valveOpenCounter = getLastPictureIndex( context->pictureView );
 
     manageValvePower( OnDeviceState );
