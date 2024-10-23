@@ -50,7 +50,7 @@ static Weather_t requestWeather()
 {
     Weather_t weather;
 
-    const HttpReturnCodes_t code = getWeather( &weather );
+    const HttpReturnCodes_t code = httpGetWeather( &weather );
     if ( code != Http_Success )
     {
         const Weather_t defaultWeather = { .temperature = 0.f, .pressure = 1000, .weatherCondition = Clouds };

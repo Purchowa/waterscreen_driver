@@ -7,6 +7,6 @@
 #include <stdbool.h>
 
 
-HttpReturnCodes_t getWaterscreenConfigFromApi( WaterscreenConfig_t *config, bool ignoreWasReadFlag );
+HttpReturnCodes_t httpGetWaterscreenConfig( WaterscreenConfig_t *config, bool ignoreWasReadFlag );
 
 #endif /* WATERSCREEN_CONFIG_API_H_ */

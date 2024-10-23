@@ -6,7 +6,7 @@
 #include "http_return_codes.h"
 
 
-HttpReturnCodes_t getDatetime( Datetime_t *datetime );
-HttpReturnCodes_t getWeather( Weather_t *weather );
+HttpReturnCodes_t httpGetDatetime( Datetime_t *datetime );
+HttpReturnCodes_t httpGetWeather( Weather_t *weather );
 
 #endif /* WEATHER_API_H_ */

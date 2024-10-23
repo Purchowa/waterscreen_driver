@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-HttpReturnCodes_t getWaterscreenConfigFromApi( WaterscreenConfig_t *config, bool isInitialRequest )
+HttpReturnCodes_t httpGetWaterscreenConfig( WaterscreenConfig_t *config, bool isInitialRequest )
 {
     char      *configContent = NULL;
     const bool wasReceived =

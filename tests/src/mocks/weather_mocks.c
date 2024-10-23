@@ -5,7 +5,7 @@
 
 #include "external_communication/weather_types.h"
 
-HttpReturnCodes_t getWeather( Weather_t *weather )
+HttpReturnCodes_t httpGetWeather( Weather_t *weather )
 {
     assert_non_null( weather );
 

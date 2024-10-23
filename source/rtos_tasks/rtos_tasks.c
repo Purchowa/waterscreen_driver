@@ -61,25 +61,25 @@ void hmiTask( void *params )
 
 static void requestWeather()
 {
-    HttpReturnCodes_t weatherErrorCode = getWeather( &s_weather );
+    HttpReturnCodes_t weatherErrorCode = httpGetWeather( &s_weather );
     while ( weatherErrorCode != Http_Success )
     {
         LogError( "Request for weather failed. Code: %d", weatherErrorCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
-        weatherErrorCode = getWeather( &s_weather );
+        weatherErrorCode = httpGetWeather( &s_weather );
     }
 }
 
 static void requestDatetime()
 {
-    HttpReturnCodes_t datetimeErrorCode = getDatetime( &s_datetime );
+    HttpReturnCodes_t datetimeErrorCode = httpGetDatetime( &s_datetime );
     while ( datetimeErrorCode != Http_Success )
     {
         LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
-        datetimeErrorCode = getDatetime( &s_datetime );
+        datetimeErrorCode = httpGetDatetime( &s_datetime );
     }
 }
 
@@ -87,7 +87,7 @@ static void requestWaterscreenConfig( bool isInitialRequest )
 {
     static WaterscreenConfig_t waterscreenConfig = {};
 
-    HttpReturnCodes_t cfgReturnCode = getWaterscreenConfigFromApi( &waterscreenConfig, isInitialRequest );
+    HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
     switch ( cfgReturnCode )
     {
     case Http_Success:

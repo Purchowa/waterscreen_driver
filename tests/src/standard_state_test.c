@@ -48,8 +48,8 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
     const Weather_t expectedWeather = { .temperature = 31, .pressure = 1024, .weatherCondition = Clear };
 
     will_return_datetime( datetime );
-    will_return( getWeather, &expectedWeather );
-    will_return( getWeather, Http_Success );
+    will_return( httpGetWeather, &expectedWeather );
+    will_return( httpGetWeather, Http_Success );
     will_return( getOccasionalPictureView, &s_expectedPicture );
     expect_value( manageValvePower, state, OnDeviceState );
     performWaterscreenAction( &context );
