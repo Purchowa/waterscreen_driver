@@ -7,6 +7,7 @@
 #include "config/waterscreen_config.h"
 
 #include "external_communication/weather_api.h"
+#include "external_communication/datetime_api.h"
 #include "external_communication/waterscreen_config_api.h"
 #include "external_communication/wlan_adapter.h"
 #include "status_logging.h"
