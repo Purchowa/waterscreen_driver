@@ -9,7 +9,7 @@
 #include <assert.h>
 
 
-static Weather_t s_weather;
+static Weather_t s_weather = { .temperature = 20.01f, .pressure = 1001, .weatherCondition = Clear };
 
 const Weather_t *getWeather()
 {

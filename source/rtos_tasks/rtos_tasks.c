@@ -13,13 +13,13 @@
 #include "status_logging.h"
 
 #include "datetime/rtc_provider.h"
-#include "logging_config.h"
 #include "external/wlan/wlan_mwm.h"
+#include "logging_config.h"
 
 #include <fsl_common.h>
-#include <serial_mwm.h>
 
 
+// TODO: measure time on how long it takes to connect to WiFi. If it's too long then use default configuration.
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = idleState,
                                           .pictureView                     = NULL,
@@ -27,10 +27,10 @@ static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idl
                                           .currentStateStatus              = kStatus_Success,
                                           .currentStateDelay               = SECOND_MS };
 
-static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = true,
-                                                  .workTimeInStandardMode  = 1,
-                                                  .idleTimeInStandardMode  = 1,
-                                                  .workRange               = { .from = 7, .to = 24 } };
+static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = false,
+                                                  .workTimeInStandardMode  = 5,
+                                                  .idleTimeInStandardMode  = 5,
+                                                  .workRange               = { .from = 7, .to = 18 } };
 
 void hmiTask( void *params )
 {
@@ -94,17 +94,20 @@ static void requestWaterscreenConfig( bool isInitialRequest )
     }
     else
     {
-        LogInfo( "Water-screen configuration request. Code: %d", cfgReturnCode );
+        LogDebug( "Water-screen configuration request. Code: %d", cfgReturnCode );
     }
 }
 
 static void handleRequests()
 {
-    assert( WATERSCREEN_CONFIG_GET_INTERVAL <= WEATHER_GET_INTERVAL );
     static uint32_t callCounter = 0;
 
-    // TODO: Find better way... This is temporary solution for problems with inter-task w-lan requests.
-    if ( WEATHER_GET_INTERVAL / WATERSCREEN_CONFIG_GET_INTERVAL <= callCounter++ )
+    if ( callCounter % WATERSCREEN_CONFIG_GET_CALLS_NUMBER == 0 )
+    {
+        requestWaterscreenConfig( false );
+    }
+
+    if ( callCounter % WEATHER_GET_CALLS_NUMBER == 0 )
     {
         const Datetime_t datetime = getRTCDatetime();
         if ( s_standardModeCfg.workRange.from <= datetime.time.hour &&
@@ -112,16 +115,14 @@ static void handleRequests()
         {
             requestWeather();
         }
-
-        callCounter = 0;
     }
-    requestWaterscreenConfig( false );
+
+    ++callCounter; // no overflow for unsigned it's just modulo
 }
 
 void wifiTask( void * )
 {
-    Datetime_t datetime      = {};
-    delayMs_t  requestsDelay = WATERSCREEN_CONFIG_GET_INTERVAL;
+    Datetime_t datetime = {};
 
     initSerialMWM();
 
@@ -139,7 +140,7 @@ void wifiTask( void * )
         logWlanStatus();
         handleRequests();
 
-        vTaskDelay( pdMS_TO_TICKS( requestsDelay ) );
+        vTaskDelay( pdMS_TO_TICKS( WIFI_TASK_DELAY_MS ) );
     }
 }
 

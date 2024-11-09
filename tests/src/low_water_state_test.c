@@ -27,7 +27,7 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
     }
 }
 
-void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
+void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler         = lowWaterState,
                                      .previousWaterscreenStateHandler = demoModeState,
@@ -45,7 +45,7 @@ void givenAlarmOff_lowWaterState_changeStateToIdle( void **state )
 int main()
 {
     const struct CMUnitTest tests[] = { cmocka_unit_test( givenAlaramOn_lowWaterState_remainLowWaterState ),
-                                        cmocka_unit_test( givenAlarmOff_lowWaterState_changeStateToIdle ) };
+                                        cmocka_unit_test( givenAlarmOff_lowWaterState_changeToPreviousState ) };
 
     return cmocka_run_group_tests_name( "Low-water State", tests, NULL, NULL );
 }

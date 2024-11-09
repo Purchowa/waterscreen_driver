@@ -1,4 +1,4 @@
-#include <logging.h>
+#include "status_logging.h"
 
 #include "waterscreen_state_context.h"
 #include "external_communication/weather_types.h"
@@ -47,7 +47,7 @@ void logWaterscreenStatus( const WaterscreenContext_t *context )
     static waterscreenStateFunction_t previousState = NULL;
     if ( context->waterscreenStateHandler != previousState )
     {
-        LogInfo( "Current water screen state: %s", getCurrentStateName( context ) );
+        LogDebug( "Current water screen state: %s", getCurrentStateName( context ) );
         previousState = context->waterscreenStateHandler;
     }
 }
@@ -76,4 +76,26 @@ void logDatetime( const Datetime_t *datetime )
     LogInfo( "Time: weekday - %d, date: %d.%d.%d time: %d:%d:%d", datetime->date.weekday, datetime->date.day,
              datetime->date.month, datetime->date.year, datetime->time.hour, datetime->time.minute,
              datetime->time.second );
+}
+
+void logValvePowerState( DeviceState_t state )
+{
+    static DeviceState_t recentState = OffDeviceState;
+
+    if ( recentState != state )
+    {
+        LogDebug( "[GPIO] Valve power %s", state == OffDeviceState ? "off" : "on" );
+        recentState = state;
+    }
+}
+
+void logWaterPumpState( DeviceState_t state )
+{
+    static DeviceState_t recentState = OffDeviceState;
+
+    if ( recentState != state )
+    {
+        LogDebug( "[GPIO] Water pump %s", state == OffDeviceState ? "off" : "on" );
+        recentState = state;
+    }
 }
