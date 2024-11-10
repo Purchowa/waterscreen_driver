@@ -115,6 +115,11 @@ static void handleRequests()
         }
     }
 
+    if ( callCounter % WATERSCREEN_STATE_POST_CALLS_NUMBER == 0 )
+    {
+        ;
+    }
+
     ++callCounter; // no overflow for unsigned it's just modulo
 }
 
