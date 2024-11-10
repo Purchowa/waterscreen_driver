@@ -19,7 +19,6 @@
 #include <fsl_common.h>
 
 
-// TODO: measure time on how long it takes to connect to WiFi. If it's too long then use default configuration.
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = idleState,
                                           .pictureView                     = NULL,
@@ -79,14 +78,13 @@ static void requestDatetime( Datetime_t *datetime )
 
 static void requestWaterscreenConfig( bool isInitialRequest )
 {
-    // TODO: workRange isn't provided from API hence it must be here as mocked value.
-    static WaterscreenConfig_t waterscreenConfig = { .standardModeConfig = { .workRange = { .from = 7, .to = 24 } } };
+    static WaterscreenConfig_t waterscreenConfig;
 
     HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
 
     if ( cfgReturnCode == Http_Success )
     {
-        LogInfo( "Water-screen configuration updated!" );
+        LogDebug( "Water-screen configuration updated!" );
 
         forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
         s_standardModeCfg = waterscreenConfig.standardModeConfig;

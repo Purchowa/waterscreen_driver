@@ -2,8 +2,9 @@
 
 #include "cjson/cjson.h"
 
-#define MAX_IDLE_TIME 30
-#define MAX_WORK_TIME 30
+#define MAX_IDLE_TIME        30
+#define MAX_WORK_TIME        30
+#define MAX_WORK_RANGE_VALUE 24
 
 static uint16_t clamp_uint16( const int32_t value, const uint16_t min, const uint16_t max )
 {
@@ -76,6 +77,28 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
 
     if ( i < config->customPictureSize )
         return Http_WaterscreenConfigParsingError;
+
+    const cJSON *workRange = cJSON_GetObjectItemCaseSensitive( cfgJson, "workRange" );
+    if ( !cJSON_IsObject( workRange ) )
+        return Http_WaterscreenConfigParsingError;
+
+    const cJSON *workRangeFrom = cJSON_GetObjectItemCaseSensitive( workRange, "from" );
+    if ( !cJSON_IsNumber( workRangeFrom ) )
+        return Http_WaterscreenConfigParsingError;
+
+    const uint8_t workRangeFromValue = clamp_uint16( workRangeFrom->valueint, 0, MAX_WORK_RANGE_VALUE );
+
+    const cJSON *workRangeTo = cJSON_GetObjectItemCaseSensitive( workRange, "to" );
+    if ( !cJSON_IsNumber( workRangeTo ) )
+        return Http_WaterscreenConfigParsingError;
+
+    const uint8_t workRangeToValue = clamp_uint16( workRangeTo->valueint, 0, MAX_WORK_RANGE_VALUE );
+
+    if ( workRangeToValue < workRangeFromValue )
+        return Http_WaterscreenConfigParsingError;
+
+    config->standardModeConfig.workRange.from = workRangeFromValue;
+    config->standardModeConfig.workRange.to   = workRangeToValue;
 
     return Http_Success;
 }
