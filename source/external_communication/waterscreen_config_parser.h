@@ -8,7 +8,6 @@
 
 
 /**
- *
  * @param cfgJson - source of raw JSON as null-terminated string
  * @param config - destinantion for the parsed config data
  * @param isInitialRequest - tells whether to ignore 'wasRead' flag inside json or not

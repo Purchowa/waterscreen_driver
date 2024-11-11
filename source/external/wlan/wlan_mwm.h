@@ -12,8 +12,6 @@
  * Prototypes
  ******************************************************************************/
 
-void initMutexes();
-
 int  wlan_get_state();
 void wlan_state();
 void wlan_scan();
