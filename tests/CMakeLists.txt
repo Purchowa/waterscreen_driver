@@ -92,3 +92,7 @@ generate_test("picture_logic_standard_mode_getters_test"
 generate_test("picture_logic_standard_mode_test"
         "picture_management/standard_mode_picture_logic.c"
         "")
+
+generate_test("waterscreen_status_serializer_test"
+        "external_communication/waterscreen_status_serializer.c;external/cjson/cjson.c"
+        "")
