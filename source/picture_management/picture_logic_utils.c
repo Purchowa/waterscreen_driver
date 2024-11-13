@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-int32_t getLastPictureIndex( const PictureDataView_t *picture )
+int32_t getLastPictureIndex( const PictureDataSpan_t *picture )
 {
     assert( picture );
 

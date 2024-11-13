@@ -4,7 +4,7 @@
 #include "picture_management/picture_types.h"
 
 
-int32_t getLastPictureIndex( const PictureDataView_t *picture );
+int32_t getLastPictureIndex( const PictureDataSpan_t *picture );
 
 size_t cyclicIncrement( const size_t index, const size_t limit );
 

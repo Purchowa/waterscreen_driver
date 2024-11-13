@@ -5,6 +5,8 @@
 
 #include <stdint.h>
 
+#define RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY 8
+
 typedef uint64_t pictureRow_t;
 typedef uint16_t pictureCharacter_t;
 
@@ -12,7 +14,7 @@ typedef struct
 {
     const uint8_t       size;
     const pictureRow_t *data;
-} PictureDataView_t;
+} PictureDataSpan_t;
 
 typedef struct
 {
@@ -21,18 +23,20 @@ typedef struct
     pictureRow_t *data;
 } CustomPictureDataSpan_t;
 
-#define PICTURE_VIEW_SPAN_CAPACITY 8
+/**
+ * @brief Array of `PictureView` type that it's size can vary from 0 to `RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY`
+ */
 typedef struct
 {
     const uint8_t           size;
-    const PictureDataView_t data[PICTURE_VIEW_SPAN_CAPACITY];
-} PictureViewSpan_t;
+    const PictureDataSpan_t data[RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY];
+} ResizablePictureSpanArray_t;
 
 typedef struct
 {
     const ShortDate_t       seasonDateStart;
-    const PictureDataView_t pictureView;
-} SeasonsInfo_t;
+    const PictureDataSpan_t pictureSpan;
+} SeasonalPicture_t;
 
 typedef struct
 {
@@ -42,8 +46,8 @@ typedef struct
 
 typedef struct
 {
-    const HolidaysRange_t   range;
-    const PictureViewSpan_t pictureSpan;
-} HolidaysInfo_t;
+    const HolidaysRange_t             range;
+    const ResizablePictureSpanArray_t pictureSpanArray;
+} HolidaysPictureArray_t;
 
 #endif /* PICTURE_TYPES_H_ */

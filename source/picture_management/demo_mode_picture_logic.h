@@ -4,6 +4,6 @@
 #include "picture_management/picture_types.h"
 
 
-const PictureDataView_t *getEachPictureView();
+const PictureDataSpan_t *getEachPicture();
 
 #endif /* DEMO_MODE_PICTURE_LOGIC_H_ */

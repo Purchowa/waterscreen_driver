@@ -11,8 +11,8 @@
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->pictureView      = getEachPictureView();
-    context->valveOpenCounter = getLastPictureIndex( context->pictureView );
+    context->picture      = getEachPicture();
+    context->valveOpenCounter = getLastPictureIndex( context->picture );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
 }
@@ -23,7 +23,6 @@ void checkSensorsSubState( WaterscreenContext_t *context )
 
     if ( isWaterAlarmTriggered )
     {
-        // Post waterAlaram to API.
         manageValvePower( OffDeviceState );
         closeValvesSubState( context );
         changeWaterscreenState( context, lowWaterState );
@@ -51,7 +50,7 @@ void presentationState( WaterscreenContext_t *context )
     }
     else
     {
-        const status_t status       = sendDataToValves( &context->pictureView->data[context->valveOpenCounter--] );
+        const status_t status       = sendDataToValves( &context->picture->data[context->valveOpenCounter--] );
         context->currentStateStatus = status;
         context->currentStateDelay  = PRESENTING_DELAY_MS;
     }

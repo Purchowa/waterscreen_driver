@@ -2,11 +2,10 @@
 #define WATERSCREEN_CONFIG_H_
 
 #include "waterscreen_state/waterscreen_state_context.h"
+#include "picture_management/picture_data_constants.h"
 
 #include <stdint.h>
 #include <stdbool.h>
-
-#define MAX_CUSTOM_PICTURE_LENGTH 64
 
 
 typedef enum

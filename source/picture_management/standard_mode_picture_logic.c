@@ -6,19 +6,18 @@
 #include <string.h>
 
 
-const PictureDataView_t *getOccasionalPictureView( const Datetime_t        *datetime,
-                                                   const WeatherCondition_t weatherCondition )
+const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const WeatherCondition_t weatherCondition )
 {
     static size_t s_callCounter = 0;
 
-    const PictureDataView_t  *pictureView = NULL;
+    const PictureDataSpan_t  *picture = NULL;
     PictureGetterLoopStatus_t getterStatus =
-        callPictureGetterAtIndex( s_callCounter, &pictureView, datetime, weatherCondition );
+        callPictureGetterAtIndex( s_callCounter, &picture, datetime, weatherCondition );
 
     while ( getterStatus == NoAvailablePicture )
     {
         s_callCounter = cyclicIncrement( s_callCounter, STANDARD_MODE_PICTURE_GETTER_COUNT );
-        getterStatus  = callPictureGetterAtIndex( s_callCounter, &pictureView, datetime, weatherCondition );
+        getterStatus  = callPictureGetterAtIndex( s_callCounter, &picture, datetime, weatherCondition );
     }
 
     if ( getterStatus == PictureGetterEndLoop )
@@ -26,5 +25,5 @@ const PictureDataView_t *getOccasionalPictureView( const Datetime_t        *date
         s_callCounter = cyclicIncrement( s_callCounter, STANDARD_MODE_PICTURE_GETTER_COUNT );
     }
 
-    return pictureView;
+    return picture;
 }

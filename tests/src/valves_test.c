@@ -10,13 +10,12 @@
 
 static void givenAnyState_closeValveSubState_turnValvesOffRemainTheSameState( void **state )
 {
-    WaterscreenContext_t context = {
-        .waterscreenStateHandler = NULL, .pictureView = NULL, .valveOpenCounter = 0, .currentStateStatus = SuccessSPI };
+    WaterscreenContext_t context = { .waterscreenStateHandler = presentationState };
 
     assertClosedValves();
     closeValvesSubState( &context );
 
-    assert_null( context.waterscreenStateHandler ); // State handler should remain the same
+    assert_ptr_equal( context.waterscreenStateHandler, presentationState ); // State handler should remain the same
 }
 
 int main()

@@ -1,7 +1,7 @@
 #include "picture_management/picture_data.h"
 
 #define STATIC_ARRAY_SIZE( array )     ( sizeof( array ) / sizeof( *array ) )
-#define CREATE_PICTURE_VIEW( picture ) { .size = STATIC_ARRAY_SIZE( picture ), .data = picture }
+#define CREATE_PICTURE_SPAN( picture ) { .size = STATIC_ARRAY_SIZE( picture ), .data = picture }
 
 
 static const pictureRow_t s_pictPumpkin[] = {
@@ -1427,31 +1427,31 @@ static const pictureRow_t s_snowflake[] = {
 };
 
 
-const PictureDataView_t g_allPictures[ALL_PICTURE_COUNT] = {
-    CREATE_PICTURE_VIEW( s_pictPumpkin ),   CREATE_PICTURE_VIEW( s_pictKI ),
-    CREATE_PICTURE_VIEW( s_zig ),           CREATE_PICTURE_VIEW( s_chessboard_1 ),
-    CREATE_PICTURE_VIEW( s_chessboard_2 ),  CREATE_PICTURE_VIEW( s_binaryShift_1 ),
-    CREATE_PICTURE_VIEW( s_binaryShift_2 ), CREATE_PICTURE_VIEW( s_eagle ),
-    CREATE_PICTURE_VIEW( s_poland ),        CREATE_PICTURE_VIEW( s_heart ),
-    CREATE_PICTURE_VIEW( s_rose ),          CREATE_PICTURE_VIEW( s_easterEgg ),
-    CREATE_PICTURE_VIEW( s_rabbit ),        CREATE_PICTURE_VIEW( s_gift ),
-    CREATE_PICTURE_VIEW( s_christmasTree ), CREATE_PICTURE_VIEW( s_candle ),
-    CREATE_PICTURE_VIEW( s_mourning ),      CREATE_PICTURE_VIEW( s_sun ),
-    CREATE_PICTURE_VIEW( s_rain ),          CREATE_PICTURE_VIEW( s_clouds ),
-    CREATE_PICTURE_VIEW( s_leaf ),          CREATE_PICTURE_VIEW( s_snowflake ) };
+const PictureDataSpan_t g_allPictures[ALL_PICTURE_COUNT] = {
+    CREATE_PICTURE_SPAN( s_pictPumpkin ),   CREATE_PICTURE_SPAN( s_pictKI ),
+    CREATE_PICTURE_SPAN( s_zig ),           CREATE_PICTURE_SPAN( s_chessboard_1 ),
+    CREATE_PICTURE_SPAN( s_chessboard_2 ),  CREATE_PICTURE_SPAN( s_binaryShift_1 ),
+    CREATE_PICTURE_SPAN( s_binaryShift_2 ), CREATE_PICTURE_SPAN( s_eagle ),
+    CREATE_PICTURE_SPAN( s_poland ),        CREATE_PICTURE_SPAN( s_heart ),
+    CREATE_PICTURE_SPAN( s_rose ),          CREATE_PICTURE_SPAN( s_easterEgg ),
+    CREATE_PICTURE_SPAN( s_rabbit ),        CREATE_PICTURE_SPAN( s_gift ),
+    CREATE_PICTURE_SPAN( s_christmasTree ), CREATE_PICTURE_SPAN( s_candle ),
+    CREATE_PICTURE_SPAN( s_mourning ),      CREATE_PICTURE_SPAN( s_sun ),
+    CREATE_PICTURE_SPAN( s_rain ),          CREATE_PICTURE_SPAN( s_clouds ),
+    CREATE_PICTURE_SPAN( s_leaf ),          CREATE_PICTURE_SPAN( s_snowflake ) };
 
-const PictureDataView_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {
-    CREATE_PICTURE_VIEW( s_pictKI ),        CREATE_PICTURE_VIEW( s_pictPumpkin ),
-    CREATE_PICTURE_VIEW( s_zig ),           CREATE_PICTURE_VIEW( s_chessboard_1 ),
-    CREATE_PICTURE_VIEW( s_chessboard_2 ),  CREATE_PICTURE_VIEW( s_binaryShift_1 ),
-    CREATE_PICTURE_VIEW( s_binaryShift_2 ),
+const PictureDataSpan_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {
+    CREATE_PICTURE_SPAN( s_pictKI ),        CREATE_PICTURE_SPAN( s_pictPumpkin ),
+    CREATE_PICTURE_SPAN( s_zig ),           CREATE_PICTURE_SPAN( s_chessboard_1 ),
+    CREATE_PICTURE_SPAN( s_chessboard_2 ),  CREATE_PICTURE_SPAN( s_binaryShift_1 ),
+    CREATE_PICTURE_SPAN( s_binaryShift_2 ),
 };
 
-const PictureDataView_t g_weatherPictures[WEATHER_CONDITION_SIZE] = { CREATE_PICTURE_VIEW( s_rain ),      // Rain
-                                                                      CREATE_PICTURE_VIEW( s_snowflake ), // Snow
-                                                                      CREATE_PICTURE_VIEW( s_clouds ),    // Mist
-                                                                      CREATE_PICTURE_VIEW( s_sun ),       // Clear
-                                                                      CREATE_PICTURE_VIEW( s_clouds ) };  // Clouds
+const PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE] = { CREATE_PICTURE_SPAN( s_rain ),      // Rain
+                                                                      CREATE_PICTURE_SPAN( s_snowflake ), // Snow
+                                                                      CREATE_PICTURE_SPAN( s_clouds ),    // Mist
+                                                                      CREATE_PICTURE_SPAN( s_sun ),       // Clear
+                                                                      CREATE_PICTURE_SPAN( s_clouds ) };  // Clouds
 
 
 const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
@@ -1490,34 +1490,34 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = { 0 };
 
-const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
-    { .seasonDateStart = { .day = 20, .month = March }, .pictureView = CREATE_PICTURE_VIEW( s_rose ) },        // Spring
-    { .seasonDateStart = { .day = 21, .month = June }, .pictureView = CREATE_PICTURE_VIEW( s_sun ) },          // Summer
-    { .seasonDateStart = { .day = 22, .month = September }, .pictureView = CREATE_PICTURE_VIEW( s_leaf ) },    // Autumn
-    { .seasonDateStart = { .day = 21, .month = December }, .pictureView = CREATE_PICTURE_VIEW( s_snowflake ) } // Winter
+const SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
+    { .seasonDateStart = { .day = 20, .month = March }, .pictureSpan = CREATE_PICTURE_SPAN( s_rose ) },        // Spring
+    { .seasonDateStart = { .day = 21, .month = June }, .pictureSpan = CREATE_PICTURE_SPAN( s_sun ) },          // Summer
+    { .seasonDateStart = { .day = 22, .month = September }, .pictureSpan = CREATE_PICTURE_SPAN( s_leaf ) },    // Autumn
+    { .seasonDateStart = { .day = 21, .month = December }, .pictureSpan = CREATE_PICTURE_SPAN( s_snowflake ) } // Winter
 };
 
-const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
-    { .range       = { .from = { .day = 14, .month = February }, .to = { .day = 14, .month = February } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_rose ), CREATE_PICTURE_VIEW( s_heart ) },
-                       .size = 2 } }, // Valentines day
+const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
+    { .range            = { .from = { .day = 14, .month = February }, .to = { .day = 14, .month = February } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_rose ), CREATE_PICTURE_SPAN( s_heart ) },
+                            .size = 2 } }, // Valentines day
 
-    { .range       = { .from = { .day = 22, .month = March }, .to = { .day = 25, .month = April } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_easterEgg ), CREATE_PICTURE_VIEW( s_rabbit ) },
-                       .size = 2 } }, // Easter
+    { .range            = { .from = { .day = 22, .month = March }, .to = { .day = 25, .month = April } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_easterEgg ), CREATE_PICTURE_SPAN( s_rabbit ) },
+                            .size = 2 } }, // Easter
 
-    { .range       = { .from = { .day = 3, .month = May }, .to = { .day = 7, .month = May } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_poland ), CREATE_PICTURE_VIEW( s_mourning ) },
-                       .size = 2 } },                                              // Feast of the Constitution
+    { .range            = { .from = { .day = 3, .month = May }, .to = { .day = 7, .month = May } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_poland ), CREATE_PICTURE_SPAN( s_mourning ) },
+                            .size = 2 } },                                              // Feast of the Constitution
 
-    { .range       = { .from = { .day = 1, .month = November }, .to = { .day = 3, .month = November } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_candle ) }, .size = 1 } }, // All Saint's Day
+    { .range            = { .from = { .day = 1, .month = November }, .to = { .day = 3, .month = November } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_candle ) }, .size = 1 } }, // All Saint's Day
 
-    { .range       = { .from = { .day = 11, .month = November }, .to = { .day = 15, .month = November } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_poland ), CREATE_PICTURE_VIEW( s_eagle ) },
-                       .size = 2 } }, // Independence Day
+    { .range            = { .from = { .day = 11, .month = November }, .to = { .day = 15, .month = November } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_poland ), CREATE_PICTURE_SPAN( s_eagle ) },
+                            .size = 2 } }, // Independence Day
 
-    { .range       = { .from = { .day = 5, .month = December }, .to = { .day = 29, .month = December } },
-      .pictureSpan = { .data = { CREATE_PICTURE_VIEW( s_christmasTree ), CREATE_PICTURE_VIEW( s_gift ) },
-                       .size = 2 } }, // Christmas
+    { .range            = { .from = { .day = 5, .month = December }, .to = { .day = 29, .month = December } },
+      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_christmasTree ), CREATE_PICTURE_SPAN( s_gift ) },
+                            .size = 2 } }, // Christmas
 };

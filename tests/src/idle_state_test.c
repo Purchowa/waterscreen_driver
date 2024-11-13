@@ -12,10 +12,7 @@
 
 void givenPumpOn_idleState_turnOffPump( void **state )
 {
-    WaterscreenContext_t context = { .waterscreenStateHandler = idleState,
-                                     .pictureView             = NULL,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = SuccessSPI };
+    WaterscreenContext_t context = { .waterscreenStateHandler = idleState };
 
     // Assume that pump is on when entering idle.
     will_return( shouldWaterAlaramTrigger, false );

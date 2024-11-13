@@ -23,7 +23,7 @@
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
                                           .previousWaterscreenStateHandler = idleState,
-                                          .pictureView                     = NULL,
+                                          .picture                         = NULL,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success,
                                           .currentStateDelay               = SECOND_MS };
@@ -52,7 +52,7 @@ void hmiTask( void *params )
         // ISP
         if ( isS1ButtonPressed() )
         {
-            forceChangeWaterscreenState( &s_context, lowWaterState );
+            forceChangeWaterscreenState( &s_context, idleState );
         }
     }
 }

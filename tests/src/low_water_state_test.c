@@ -8,14 +8,10 @@
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
 
-#include "utils/common_state_assert.h"
 
 void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
 {
-    WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState,
-                                     .pictureView             = NULL,
-                                     .valveOpenCounter        = 0,
-                                     .currentStateStatus      = SuccessSPI };
+    WaterscreenContext_t context = { .waterscreenStateHandler = lowWaterState };
 
     const uint8_t arbitraryLoopCountInLowWaterState = 3;
     for ( uint8_t i = 0; i < arbitraryLoopCountInLowWaterState; ++i )
@@ -30,10 +26,7 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
 void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler         = lowWaterState,
-                                     .previousWaterscreenStateHandler = demoModeState,
-                                     .pictureView                     = NULL,
-                                     .valveOpenCounter                = 0,
-                                     .currentStateStatus              = SuccessSPI };
+                                     .previousWaterscreenStateHandler = demoModeState };
 
     expect_value( manageWaterPump, state, OffDeviceState );
     will_return( shouldWaterAlaramTrigger, false );

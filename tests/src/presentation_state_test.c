@@ -16,17 +16,16 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
                                           0b0010000000000000000000000000000000000000000000000000000000000000,
                                           0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureDataView_t picture = { .data = pictureSample, .size = 4 };
+static const PictureDataSpan_t picture = { .data = pictureSample, .size = 4 };
 
 static void givenPicture_presentationState_printBottomUp()
 {
-    will_return( getEachPictureView, &picture );
-    const PictureDataView_t *mockedPicture = getEachPictureView();
+    will_return( getEachPicture, &picture );
+    const PictureDataSpan_t *mockedPicture = getEachPicture();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
-                                     .pictureView             = mockedPicture,
-                                     .valveOpenCounter        = mockedPicture->size - 1,
-                                     .currentStateStatus      = SuccessSPI };
+                                     .picture                 = mockedPicture,
+                                     .valveOpenCounter        = mockedPicture->size - 1 };
     for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )
     { // Print picture
         expect_value( sendDataToValves, *data, mockedPicture->data[i] );

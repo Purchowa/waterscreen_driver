@@ -4,11 +4,11 @@
 // Mocks to assert non-null
 static const pictureRow_t s_mockedPicture[] = { 1 };
 
-const PictureDataView_t g_allPictures[ALL_PICTURE_COUNT] = {};
+const PictureDataSpan_t g_allPictures[ALL_PICTURE_COUNT] = {};
 
-const PictureDataView_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
+const PictureDataSpan_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
 
-const PictureDataView_t g_weatherPictures[WEATHER_CONDITION_SIZE] = {};
+const PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE] = {};
 
 const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
     { 0x0000, 0x0ff0, 0x1ff8, 0x3ffc, 0x7ffe, 0x7ffe, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e,
@@ -46,28 +46,29 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = {};
 
-const SeasonsInfo_t g_seasonsInfo[SEASONS_COUNT] = {
+const SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
     { .seasonDateStart = { .day = 20, .month = March },
-      .pictureView     = { .size = MOCKED_SPRING_SIZE, .data = s_mockedPicture } }, // Spring
+      .pictureSpan     = { .size = MOCKED_SPRING_SIZE, .data = s_mockedPicture } }, // Spring
 
     { .seasonDateStart = { .day = 21, .month = June },
-      .pictureView     = { .size = MOCKED_SUMMER_SIZE, .data = s_mockedPicture } }, // Summer
+      .pictureSpan     = { .size = MOCKED_SUMMER_SIZE, .data = s_mockedPicture } }, // Summer
 
     { .seasonDateStart = { .day = 22, .month = September },
-      .pictureView     = { .size = MOCKED_AUTUMN_SIZE, .data = s_mockedPicture } }, // Autumn
+      .pictureSpan     = { .size = MOCKED_AUTUMN_SIZE, .data = s_mockedPicture } }, // Autumn
 
     { .seasonDateStart = { .day = 21, .month = December },
-      .pictureView     = { .size = MOCKED_WINTER_SIZE, .data = s_mockedPicture } }  // Winter
+      .pictureSpan     = { .size = MOCKED_WINTER_SIZE, .data = s_mockedPicture } }  // Winter
 };
 
-const HolidaysInfo_t g_holidaysInfo[HOLIDAYS_COUNT] = {
-    { .range       = { .from = { .day = 1, .month = January }, .to = { .day = 1, .month = January } },
-      .pictureSpan = { .size = 1, .data = { { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
+const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
+    { .range            = { .from = { .day = 1, .month = January }, .to = { .day = 1, .month = January } },
+      .pictureSpanArray = { .size = 1,
+                            .data = { { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
 
-    { .range       = { .from = { .day = 1, .month = February }, .to = { .day = 2, .month = March } },
-      .pictureSpan = { .size = 1, .data = { { .size = NORMAL_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
+    { .range            = { .from = { .day = 1, .month = February }, .to = { .day = 2, .month = March } },
+      .pictureSpanArray = { .size = 1, .data = { { .size = NORMAL_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
 
-    { .range       = { .from = { .day = 15, .month = March }, .to = { .day = 20, .month = March } },
-      .pictureSpan = { .size = 2,
-                       .data = { { .size = MULTIPLE_PICTURES_MOCKED_SIZE_0, .data = s_mockedPicture },
-                                 { .size = MULTIPLE_PICTURES_MOCKED_SIZE_1, .data = s_mockedPicture } } } } };
+    { .range            = { .from = { .day = 15, .month = March }, .to = { .day = 20, .month = March } },
+      .pictureSpanArray = { .size = 2,
+                            .data = { { .size = MULTIPLE_PICTURES_MOCKED_SIZE_0, .data = s_mockedPicture },
+                                      { .size = MULTIPLE_PICTURES_MOCKED_SIZE_1, .data = s_mockedPicture } } } } };

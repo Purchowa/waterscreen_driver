@@ -16,7 +16,7 @@ static const uint64_t pictureSample[] = { 0b100000000000000000000000000000000000
                                           0b0010000000000000000000000000000000000000000000000000000000000000,
                                           0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureDataView_t picture = { .data = pictureSample, .size = 4 };
+static const PictureDataSpan_t picture = { .data = pictureSample, .size = 4 };
 
 static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
 {
@@ -25,7 +25,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
     static const uint8_t mockedInfiniteLoopCount = 32;
 
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
-                                     .pictureView             = NULL,
+                                     .picture                 = NULL,
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = SuccessSPI };
 
@@ -33,10 +33,10 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
     {
         expect_value( manageValvePower, state, OnDeviceState );
         assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
-        will_return( getEachPictureView, &picture );
+        will_return( getEachPicture, &picture );
         performWaterscreenAction( &context );
 
-        assert_ptr_equal( context.pictureView, &picture );
+        assert_ptr_equal( context.picture, &picture );
         assert_int_equal( context.valveOpenCounter, lastIndexFromPicture );
 
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
@@ -49,7 +49,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );
             performWaterscreenAction( &context );
-            assert_ptr_equal( context.pictureView, &picture );
+            assert_ptr_equal( context.picture, &picture );
         }
         assert_int_equal( context.valveOpenCounter, endOfDemoCounterValue );
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );

@@ -13,7 +13,7 @@
 #include <waterscreen_states.h>
 
 static const pictureRow_t      s_mockedSingleRow = 128;
-static const PictureDataView_t s_expectedPicture = { .size = 1, .data = &s_mockedSingleRow };
+static const PictureDataSpan_t s_expectedPicture = { .size = 1, .data = &s_mockedSingleRow };
 
 void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
 {
@@ -49,7 +49,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
 
     will_return_datetime( datetime );
     will_return( getWeather, &expectedWeather );
-    will_return( getOccasionalPictureView, &s_expectedPicture );
+    will_return( getOccasionalPicture, &s_expectedPicture );
     expect_value( manageValvePower, state, OnDeviceState );
     performWaterscreenAction( &context );
 

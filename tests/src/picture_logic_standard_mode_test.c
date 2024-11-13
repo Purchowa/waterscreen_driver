@@ -10,43 +10,43 @@ size_t cyclicIncrement( const size_t, const size_t )
     return mock_type( size_t );
 }
 
-PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataView_t **const picture,
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataSpan_t **const picture,
                                                     const Datetime_t *, const WeatherCondition_t )
 {
     check_expected( getterIndex );
 
-    *picture = mock_ptr_type( PictureDataView_t * );
+    *picture = mock_ptr_type( PictureDataSpan_t * );
 
     return mock_type( PictureGetterLoopStatus_t );
 }
 
 
 static const pictureRow_t       s_mockedSingleRow               = 128;
-static const PictureDataView_t  s_expectedPicture               = { .size = 1, .data = &s_mockedSingleRow };
+static const PictureDataSpan_t  s_expectedPicture               = { .size = 1, .data = &s_mockedSingleRow };
 static const size_t             s_loopCount                     = 3;
 static const WeatherCondition_t s_insignificantWeatherCondition = Rain;
 
-void givenEndLoopStatus_getOccasionalPictureView_returnPictureAndIncrecemntCallCounter()
+void givenEndLoopStatus_getOccasionalPicture_returnPictureAndIncrecemntCallCounter()
 {
     will_return( callPictureGetterAtIndex, &s_expectedPicture );
     will_return( callPictureGetterAtIndex, PictureGetterEndLoop );
     expect_value( callPictureGetterAtIndex, getterIndex, 0 );
     will_return( cyclicIncrement, 1 );
-    assert_ptr_equal( &s_expectedPicture, getOccasionalPictureView( NULL, s_insignificantWeatherCondition ) );
+    assert_ptr_equal( &s_expectedPicture, getOccasionalPicture( NULL, s_insignificantWeatherCondition ) );
 }
 
-void givenLoopStatus_getOccasionalPictureView_returnPicturesWithoutIncrementingCallCounter()
+void givenLoopStatus_getOccasionalPicture_returnPicturesWithoutIncrementingCallCounter()
 {
     for ( size_t i = 0; i < s_loopCount; ++i )
     {
         will_return( callPictureGetterAtIndex, &s_expectedPicture );
         will_return( callPictureGetterAtIndex, PictureGetterLoop );
         expect_value( callPictureGetterAtIndex, getterIndex, 0 );
-        assert_ptr_equal( &s_expectedPicture, getOccasionalPictureView( NULL, s_insignificantWeatherCondition ) );
+        assert_ptr_equal( &s_expectedPicture, getOccasionalPicture( NULL, s_insignificantWeatherCondition ) );
     }
 }
 
-void givenNoAvailablePictureStatus_getOccasionalPictureView_incrementCallCounterUntillStatusChanges()
+void givenNoAvailablePictureStatus_getOccasionalPicture_incrementCallCounterUntillStatusChanges()
 {
     // 0
     will_return( callPictureGetterAtIndex, NULL );
@@ -66,7 +66,7 @@ void givenNoAvailablePictureStatus_getOccasionalPictureView_incrementCallCounter
     expect_value( callPictureGetterAtIndex, getterIndex, 2 );
 
     will_return( cyclicIncrement, 3 );
-    assert_ptr_equal( &s_expectedPicture, getOccasionalPictureView( NULL, s_insignificantWeatherCondition ) );
+    assert_ptr_equal( &s_expectedPicture, getOccasionalPicture( NULL, s_insignificantWeatherCondition ) );
 }
 
 // Setup to set s_callCounter back to zero
@@ -76,7 +76,7 @@ int setupGetterCallCounterToZero()
     will_return( callPictureGetterAtIndex, PictureGetterEndLoop );
     expect_any( callPictureGetterAtIndex, getterIndex );
     will_return( cyclicIncrement, 0 );
-    getOccasionalPictureView( NULL, s_insignificantWeatherCondition );
+    getOccasionalPicture( NULL, s_insignificantWeatherCondition );
 
     return 0;
 }
@@ -84,12 +84,12 @@ int setupGetterCallCounterToZero()
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test_setup( givenEndLoopStatus_getOccasionalPictureView_returnPictureAndIncrecemntCallCounter,
+        cmocka_unit_test_setup( givenEndLoopStatus_getOccasionalPicture_returnPictureAndIncrecemntCallCounter,
                                 setupGetterCallCounterToZero ),
-        cmocka_unit_test_setup( givenLoopStatus_getOccasionalPictureView_returnPicturesWithoutIncrementingCallCounter,
+        cmocka_unit_test_setup( givenLoopStatus_getOccasionalPicture_returnPicturesWithoutIncrementingCallCounter,
                                 setupGetterCallCounterToZero ),
         cmocka_unit_test_setup(
-            givenNoAvailablePictureStatus_getOccasionalPictureView_incrementCallCounterUntillStatusChanges,
+            givenNoAvailablePictureStatus_getOccasionalPicture_incrementCallCounterUntillStatusChanges,
             setupGetterCallCounterToZero ),
     };
 
