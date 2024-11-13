@@ -11,7 +11,7 @@ void givenStatus_serializeWaterscreenStatus_returnNotNullJsonString()
 {
     const WaterscreenStatus_t status = {
         .mode = Mode_Standard, .fluidLevel = FluidLevel_Optimal, .isPresenting = true };
-    const char *expectedJsonStr = "{\n\t\"mode\":\t0,\n\t\"fluidLevel\":\t0,\n\t\"isPresenting\":\ttrue\n}";
+    const char *expectedJsonStr = "{\"mode\":0,\"fluidLevel\":0,\"isPresenting\":true}";
 
     char *jsonStr = serializeWaterscreenStatus( &status );
     assert_non_null( jsonStr );

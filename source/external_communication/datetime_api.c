@@ -4,7 +4,7 @@
 
 #include "config/wifi_cfg.h"
 #include "external/wlan/wlan_mwm.h"
-#include "http_get_utils.h"
+#include "http_utils.h"
 
 #include <string.h>
 

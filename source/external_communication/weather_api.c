@@ -3,7 +3,7 @@
 #include "weather_parser.h"
 
 #include "config/wifi_cfg.h"
-#include "http_get_utils.h"
+#include "http_utils.h"
 
 #include <string.h>
 #include <assert.h>

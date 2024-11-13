@@ -9,6 +9,8 @@
 #include "external_communication/weather_api.h"
 #include "external_communication/datetime_api.h"
 #include "external_communication/waterscreen_config_api.h"
+#include "external_communication/waterscreen_status.h"
+#include "external_communication/waterscreen_status_api.h"
 #include "external_communication/wlan_adapter.h"
 #include "status_logging.h"
 
@@ -50,7 +52,7 @@ void hmiTask( void *params )
         // ISP
         if ( isS1ButtonPressed() )
         {
-            forceChangeWaterscreenState( &s_context, idleState );
+            forceChangeWaterscreenState( &s_context, lowWaterState );
         }
     }
 }
@@ -60,7 +62,7 @@ static void requestWeather()
     HttpReturnCodes_t weatherErrorCode = httpGetWeather();
     if ( weatherErrorCode != Http_Success )
     {
-        LogError( "Request for weather failed. Code: %d", weatherErrorCode );
+        LogError( "GET request for weather failed. Code: %d", weatherErrorCode );
     }
 }
 
@@ -69,7 +71,7 @@ static void requestDatetime( Datetime_t *datetime )
     HttpReturnCodes_t datetimeErrorCode = httpGetDatetime( datetime );
     while ( datetimeErrorCode != Http_Success )
     {
-        LogError( "Request for datetime failed. Code: %d", datetimeErrorCode );
+        LogError( "GET request for datetime failed. Code: %d", datetimeErrorCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
         datetimeErrorCode = httpGetDatetime( datetime );
@@ -92,9 +94,10 @@ static void requestWaterscreenConfig( bool isInitialRequest )
     }
     else
     {
-        LogDebug( "Water-screen configuration request. Code: %d", cfgReturnCode );
+        LogDebug( "Water-screen configuration GET request. Code: %d", cfgReturnCode );
     }
 }
+
 
 static void handleRequests()
 {
@@ -117,7 +120,10 @@ static void handleRequests()
 
     if ( callCounter % WATERSCREEN_STATE_POST_CALLS_NUMBER == 0 )
     {
-        ;
+        const WaterscreenStatus_t status     = generateWaterscreenStatus( &s_context );
+        HttpReturnCodes_t         returnCode = httpPostWaterscreenStatus( &status );
+
+        LogDebug( "Water-screen status POST request. Code: %d", returnCode );
     }
 
     ++callCounter; // no overflow for unsigned it's just modulo

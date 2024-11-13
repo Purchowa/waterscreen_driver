@@ -11,22 +11,19 @@ static char *feedJsonObject( const WaterscreenStatus_t *status, cJSON *statusObj
     if ( !statusObj )
         return SERIALIZATION_ERROR;
 
-    cJSON *mode = cJSON_CreateNumber( status->mode );
+    const cJSON *mode = cJSON_AddNumberToObject( statusObj, "mode", status->mode );
     if ( !mode )
         return SERIALIZATION_ERROR;
-    cJSON_AddItemToObject( statusObj, "mode", mode );
 
-    cJSON *fluidLevel = cJSON_CreateNumber( status->fluidLevel );
+    const cJSON *fluidLevel = cJSON_AddNumberToObject( statusObj, "fluidLevel", status->fluidLevel );
     if ( !fluidLevel )
         return SERIALIZATION_ERROR;
-    cJSON_AddItemToObject( statusObj, "fluidLevel", fluidLevel );
 
-    cJSON *isPresenting = cJSON_CreateBool( status->isPresenting );
+    const cJSON *isPresenting = cJSON_AddBoolToObject( statusObj, "isPresenting", status->isPresenting );
     if ( !isPresenting )
         return SERIALIZATION_ERROR;
-    cJSON_AddItemToObject( statusObj, "isPresenting", isPresenting );
 
-    dstString = cJSON_Print( statusObj );
+    dstString = cJSON_PrintUnformatted( statusObj );
     if ( !dstString )
         return SERIALIZATION_ERROR;
 

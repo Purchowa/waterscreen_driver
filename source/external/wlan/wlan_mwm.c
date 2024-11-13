@@ -11,7 +11,6 @@
 #include "task.h"
 #include "serial_mwm.h"
 
-#include <semphr.h>
 #include <stdio.h>
 
 /*******************************************************************************
@@ -357,7 +356,8 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     wlan_state();
 }
 
-void http_POST( const char *reqdata, char *respdata, char *contdata )
+void http_POST( const char *reqdata, const char *authorization, char *response_data, const uint32_t response_data_len,
+                char *content_data )
 {
 
     char hostname[HOSTNAME_LEN] = { 0 };
@@ -392,7 +392,7 @@ void http_POST( const char *reqdata, char *respdata, char *contdata )
     sprintf( g_http_srv_addr.host, hostname );
     g_http_srv_addr.port = 80;
 
-    PRINTF( "Connecting to: %s:%d\r\n", g_http_srv_addr.host, g_http_srv_addr.port );
+    // PRINTF( "Connecting to: %s:%d\r\n", g_http_srv_addr.host, g_http_srv_addr.port );
 
     ret = mwm_connect( s, &g_http_srv_addr, sizeof( g_http_srv_addr ) );
     if ( ret != 0 )
@@ -403,14 +403,31 @@ void http_POST( const char *reqdata, char *respdata, char *contdata )
             ;
     }
 
-    char request[256];
-    sprintf( request,
-             "POST http://%s HTTP/1.0\r\n"
-             "Host: %s\r\n"
-             "Content-Type: application/json\r\n"
-             "Content-Length: %d\r\n\r\n"
-             "%s\r\n",
-             reqdata, hostname, strlen( contdata ), contdata );
+    char request[TXD_BUFFER_LEN];
+
+    if ( authorization )
+    {
+
+        sprintf( request,
+                 "POST http://%s HTTP/1.0\r\n"
+                 "Authorization:%s\r\n"
+                 "Host: %s\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %d\r\n\r\n"
+                 "%s\r\n",
+                 reqdata, authorization, hostname, strlen( content_data ), content_data );
+    }
+    else
+    {
+        sprintf( request,
+                 "POST http://%s HTTP/1.0\r\n"
+                 "Host: %s\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %d\r\n\r\n"
+                 "%s\r\n",
+                 reqdata, hostname, strlen( content_data ), content_data );
+    }
+
 
     data_len = strlen( request );
     ret      = mwm_send( s, request, data_len );
@@ -422,9 +439,9 @@ void http_POST( const char *reqdata, char *respdata, char *contdata )
             ;
     }
 
-    ret = mwm_recv_timeout( s, respdata, RXD_BUFFER_LEN, 0 );
+    ret = mwm_recv_timeout( s, response_data, response_data_len, 0 );
 
-    respdata[ret] = '\0';
+    response_data[ret] = '\0';
 
     ret = mwm_close( s );
     if ( ret != 0 )
@@ -470,7 +487,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     sprintf( g_http_srv_addr.host, hostname );
     g_http_srv_addr.port = 80;
 
-    PRINTF( "Connecting to: %s:%d\r\n", g_http_srv_addr.host, g_http_srv_addr.port );
+    // PRINTF( "Connecting to: %s:%d\r\n", g_http_srv_addr.host, g_http_srv_addr.port );
 
     ret = mwm_connect( s, &g_http_srv_addr, sizeof( g_http_srv_addr ) );
     if ( ret != 0 )
@@ -512,7 +529,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     }
 }
 
-void http_head_parser( char *headdata, char *parseval, char *keyval )
+void http_head_parser( const char *headdata, char *parseval, char *keyval )
 {
 
     char *parse = 0;

@@ -5,7 +5,7 @@
 #include "config/wifi_cfg.h"
 #include "wlan/wlan_mwm.h"
 #include "http_return_codes.h"
-#include "http_get_utils.h"
+#include "http_utils.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -14,7 +14,7 @@ HttpReturnCodes_t httpGetWaterscreenConfig( WaterscreenConfig_t *config, bool is
 {
     char      *configContent = NULL;
     const bool wasReceived =
-        httpGET_receiveContent( &configContent, WATERSCREEN_CONFIG_BASIC_AUTH_BASE64, WATERSCREEN_CONFIG_API_URL );
+        httpGET_receiveContent( &configContent, WATERSCREEN_API_BASIC_AUTH_BASE64, WATERSCREEN_CONFIG_GET_URL );
 
     if ( !wasReceived )
         return Http_GETError;

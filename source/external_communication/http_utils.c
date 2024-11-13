@@ -1,4 +1,4 @@
-#include "http_get_utils.h"
+#include "http_utils.h"
 
 #include "external/wlan/wlan_mwm.h"
 
@@ -6,9 +6,13 @@
 #include <string.h>
 
 
-#define HTTP_GET_BUFFER_LEN 2046
-#define CONTENT_LEN_STR_LEN 32
+#define HTTP_GET_BUFFER_LEN  2046
+#define CONTENT_LEN_BUFF_LEN 32
 
+#define HTTP_CODE_BUFF_LEN 64
+#define HTTP_CODE_PREFIX   "HTTP/1.1"
+
+#define BASE_10 10
 
 static char s_httpGetBuffer[HTTP_GET_BUFFER_LEN];
 
@@ -30,7 +34,7 @@ bool httpGET_receiveContent( char **destContent, const char *authorization, cons
     if ( requestLen == HTTP_HEAD_CONVERSION_FAILED_VALUE )
         return false;
 
-    char contentLenStr[CONTENT_LEN_STR_LEN] = { 0 };
+    char contentLenStr[CONTENT_LEN_BUFF_LEN] = { 0 };
     http_head_parser( httpGetBuffer, contentLenStr, "Content-Length:" );
 
     size_t contentLen = atol( contentLenStr );
@@ -40,4 +44,16 @@ bool httpGET_receiveContent( char **destContent, const char *authorization, cons
     *destContent = httpGetBuffer + ( requestLen - contentLen );
 
     return true;
+}
+
+bool extractHttpResponseCode( const char *response, long *responseCode )
+{
+    char httpCodeStr[HTTP_CODE_BUFF_LEN] = { 0 };
+    http_head_parser( response, httpCodeStr, HTTP_CODE_PREFIX );
+
+    char *end;
+    *responseCode = strtol( httpCodeStr, &end, BASE_10 );
+
+    const bool wasParsed = end != response;
+    return wasParsed;
 }
