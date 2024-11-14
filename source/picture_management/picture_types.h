@@ -24,7 +24,7 @@ typedef struct
 } CustomPictureDataSpan_t;
 
 /**
- * @brief Array of `PictureView` type that it's size can vary from 0 to `RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY`
+ * @brief Array of `PictureSpan` type that its size can vary from 0 to `RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY`
  */
 typedef struct
 {
