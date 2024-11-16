@@ -2,6 +2,7 @@
 #define PICTURE_TYPES_H_
 
 #include "datetime/datetime_types.h"
+#include "picture_data_constants.h"
 
 #include <stdint.h>
 
@@ -20,8 +21,8 @@ typedef struct
 {
     const uint8_t capacity;
     uint8_t       size;
-    pictureRow_t *data;
-} CustomPictureDataSpan_t;
+    pictureRow_t  data[MAX_CUSTOM_PICTURE_LENGTH];
+} ResizableCustomPicture_t;
 
 /**
  * @brief Array of `PictureSpan` type that its size can vary from 0 to `RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY`

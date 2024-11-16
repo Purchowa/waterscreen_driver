@@ -56,7 +56,7 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     const cJSON *pictureSize = cJSON_GetObjectItemCaseSensitive( pictureObject, "size" );
     if ( !cJSON_IsNumber( pictureSize ) )
         return Http_WaterscreenConfigParsingError;
-    config->customPictureSize = clamp_uint16( pictureSize->valueint, 0, MAX_CUSTOM_PICTURE_LENGTH );
+    config->customPicture->size = clamp_uint16( pictureSize->valueint, 0, config->customPicture->capacity );
 
     const cJSON *pictureArray = cJSON_GetObjectItemCaseSensitive( pictureObject, "data" );
     if ( !cJSON_IsArray( pictureArray ) )
@@ -69,13 +69,13 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
         if ( !cJSON_IsNumber( element ) )
             return Http_WaterscreenConfigParsingError;
 
-        if ( config->customPictureSize <= i )
+        if ( config->customPicture->size <= i )
             break;
 
-        config->customPicture[i++] = element->valueint;
+        config->customPicture->data[i++] = element->valueint;
     }
 
-    if ( i < config->customPictureSize )
+    if ( i < config->customPicture->size )
         return Http_WaterscreenConfigParsingError;
 
     const cJSON *workRange = cJSON_GetObjectItemCaseSensitive( cfgJson, "workRange" );

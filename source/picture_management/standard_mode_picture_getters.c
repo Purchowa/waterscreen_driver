@@ -156,6 +156,12 @@ PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataSpan_t **const pi
     return PictureGetterLoop;
 }
 
+PictureGetterLoopStatus_t getCustomPicture( const PictureDataSpan_t **const, const Datetime_t *,
+                                            const WeatherCondition_t )
+{
+    return PictureGetterEndLoop;
+}
+
 PictureGetterLoopStatus_t getStandardModePicture( const PictureDataSpan_t **const picture, const Datetime_t *,
                                                   const WeatherCondition_t )
 {

@@ -30,6 +30,9 @@ PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataSpan_t **const, c
 PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataSpan_t **const, const Datetime_t *,
                                               const WeatherCondition_t );
 
+PictureGetterLoopStatus_t getCustomPicture( const PictureDataSpan_t **const, const Datetime_t *,
+                                            const WeatherCondition_t );
+
 PictureGetterLoopStatus_t getStandardModePicture( const PictureDataSpan_t **const, const Datetime_t *,
                                                   const WeatherCondition_t );
 

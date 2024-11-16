@@ -80,7 +80,7 @@ static void requestDatetime( Datetime_t *datetime )
 
 static void requestWaterscreenConfig( bool isInitialRequest )
 {
-    static WaterscreenConfig_t waterscreenConfig;
+    static WaterscreenConfig_t waterscreenConfig = {.customPicture = &g_customPicture};
 
     HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
 

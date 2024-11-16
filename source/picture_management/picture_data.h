@@ -14,7 +14,9 @@ extern const PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE];
 extern const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT];
 extern pictureRow_t             g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT];
 
-extern const SeasonalPicture_t  g_seasonsInfo[SEASONS_COUNT];
+extern const SeasonalPicture_t      g_seasonsInfo[SEASONS_COUNT];
 extern const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT];
+
+extern ResizableCustomPicture_t g_customPicture;
 
 #endif /* PICTURE_DATA_H_ */

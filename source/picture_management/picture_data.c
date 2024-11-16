@@ -1569,3 +1569,5 @@ const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
       .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_christmasTree ), CREATE_PICTURE_SPAN( s_gift ) },
                             .size = 2 } }, // Christmas
 };
+
+ResizableCustomPicture_t g_customPicture = { .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 0, .data = { 0 } };

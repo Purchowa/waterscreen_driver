@@ -3,6 +3,7 @@
 
 #include "waterscreen_state/waterscreen_state_context.h"
 #include "picture_management/picture_data_constants.h"
+#include "picture_management/picture_data.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -32,10 +33,9 @@ typedef struct
 
 typedef struct
 {
-    WaterscreenMode_t    mode;
-    StandardModeConfig_t standardModeConfig;
-    uint8_t              customPictureSize;
-    uint64_t             customPicture[MAX_CUSTOM_PICTURE_LENGTH];
+    WaterscreenMode_t               mode;
+    StandardModeConfig_t            standardModeConfig;
+    ResizableCustomPicture_t *const customPicture;
 } WaterscreenConfig_t;
 
 extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];
