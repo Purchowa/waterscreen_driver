@@ -15,31 +15,28 @@ typedef enum
     NoAvailablePicture
 } PictureGetterLoopStatus_t;
 
-typedef PictureGetterLoopStatus_t ( *pictureGetterFun_t )( const PictureDataSpan_t **const, const Datetime_t *,
+typedef PictureGetterLoopStatus_t ( *pictureGetterFun_t )( PictureDataSpan_t **const, const Datetime_t *,
                                                            const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataSpan_t **const, const Datetime_t *,
+PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureDataSpan_t **const, const Datetime_t *,
                                                    const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataSpan_t **const, const Datetime_t *,
+PictureGetterLoopStatus_t getWeatherAsPicture( PictureDataSpan_t **const, const Datetime_t *,
                                                const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataSpan_t **const, const Datetime_t *,
-                                              const WeatherCondition_t );
+PictureGetterLoopStatus_t getSeasonalPicture( PictureDataSpan_t **const, const Datetime_t *, const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataSpan_t **const, const Datetime_t *,
-                                              const WeatherCondition_t );
+PictureGetterLoopStatus_t getHolidaysPicture( PictureDataSpan_t **const, const Datetime_t *, const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getCustomPicture( const PictureDataSpan_t **const, const Datetime_t *,
-                                            const WeatherCondition_t );
+PictureGetterLoopStatus_t getCustomPicture( PictureDataSpan_t **const, const Datetime_t *, const WeatherCondition_t );
 
-PictureGetterLoopStatus_t getStandardModePicture( const PictureDataSpan_t **const, const Datetime_t *,
+PictureGetterLoopStatus_t getStandardModePicture( PictureDataSpan_t **const, const Datetime_t *,
                                                   const WeatherCondition_t );
 
 
 extern const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT];
 
-PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataSpan_t **const picture,
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, PictureDataSpan_t **const picture,
                                                     const Datetime_t        *datetime,
                                                     const WeatherCondition_t weatherCondition );
 

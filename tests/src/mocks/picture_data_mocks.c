@@ -6,9 +6,9 @@ static const pictureRow_t s_mockedPicture[] = { 1 };
 
 const PictureDataSpan_t g_allPictures[ALL_PICTURE_COUNT] = {};
 
-const PictureDataSpan_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
+PictureDataSpan_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
 
-const PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE] = {};
+PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE] = {};
 
 const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
     { 0x0000, 0x0ff0, 0x1ff8, 0x3ffc, 0x7ffe, 0x7ffe, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e,
@@ -46,7 +46,7 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = {};
 
-const SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
+SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
     { .seasonDateStart = { .day = 20, .month = March },
       .pictureSpan     = { .size = MOCKED_SPRING_SIZE, .data = s_mockedPicture } }, // Spring
 
@@ -60,7 +60,7 @@ const SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
       .pictureSpan     = { .size = MOCKED_WINTER_SIZE, .data = s_mockedPicture } }  // Winter
 };
 
-const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
+HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
     { .range            = { .from = { .day = 1, .month = January }, .to = { .day = 1, .month = January } },
       .pictureSpanArray = { .size = 1,
                             .data = { { .size = SINGLE_DAY_RANGE_MOCKED_SIZE, .data = s_mockedPicture } } } },
@@ -72,3 +72,6 @@ const HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
       .pictureSpanArray = { .size = 2,
                             .data = { { .size = MULTIPLE_PICTURES_MOCKED_SIZE_0, .data = s_mockedPicture },
                                       { .size = MULTIPLE_PICTURES_MOCKED_SIZE_1, .data = s_mockedPicture } } } } };
+
+ResizableCustomPicture_t g_customPicture = {
+    .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 5, .data = { 1, 2, 3, 4, 5 } };

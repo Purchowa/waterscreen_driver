@@ -22,7 +22,7 @@
 
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
-                                          .previousWaterscreenStateHandler = idleState,
+                                          .previousWaterscreenStateHandler = standardModeState,
                                           .picture                         = NULL,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success,
@@ -80,7 +80,7 @@ static void requestDatetime( Datetime_t *datetime )
 
 static void requestWaterscreenConfig( bool isInitialRequest )
 {
-    static WaterscreenConfig_t waterscreenConfig = {.customPicture = &g_customPicture};
+    static WaterscreenConfig_t waterscreenConfig = { .customPicture = &g_customPicture };
 
     HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
 

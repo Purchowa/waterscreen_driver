@@ -1,5 +1,6 @@
 #include "picture_management/picture_logic_utils.h"
 
+#include <string.h>
 #include <assert.h>
 
 int32_t getLastPictureIndex( const PictureDataSpan_t *picture )

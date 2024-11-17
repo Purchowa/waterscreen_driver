@@ -24,8 +24,8 @@
 
 
 const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT] = {
-    getWeatherAsPicture,    getCurrentTimeAsPicture, getSeasonalPicture,
-    getStandardModePicture, getHolidaysPicture,      getCurrentTimeAsPicture };
+    getCustomPicture,       getWeatherAsPicture, getCurrentTimeAsPicture, getSeasonalPicture,
+    getStandardModePicture, getHolidaysPicture,  getCurrentTimeAsPicture };
 
 static uint8_t extractOnesFromNumber( const uint8_t number )
 {
@@ -39,7 +39,7 @@ static uint8_t extractTensFromNumber( const uint8_t number )
 
 static PictureDataSpan_t s_timePicture = { .size = CHARACTER_TO_PICTURE_ROW_COUNT, .data = NULL };
 
-PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
                                                    const WeatherCondition_t )
 {
     memset( g_timePicture, 0, sizeof( *g_timePicture ) * CHARACTER_TO_PICTURE_ROW_COUNT );
@@ -69,8 +69,8 @@ PictureGetterLoopStatus_t getCurrentTimeAsPicture( const PictureDataSpan_t **con
     return PictureGetterEndLoop;
 }
 
-PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataSpan_t **const picture, const Datetime_t *,
-                                               const WeatherCondition_t        weatherCondition )
+PictureGetterLoopStatus_t getWeatherAsPicture( PictureDataSpan_t **const picture, const Datetime_t *,
+                                               const WeatherCondition_t  weatherCondition )
 {
     assert( 0 <= weatherCondition && weatherCondition < WEATHER_CONDITION_SIZE );
 
@@ -79,7 +79,7 @@ PictureGetterLoopStatus_t getWeatherAsPicture( const PictureDataSpan_t **const p
     return PictureGetterEndLoop;
 }
 
-PictureGetterLoopStatus_t getSeasonalPicture( const PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getSeasonalPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
                                               const WeatherCondition_t )
 {
     const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
@@ -130,7 +130,7 @@ static int32_t tryToFindMatchingHoliday( const Datetime_t *datetime )
     return NOT_FOUND;
 }
 
-PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getHolidaysPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
                                               const WeatherCondition_t )
 {
     static size_t  s_holidayPictureCounter = 0;
@@ -156,13 +156,20 @@ PictureGetterLoopStatus_t getHolidaysPicture( const PictureDataSpan_t **const pi
     return PictureGetterLoop;
 }
 
-PictureGetterLoopStatus_t getCustomPicture( const PictureDataSpan_t **const, const Datetime_t *,
+PictureGetterLoopStatus_t getCustomPicture( PictureDataSpan_t **const picture, const Datetime_t *,
                                             const WeatherCondition_t )
 {
+    static PictureDataSpan_t customPic = {};
+
+    customPic.data = g_customPicture.data;
+    customPic.size = g_customPicture.size;
+
+    *picture = &customPic;
+
     return PictureGetterEndLoop;
 }
 
-PictureGetterLoopStatus_t getStandardModePicture( const PictureDataSpan_t **const picture, const Datetime_t *,
+PictureGetterLoopStatus_t getStandardModePicture( PictureDataSpan_t **const picture, const Datetime_t *,
                                                   const WeatherCondition_t )
 {
     static size_t s_standardPictureIndex = 0;
@@ -178,7 +185,7 @@ PictureGetterLoopStatus_t getStandardModePicture( const PictureDataSpan_t **cons
     return PictureGetterLoop;
 }
 
-PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataSpan_t **const picture,
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, PictureDataSpan_t **const picture,
                                                     const Datetime_t        *datetime,
                                                     const WeatherCondition_t weatherCondition )
 {

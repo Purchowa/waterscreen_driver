@@ -4,13 +4,14 @@
 #include "picture_logic_utils.h"
 
 #include <string.h>
+#include <assert.h>
 
 
 const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const WeatherCondition_t weatherCondition )
 {
     static size_t s_callCounter = 0;
 
-    const PictureDataSpan_t  *picture = NULL;
+    PictureDataSpan_t        *picture = NULL;
     PictureGetterLoopStatus_t getterStatus =
         callPictureGetterAtIndex( s_callCounter, &picture, datetime, weatherCondition );
 
@@ -24,6 +25,8 @@ const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const
     {
         s_callCounter = cyclicIncrement( s_callCounter, STANDARD_MODE_PICTURE_GETTER_COUNT );
     }
+
+    assert( picture );
 
     return picture;
 }

@@ -13,8 +13,8 @@ typedef uint16_t pictureCharacter_t;
 
 typedef struct
 {
-    const uint8_t       size;
-    const pictureRow_t *data;
+    uint8_t       size;
+    pictureRow_t *data;
 } PictureDataSpan_t;
 
 typedef struct
@@ -29,14 +29,14 @@ typedef struct
  */
 typedef struct
 {
-    const uint8_t           size;
-    const PictureDataSpan_t data[RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY];
+    const uint8_t     size;
+    PictureDataSpan_t data[RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY];
 } ResizablePictureSpanArray_t;
 
 typedef struct
 {
-    const ShortDate_t       seasonDateStart;
-    const PictureDataSpan_t pictureSpan;
+    const ShortDate_t seasonDateStart;
+    PictureDataSpan_t pictureSpan;
 } SeasonalPicture_t;
 
 typedef struct
@@ -47,8 +47,8 @@ typedef struct
 
 typedef struct
 {
-    const HolidaysRange_t             range;
-    const ResizablePictureSpanArray_t pictureSpanArray;
+    const HolidaysRange_t       range;
+    ResizablePictureSpanArray_t pictureSpanArray;
 } HolidaysPictureArray_t;
 
 #endif /* PICTURE_TYPES_H_ */
