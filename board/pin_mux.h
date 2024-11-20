@@ -430,7 +430,7 @@ void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 (Core #0
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPMODPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitSPIValvePins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
@@ -572,6 +572,31 @@ void BOARD_InitGPIOPins(void); /* Function assigned for the Cortex-M33 (Core #0)
  *
  */
 void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_13_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Switch between GPIO mode and I2C mode.: I2C mode. */
+#define PIO0_13_EGP_I2C_MODE 0x00u
+/*!
+ * @brief Selects pin function.: Alternative connection 1. */
+#define PIO0_13_FUNC_ALT1 0x01u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_14_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Switch between GPIO mode and I2C mode.: I2C mode. */
+#define PIO0_14_EGP_I2C_MODE 0x00u
+/*!
+ * @brief Selects pin function.: Alternative connection 1. */
+#define PIO0_14_FUNC_ALT1 0x01u
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitOLEDPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 #if defined(__cplusplus)
 }
