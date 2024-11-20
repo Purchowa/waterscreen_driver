@@ -356,6 +356,16 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     wlan_state();
 }
 
+static void closeSocket( const int socketHandle )
+{
+    int ret = mwm_close( socketHandle );
+    while ( ret != 0 )
+    {
+        PRINTF( "Could not close socket, error: %d\r\n", ret );
+        ret = mwm_close( socketHandle );
+    }
+}
+
 void http_POST( const char *reqdata, const char *authorization, char *response_data, const uint32_t response_data_len,
                 char *content_data )
 {
@@ -399,15 +409,14 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     {
 
         PRINTF( "Could not connect to server, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        closeSocket( s );
+        return;
     }
 
     char request[TXD_BUFFER_LEN];
 
     if ( authorization )
     {
-
         sprintf( request,
                  "POST http://%s HTTP/1.0\r\n"
                  "Authorization:%s\r\n"
@@ -435,22 +444,15 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     {
 
         PRINTF( "Could not send data, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        closeSocket( s );
+        return;
     }
 
     ret = mwm_recv_timeout( s, response_data, response_data_len, 0 );
 
     response_data[ret] = '\0';
 
-    ret = mwm_close( s );
-    if ( ret != 0 )
-    {
-
-        PRINTF( "Could not close socket, error: %d\r\n", ret );
-        while ( 1 )
-            ;
-    }
+    closeSocket( s );
 }
 
 void http_GET( const char *reqdata, const char *authorization, char *respdata )
@@ -494,8 +496,8 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     {
 
         PRINTF( "Could not connect to server, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        closeSocket( s );
+        return;
     }
 
     char request[256];
@@ -512,21 +514,14 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     {
 
         PRINTF( "Could not send data, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        closeSocket( s );
+        return;
     }
 
     ret           = mwm_recv_timeout( s, respdata, RXD_BUFFER_LEN, 0 );
     respdata[ret] = '\0';
 
-    ret = mwm_close( s );
-    if ( ret != 0 )
-    {
-
-        PRINTF( "Could not close socket, error: %d\r\n", ret );
-        while ( 1 )
-            ;
-    }
+    closeSocket( s );
 }
 
 void http_head_parser( const char *headdata, char *parseval, char *keyval )
