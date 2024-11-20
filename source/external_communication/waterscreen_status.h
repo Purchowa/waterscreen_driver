@@ -20,6 +20,7 @@ typedef struct
     bool              isPresenting;
 } WaterscreenStatus_t;
 
-WaterscreenStatus_t generateWaterscreenStatus( const WaterscreenContext_t *context );
+WaterscreenStatus_t generateWaterscreenStatus( const WaterscreenMode_t     currentMode,
+                                               const WaterscreenContext_t *context );
 
 #endif /* WATERSCREEN_STATUS_H_ */

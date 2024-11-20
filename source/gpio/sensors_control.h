@@ -4,6 +4,6 @@
 #include <stdbool.h>
 
 bool shouldWaterPumpTrigger();
-bool shouldWaterAlaramTrigger();
+bool shouldWaterAlarmTrigger();
 
 #endif /* SENSORS_CONTROL_H_ */

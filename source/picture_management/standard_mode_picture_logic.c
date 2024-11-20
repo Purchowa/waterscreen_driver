@@ -26,7 +26,5 @@ const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const
         s_callCounter = cyclicIncrement( s_callCounter, STANDARD_MODE_PICTURE_GETTER_COUNT );
     }
 
-    assert( picture );
-
     return picture;
 }

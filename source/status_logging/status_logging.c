@@ -8,36 +8,11 @@
 #include "wlan/wlan_mwm.h"
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/standard_mode_state.h"
+#include "waterscreen_state/state_utils.h"
 
 #include <fsl_common.h>
 #include <stdint.h>
 
-#define WATERSCREEN_STATE_COUNT 5
-
-#define UNKNOWN_STATE "unknown"
-
-typedef struct
-{
-    waterscreenStateFunction_t key;
-    const char                *value;
-} pair_t;
-
-static const char *getCurrentStateName( const WaterscreenContext_t *context )
-{
-    static const pair_t statesMap[WATERSCREEN_STATE_COUNT] = { { .key = demoModeState, .value = "demo mode" },
-                                                               { presentationState, "presentation" },
-                                                               { idleState, "idle" },
-                                                               { lowWaterState, "low water" },
-                                                               { standardModeState, "standard mode" } };
-
-    for ( uint8_t i = 0; i < WATERSCREEN_STATE_COUNT; ++i )
-    {
-        if ( context->waterscreenStateHandler == statesMap[i].key )
-            return statesMap[i].value;
-    }
-
-    return UNKNOWN_STATE;
-}
 
 void logWaterscreenStatus( const WaterscreenContext_t *context )
 {
@@ -47,7 +22,7 @@ void logWaterscreenStatus( const WaterscreenContext_t *context )
     static waterscreenStateFunction_t previousState = NULL;
     if ( context->waterscreenStateHandler != previousState )
     {
-        LogDebug( "Current water screen state: %s", getCurrentStateName( context ) );
+        LogDebug( "Current water screen state: %s", getStateName( context->waterscreenStateHandler ) );
         previousState = context->waterscreenStateHandler;
     }
 }

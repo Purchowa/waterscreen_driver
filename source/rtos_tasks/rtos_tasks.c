@@ -13,6 +13,7 @@
 #include "external_communication/waterscreen_status_api.h"
 #include "external_communication/wlan_adapter.h"
 #include "status_logging.h"
+#include "oled_screen/oled_panel.h"
 
 #include "datetime/rtc_provider.h"
 #include "external/wlan/wlan_mwm.h"
@@ -21,80 +22,88 @@
 #include <fsl_common.h>
 
 
-static WaterscreenContext_t s_context = { .waterscreenStateHandler         = idleState,
-                                          .previousWaterscreenStateHandler = standardModeState,
+static WaterscreenContext_t s_context = { .waterscreenStateHandler         = standardModeState,
+                                          .previousWaterscreenStateHandler = demoModeState,
                                           .picture                         = NULL,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success,
                                           .currentStateDelay               = SECOND_MS };
 
-static StandardModeConfig_t s_standardModeCfg = { .isWorkingDuringWeekends = false,
-                                                  .workTimeInStandardMode  = 5,
-                                                  .idleTimeInStandardMode  = 5,
-                                                  .workRange               = { .from = 7, .to = 18 } };
+static WaterscreenConfig_t s_waterscreenConfig = {
+    .mode               = Mode_Standard,
+    .standardModeConfig = { .isWorkingDuringWeekends = false,
+                            .workTimeInStandardMode  = 5,
+                            .idleTimeInStandardMode  = 5,
+                            .workRange               = { .from = 7, .to = 18 } },
+    .customPicture      = &g_customPicture,
+};
+
+static HttpReturnCodes_t s_httpReturnCode = Http_UnknownError;
 
 void hmiTask( void *params )
 {
     for ( ;; )
     {
+        drawInfoPanel( &s_context, s_waterscreenConfig.mode, s_httpReturnCode );
+
         // USER
         if ( isS3ButtonPressed() )
         {
             forceChangeWaterscreenState( &s_context, demoModeState );
+            s_waterscreenConfig.mode = Mode_Demo;
         }
 
         // WAKEUP
         if ( isS2ButtonPressed() )
         {
             forceChangeWaterscreenState( &s_context, standardModeState );
+            s_waterscreenConfig.mode = Mode_Standard;
         }
 
         // ISP
         if ( isS1ButtonPressed() )
         {
             forceChangeWaterscreenState( &s_context, idleState );
+            s_waterscreenConfig.mode = Mode_Service;
         }
+
+        vTaskDelay( pdMS_TO_TICKS( 32 ) );
     }
 }
 
 static void requestWeather()
 {
-    HttpReturnCodes_t weatherErrorCode = httpGetWeather();
-    if ( weatherErrorCode != Http_Success )
-    {
-        LogError( "GET request for weather failed. Code: %d", weatherErrorCode );
-    }
+    s_httpReturnCode = httpGetWeather();
+
+    LogDebug( "Weather GET request. Code: %d", s_httpReturnCode );
 }
 
 static void requestDatetime( Datetime_t *datetime )
 {
-    HttpReturnCodes_t datetimeErrorCode = httpGetDatetime( datetime );
-    while ( datetimeErrorCode != Http_Success )
+    s_httpReturnCode = httpGetDatetime( datetime );
+    while ( s_httpReturnCode != Http_Success )
     {
-        LogError( "GET request for datetime failed. Code: %d", datetimeErrorCode );
+        LogError( "GET request for datetime failed. Code: %d", s_httpReturnCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
-        datetimeErrorCode = httpGetDatetime( datetime );
+        s_httpReturnCode = httpGetDatetime( datetime );
     }
 }
 
 static void requestWaterscreenConfig( bool isInitialRequest )
 {
-    static WaterscreenConfig_t waterscreenConfig = { .customPicture = &g_customPicture };
+    s_httpReturnCode = httpGetWaterscreenConfig( &s_waterscreenConfig, isInitialRequest );
 
-    HttpReturnCodes_t cfgReturnCode = httpGetWaterscreenConfig( &waterscreenConfig, isInitialRequest );
-
-    if ( cfgReturnCode == Http_Success )
+    if ( s_httpReturnCode == Http_Success )
     {
         LogDebug( "Water-screen configuration updated!" );
 
-        forceChangeWaterscreenState( &s_context, g_waterscreenModes[waterscreenConfig.mode] );
-        s_standardModeCfg = waterscreenConfig.standardModeConfig;
-        initStandardModeConfig( &s_standardModeCfg );
+        forceChangeWaterscreenState( &s_context, g_waterscreenModes[s_waterscreenConfig.mode] );
+        initStandardModeConfig( &s_waterscreenConfig.standardModeConfig );
     }
     else
     {
-        LogDebug( "Water-screen configuration GET request. Code: %d", cfgReturnCode );
+        LogDebug( "Water-screen configuration GET request. Code: %d", s_httpReturnCode );
     }
 }
 
@@ -111,8 +120,8 @@ static void handleRequests()
     if ( callCounter % WEATHER_GET_CALLS_NUMBER == 0 )
     {
         const Datetime_t datetime = getRTCDatetime();
-        if ( s_standardModeCfg.workRange.from <= datetime.time.hour &&
-             datetime.time.hour <= s_standardModeCfg.workRange.to )
+        if ( s_waterscreenConfig.standardModeConfig.workRange.from <= datetime.time.hour &&
+             datetime.time.hour <= s_waterscreenConfig.standardModeConfig.workRange.to )
         {
             requestWeather();
         }
@@ -120,10 +129,10 @@ static void handleRequests()
 
     if ( callCounter % WATERSCREEN_STATE_POST_CALLS_NUMBER == 0 )
     {
-        const WaterscreenStatus_t status     = generateWaterscreenStatus( &s_context );
-        HttpReturnCodes_t         returnCode = httpPostWaterscreenStatus( &status );
+        const WaterscreenStatus_t status = generateWaterscreenStatus( s_waterscreenConfig.mode, &s_context );
+        s_httpReturnCode                 = httpPostWaterscreenStatus( &status );
 
-        LogDebug( "Water-screen status POST request. Code: %d", returnCode );
+        LogDebug( "Water-screen status POST request. Code: %d", s_httpReturnCode );
     }
 
     ++callCounter; // no overflow for unsigned it's just modulo
@@ -155,7 +164,7 @@ void wifiTask( void * )
 
 void waterscreenActionTask( void *params )
 {
-    initStandardModeConfig( &s_standardModeCfg );
+    initStandardModeConfig( &s_waterscreenConfig.standardModeConfig );
 
     TickType_t lastWakeTime = xTaskGetTickCount();
     for ( ;; )

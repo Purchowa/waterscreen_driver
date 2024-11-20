@@ -12,7 +12,7 @@ bool shouldWaterPumpTrigger()
                            BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN ) == 0 );
 }
 
-bool shouldWaterAlaramTrigger()
+bool shouldWaterAlarmTrigger()
 {
     return GPIO_PinRead( BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO, BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PORT,
                          BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN ) == 0;

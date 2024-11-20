@@ -10,7 +10,7 @@ size_t cyclicIncrement( const size_t, const size_t )
     return mock_type( size_t );
 }
 
-PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, const PictureDataSpan_t **const picture,
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, PictureDataSpan_t **const picture,
                                                     const Datetime_t *, const WeatherCondition_t )
 {
     check_expected( getterIndex );
@@ -28,9 +28,9 @@ static const WeatherCondition_t s_insignificantWeatherCondition = Rain;
 
 void givenEndLoopStatus_getOccasionalPicture_returnPictureAndIncrecemntCallCounter()
 {
+    expect_value( callPictureGetterAtIndex, getterIndex, 0 );
     will_return( callPictureGetterAtIndex, &s_expectedPicture );
     will_return( callPictureGetterAtIndex, PictureGetterEndLoop );
-    expect_value( callPictureGetterAtIndex, getterIndex, 0 );
     will_return( cyclicIncrement, 1 );
     assert_ptr_equal( &s_expectedPicture, getOccasionalPicture( NULL, s_insignificantWeatherCondition ) );
 }
