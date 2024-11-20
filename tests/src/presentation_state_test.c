@@ -30,7 +30,7 @@ static void givenPicture_presentationState_printBottomUp()
     { // Print picture
         expect_value( sendDataToValves, *data, mockedPicture->data[i] );
         will_return( shouldWaterPumpTrigger, false );
-        will_return( shouldWaterAlaramTrigger, false );
+        will_return( shouldWaterAlarmTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );
         will_return( sendDataToValves, SuccessSPI );
         performWaterscreenAction( &context );
@@ -47,7 +47,7 @@ static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGo
     };
 
     will_return( shouldWaterPumpTrigger, false );
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
 
     assertClosedValves();

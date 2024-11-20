@@ -26,7 +26,7 @@ bool shouldWaterPumpTrigger()
 {
     return mock_type( bool );
 }
-bool shouldWaterAlaramTrigger()
+bool shouldWaterAlarmTrigger()
 {
     return mock_type( bool );
 }

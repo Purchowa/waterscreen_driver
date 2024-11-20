@@ -45,7 +45,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
             expect_any( sendDataToValves, *data );
             expect_any( manageWaterPump, state );
             will_return( sendDataToValves, SuccessSPI );
-            will_return( shouldWaterAlaramTrigger, false );
+            will_return( shouldWaterAlarmTrigger, false );
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );
             performWaterscreenAction( &context );
@@ -53,7 +53,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
         }
         assert_int_equal( context.valveOpenCounter, endOfDemoCounterValue );
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
-        will_return( shouldWaterAlaramTrigger, false );
+        will_return( shouldWaterAlarmTrigger, false );
         will_return( shouldWaterPumpTrigger, false );
         expect_any( manageWaterPump, state );
         assertClosedValves();

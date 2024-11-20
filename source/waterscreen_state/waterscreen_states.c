@@ -11,7 +11,7 @@
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->picture      = getEachPicture();
+    context->picture          = getEachPicture();
     context->valveOpenCounter = getLastPictureIndex( context->picture );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
@@ -19,7 +19,7 @@ void demoModeState( WaterscreenContext_t *context )
 
 void checkSensorsSubState( WaterscreenContext_t *context )
 {
-    const bool isWaterAlarmTriggered = shouldWaterAlaramTrigger();
+    const bool isWaterAlarmTriggered = shouldWaterAlarmTrigger();
 
     if ( isWaterAlarmTriggered )
     {
@@ -74,7 +74,7 @@ void idleState( WaterscreenContext_t *context )
 void lowWaterState( WaterscreenContext_t *context )
 {
     manageWaterPump( OffDeviceState );
-    if ( !shouldWaterAlaramTrigger() )
+    if ( !shouldWaterAlarmTrigger() )
     {
         goBackToPreviousWaterscreenState( context );
         context->currentStateDelay = 5 * SECOND_MS;

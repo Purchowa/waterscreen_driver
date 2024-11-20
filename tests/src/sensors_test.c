@@ -14,7 +14,7 @@ void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClose
     WaterscreenContext_t context = {};
 
     assertClosedValves();
-    will_return( shouldWaterAlaramTrigger, true );
+    will_return( shouldWaterAlarmTrigger, true );
     will_return( shouldWaterPumpTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
     expect_value( manageValvePower, state, OffDeviceState );
@@ -28,7 +28,7 @@ void givenAlarmOnPumpOn_checkSensorsSubState_transitionToLowWaterStateWithClosed
     WaterscreenContext_t context = {};
 
     assertClosedValves();
-    will_return( shouldWaterAlaramTrigger, true );
+    will_return( shouldWaterAlarmTrigger, true );
     will_return( shouldWaterPumpTrigger, true );
     expect_value( manageWaterPump, state, OffDeviceState );
     expect_value( manageValvePower, state, OffDeviceState );
@@ -41,7 +41,7 @@ void givenAlarmOffPumpOff_checkSensorsSubState_remainInitialStateWithOpenValves(
 {
     WaterscreenContext_t context = {};
 
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     will_return( shouldWaterPumpTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
     checkSensorsSubState( &context );
@@ -53,7 +53,7 @@ void givenAlarmOffPumpOn_checkSensorsSubState_remainInitialStateWithOpenValves( 
 {
     WaterscreenContext_t context = {};
 
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     will_return( shouldWaterPumpTrigger, true );
     expect_value( manageWaterPump, state, OnDeviceState );
     checkSensorsSubState( &context );

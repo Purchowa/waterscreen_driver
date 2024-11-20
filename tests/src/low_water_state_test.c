@@ -17,7 +17,7 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
     for ( uint8_t i = 0; i < arbitraryLoopCountInLowWaterState; ++i )
     {
         expect_value( manageWaterPump, state, OffDeviceState );
-        will_return( shouldWaterAlaramTrigger, true );
+        will_return( shouldWaterAlarmTrigger, true );
         performWaterscreenAction( &context );
         assert_ptr_equal( context.waterscreenStateHandler, lowWaterState );
     }
@@ -29,7 +29,7 @@ void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
                                      .previousWaterscreenStateHandler = demoModeState };
 
     expect_value( manageWaterPump, state, OffDeviceState );
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     performWaterscreenAction( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, demoModeState );

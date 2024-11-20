@@ -15,13 +15,13 @@ void givenPumpOn_idleState_turnOffPump( void **state )
     WaterscreenContext_t context = { .waterscreenStateHandler = idleState };
 
     // Assume that pump is on when entering idle.
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     will_return( shouldWaterPumpTrigger, true );
     expect_value( manageWaterPump, state, OnDeviceState );
     performWaterscreenAction( &context );
 
     // When sensors trigger turn off pump
-    will_return( shouldWaterAlaramTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
     will_return( shouldWaterPumpTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
     performWaterscreenAction( &context );
