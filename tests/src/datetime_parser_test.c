@@ -24,7 +24,7 @@ void givenDateHeader_datetimeParser_returnTrue()
 {
     const char *datetimeHeader = "Fri, 01 Jan 2019 23:59:00";
 
-    Datetime_t       datetime;
+    Datetime_t       datetime         = {};
     const Datetime_t expectedDatetime = { .date = { .year = 2019, .month = January, .day = 1, .weekday = Friday },
                                           .time = { .hour = 23, .minute = 59, .second = 0 } };
 

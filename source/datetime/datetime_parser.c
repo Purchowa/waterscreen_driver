@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#define DATE_STRS_LEN       4 // Size includes null-terminantion
+#define DATE_STRS_LEN       4 // includes null
 #define DATETIME_ARGS_COUNT 7
+
+#define DATETIME_STRS_BUFFER_SIZE 8
 
 #define NOT_FOUND_VALUE -1
 
@@ -46,14 +48,14 @@ static int findMatchingStr( const char *srcStr, const char collection[][DATE_STR
 
 bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
 {
-    char weekdayStr[DATE_STRS_LEN] = { 0 };
-    char monthStr[DATE_STRS_LEN]   = { 0 };
+    char weekdayStr[DATETIME_STRS_BUFFER_SIZE] = "";
+    char monthStr[DATETIME_STRS_BUFFER_SIZE]   = "";
 
-    uint8_t   day;
+    uint8_t   day = 0;
     const int assignedArgs =
-        sscanf( datetimeStr, "%3s, %2u %3s %4u %2u:%2u:%2u", weekdayStr, &day, monthStr, &datetime->date.year,
+        sscanf( datetimeStr, "%3s,%2u%3s%4u%2u:%2u:%2u", weekdayStr, &day, monthStr, &datetime->date.year,
                 &datetime->time.hour, &datetime->time.minute, &datetime->time.second );
-    datetime->date.day = day; // scanf is broken...
+    datetime->date.day = day; // sscanf is broken...
 
     if ( assignedArgs != DATETIME_ARGS_COUNT )
         return false;
