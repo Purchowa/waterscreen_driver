@@ -16,6 +16,7 @@ set(EMBEDDED_DIRS
         ${PROJ_DIR}/source/external
         ${PROJ_DIR}/source/datetime
         ${PROJ_DIR}/source/picture_management
+        ${PROJ_DIR}/source/neopixels
 )
 
 SET(TEST_UTILS_SRC
@@ -95,4 +96,8 @@ generate_test("picture_logic_standard_mode_test"
 
 generate_test("waterscreen_status_serializer_test"
         "external_communication/waterscreen_status_serializer.c;external/cjson/cjson.c"
+        "")
+
+generate_test("neopixel_converter_utils_test"
+        "neopixels/converter_utils.c"
         "")
