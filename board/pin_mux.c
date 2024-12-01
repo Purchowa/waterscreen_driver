@@ -19,6 +19,7 @@ pin_labels:
 - {pin_num: '83', pin_signal: PIO0_3/FC3_RXD_SDA_MOSI_DATA/CTIMER0_MAT1/SCT0_OUT1/SCT_GPI3/SECURE_GPIO0_3, label: 'U3[11]/P20[3]/FC3_SPI_MOSI', identifier: VALVE_MOSI}
 - {pin_num: '89', pin_signal: PIO0_6/FC3_SCK/CT_INP13/CTIMER4_MAT0/SCT_GPI6/SECURE_GPIO0_6, label: 'U3[13]/P20[7]/FC3_SPI_SCK', identifier: VALVE_MOSI}
 - {pin_num: '62', pin_signal: PIO1_3/SCT0_OUT4/HS_SPI_MISO/USB0_PORTPWRN/PLU_OUT6, label: 'P17[11]/P23[5]/LSPI_HS_MISO', identifier: VALVE_RELAY}
+- {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: NEOPIXEL_MOSI}
 - {pin_num: '57', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, label: 'P18[4]/SD1_CMD', identifier: PUMP}
 - {pin_num: '82', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, label: 'P18[12]/SD1_D2', identifier: BOTTOM_WATER_SENSOR}
 - {pin_num: '42', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, label: 'P18[8]/PLU_OUT5/GPIO/SD1_D3/FC4_SPI_SSEL2', identifier: UPPER_WATER_SENSOR_2}
@@ -47,6 +48,7 @@ void BOARD_InitBootPins(void)
     BOARD_InitGPIOPins();
     MWM_InitPins();
     BOARD_InitOLEDPins();
+    BOARD_InitNeopixelPins();
 }
 
 /* clang-format off */
@@ -1173,6 +1175,27 @@ void BOARD_InitOLEDPins(void)
                          /* Switch between GPIO mode and I2C mode.
                           * : I2C mode. */
                          | IOCON_PIO_EGP(PIO0_14_EGP_I2C_MODE));
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitNeopixelPins:
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- pin_list: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitNeopixelPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitNeopixelPins(void)
+{
 }
 /***********************************************************************************************************************
  * EOF

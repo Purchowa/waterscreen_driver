@@ -81,11 +81,112 @@ static void NVIC_init(void) {
 } */
 
 /***********************************************************************************************************************
+ * OLED_I2C_FC1 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'OLED_I2C_FC1'
+- type: 'flexcomm_i2c'
+- mode: 'I2C_Polling'
+- custom_name_enabled: 'true'
+- type_id: 'flexcomm_i2c_c8597948f61bd571ab263ea4330b9dd6'
+- functional_group: 'BOARD_InitPeripherals_cm33_core0'
+- peripheral: 'FLEXCOMM1'
+- config_sets:
+  - fsl_i2c:
+    - i2c_mode: 'kI2C_Master'
+    - clockSource: 'FXCOMFunctionClock'
+    - clockSourceFreq: 'BOARD_BootClockPLL150M'
+    - i2c_master_config:
+      - enableMaster: 'true'
+      - baudRate_Bps: '1000000'
+      - enableTimeout: 'false'
+      - timeout_Ms: '35'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const i2c_master_config_t OLED_I2C_FC1_config = {
+  .enableMaster = true,
+  .baudRate_Bps = 1000000UL,
+  .enableTimeout = false,
+  .timeout_Ms = 35U
+};
+
+static void OLED_I2C_FC1_init(void) {
+  /* Initialization function */
+  I2C_MasterInit(OLED_I2C_FC1_PERIPHERAL, &OLED_I2C_FC1_config, OLED_I2C_FC1_CLOCK_SOURCE);
+}
+
+/***********************************************************************************************************************
+ * VALVES_SPI_FC3 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'VALVES_SPI_FC3'
+- type: 'flexcomm_spi'
+- mode: 'SPI_Polling'
+- custom_name_enabled: 'true'
+- type_id: 'flexcomm_spi_b6bbc4b9dd1d40a58bb9821123930d3a'
+- functional_group: 'BOARD_InitPeripherals_cm33_core0'
+- peripheral: 'FLEXCOMM3'
+- config_sets:
+  - fsl_spi:
+    - spi_mode: 'kSPI_Master'
+    - clockSource: 'FXCOMFunctionClock'
+    - clockSourceFreq: 'BOARD_BootClockPLL150M'
+    - spi_master_config:
+      - enableLoopback: 'false'
+      - enableMaster: 'true'
+      - polarity: 'kSPI_ClockPolarityActiveHigh'
+      - phase: 'kSPI_ClockPhaseFirstEdge'
+      - direction: 'kSPI_LsbFirst'
+      - baudRate_Bps: '12000000'
+      - dataWidth: 'kSPI_Data8Bits'
+      - sselNum: 'kSPI_Ssel0'
+      - sselPol_set: ''
+      - txWatermark: 'kSPI_TxFifo0'
+      - rxWatermark: 'kSPI_RxFifo1'
+      - delayConfig:
+        - preDelay: '0'
+        - postDelay: '0'
+        - frameDelay: '0'
+        - transferDelay: '1'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const spi_master_config_t VALVES_SPI_FC3_config = {
+  .enableLoopback = false,
+  .enableMaster = true,
+  .polarity = kSPI_ClockPolarityActiveHigh,
+  .phase = kSPI_ClockPhaseFirstEdge,
+  .direction = kSPI_LsbFirst,
+  .baudRate_Bps = 12000000UL,
+  .dataWidth = kSPI_Data8Bits,
+  .sselNum = kSPI_Ssel0,
+  .sselPol = kSPI_SpolActiveAllLow,
+  .txWatermark = kSPI_TxFifo0,
+  .rxWatermark = kSPI_RxFifo1,
+  .delayConfig = {
+    .preDelay = 0U,
+    .postDelay = 0U,
+    .frameDelay = 0U,
+    .transferDelay = 1U
+  }
+};
+
+static void VALVES_SPI_FC3_init(void) {
+  /* Initialization function */
+  SPI_MasterInit(VALVES_SPI_FC3_PERIPHERAL, &VALVES_SPI_FC3_config, VALVES_SPI_FC3_CLOCK_SOURCE);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals_cm33_core0(void)
 {
   /* Initialize components */
+  OLED_I2C_FC1_init();
+  VALVES_SPI_FC3_init();
 }
 
 /***********************************************************************************************************************

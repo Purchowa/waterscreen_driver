@@ -598,6 +598,12 @@ void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
  */
 void BOARD_InitOLEDPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitNeopixelPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+
 #if defined(__cplusplus)
 }
 #endif

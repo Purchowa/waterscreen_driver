@@ -20,23 +20,16 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_common.h"
+#include "peripherals.h"
 
 
 int main()
 {
-    // Attach clocks to peripherals-
-    CLOCK_AttachClk( VALVES_SPI_CLOCK );
-    CLOCK_AttachClk( OLED_I2C_CLOCK );
-
-    /*reset FLEXCOMM's*/
-    RESET_PeripheralReset( VALVES_SPI_RESET );
-    RESET_PeripheralReset( OLED_I2C_RESET );
-    // --
-
     CLOCK_AttachClk( BOARD_DEBUG_UART_CLK_ATTACH );
     /* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+    BOARD_InitBootPeripherals();
 
 #ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL
     /* Init FSL debug console. */
@@ -45,28 +38,7 @@ int main()
     SystemCoreClockUpdate();
 
     initRTC();
-
-    // --- Peripherals
-    // ---- OLED FC1
-    i2c_master_config_t oledConfig = {};
-    I2C_MasterGetDefaultConfig( &oledConfig );
-    oledConfig.baudRate_Bps = OLED_I2C_BAUD_RATE;
-    oledConfig.enableMaster = true;
-    oledConfig.timeout_Ms   = OLED_I2C_TIMEOUT_MS;
-    I2C_MasterInit( OLED_I2C, &oledConfig, OLED_I2C_SRC_FREQ );
     OLED_Init( OLED_I2C );
-
-    // ---- Valves FC3
-    spi_master_config_t valvesMasterConfig = { 0 };
-    SPI_MasterGetDefaultConfig( &valvesMasterConfig );
-    valvesMasterConfig.sselNum                   = (spi_ssel_t)VALVES_SPI_SSEL;
-    valvesMasterConfig.sselPol                   = (spi_spol_t)VALVES_SPI_SPOL;
-    valvesMasterConfig.delayConfig.transferDelay = 1;
-    valvesMasterConfig.direction                 = kSPI_LsbFirst; // Least significant bit.
-    valvesMasterConfig.baudRate_Bps              = VALVE_SPI_BAUD_RATE;
-    SPI_MasterInit( VALVES_SPI_MASTER, &valvesMasterConfig, VALVES_SPI_MASTER_SRC_FREQ );
-    // !--
-
 
     if ( xTaskCreate( waterscreenActionTask, "WaterScreenActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
                       WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )
@@ -87,7 +59,7 @@ int main()
     vTaskStartScheduler();
     for ( ;; )
     {
-        PRINTF( "Task scheduler hasn't started or was stopped!" );
+        PRINTF( "[RTOS] Task scheduler hasn't started or was stopped!" );
     }
 
     return 0;
