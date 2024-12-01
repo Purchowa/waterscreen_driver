@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-static ResizableCustomPicture_t customPicture = { .capacity = MAX_CUSTOM_PICTURE_LENGTH };
+static ResizableCustomPicture_t customPicture = { .capacity = MAX_CUSTOM_PICTURE_HEIGHT };
 
 static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenConfig_t *second )
 {
@@ -57,7 +57,7 @@ void givenRawValidJson_configParser_fillConfigStructure()
         "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
     ResizableCustomPicture_t expectedCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 4, .data = { 0, 0, 24, 1567 } };
+        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 4, .data = { 0, 0, 24, 1567 } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =
@@ -115,7 +115,7 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
         "-1,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
     ResizableCustomPicture_t expecteCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 0, .data = { 0, 0, 24, 1567 } };
+        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 0, .data = { 0, 0, 24, 1567 } };
 
     WaterscreenConfig_t expectedConfig = { .mode = Mode_Service,
                                            .standardModeConfig =
@@ -138,7 +138,7 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
         "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
         "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
-    expectedConfig.customPicture->size = MAX_CUSTOM_PICTURE_LENGTH;
+    expectedConfig.customPicture->size = MAX_CUSTOM_PICTURE_HEIGHT;
     memset( expectedConfig.customPicture->data, 0,
             expectedConfig.customPicture->size * sizeof( *expectedConfig.customPicture->data ) );
 
@@ -153,7 +153,7 @@ void givenWorkHoursOutsideRange_configParser_returnSuccessAndClamp()
         "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": -1, \"to\": 25}}";
 
     ResizableCustomPicture_t expecteCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 4, .data = { 0, 0, 24, 1567 } };
+        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 4, .data = { 0, 0, 24, 1567 } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =

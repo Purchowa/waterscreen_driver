@@ -101,3 +101,12 @@ generate_test("waterscreen_status_serializer_test"
 generate_test("neopixel_converter_utils_test"
         "neopixels/converter_utils.c"
         "")
+
+generate_test("color_converter_test"
+        "neopixels/color.c"
+        "")
+
+generate_test("neopixel_converter_test"
+        "neopixels/color.c;neopixels/converter_utils.c;neopixels/neopixel_converter.c"
+        "")
+target_compile_definitions("neopixel_converter_test" PRIVATE NEOPIXEL_COUNT=12 PICTURE_WIDTH=6)

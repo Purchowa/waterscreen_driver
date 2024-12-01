@@ -1570,4 +1570,4 @@ HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
                             .size = 2 } }, // Christmas
 };
 
-ResizableCustomPicture_t g_customPicture = { .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 0, .data = { 0 } };
+ResizableCustomPicture_t g_customPicture = { .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 0, .data = { 0 } };

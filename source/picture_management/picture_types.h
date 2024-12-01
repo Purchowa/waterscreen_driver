@@ -21,7 +21,7 @@ typedef struct
 {
     const uint8_t capacity;
     uint8_t       size;
-    pictureRow_t  data[MAX_CUSTOM_PICTURE_LENGTH];
+    pictureRow_t  data[MAX_CUSTOM_PICTURE_HEIGHT];
 } ResizableCustomPicture_t;
 
 /**

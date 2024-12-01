@@ -74,4 +74,4 @@ HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
                                       { .size = MULTIPLE_PICTURES_MOCKED_SIZE_1, .data = s_mockedPicture } } } } };
 
 ResizableCustomPicture_t g_customPicture = {
-    .capacity = MAX_CUSTOM_PICTURE_LENGTH, .size = 5, .data = { 1, 2, 3, 4, 5 } };
+    .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 5, .data = { 1, 2, 3, 4, 5 } };

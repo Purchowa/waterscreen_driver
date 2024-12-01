@@ -51,14 +51,23 @@ bool getDatetimeFromDateHeader( const char *datetimeStr, Datetime_t *datetime )
     char weekdayStr[DATETIME_STRS_BUFFER_SIZE] = "";
     char monthStr[DATETIME_STRS_BUFFER_SIZE]   = "";
 
-    uint8_t   day = 0;
+    uint32_t day;
+    uint32_t year;
+    uint32_t hour;
+    uint32_t minute;
+    uint32_t second;
+
     const int assignedArgs =
-        sscanf( datetimeStr, "%3s,%2u%3s%4u%2u:%2u:%2u", weekdayStr, &day, monthStr, &datetime->date.year,
-                &datetime->time.hour, &datetime->time.minute, &datetime->time.second );
-    datetime->date.day = day; // sscanf is broken...
+        sscanf( datetimeStr, "%3s,%2u%3s%4u%2u:%2u:%2u", weekdayStr, &day, monthStr, &year, &hour, &minute, &second );
 
     if ( assignedArgs != DATETIME_ARGS_COUNT )
         return false;
+
+    datetime->date.day    = (uint8_t)day;
+    datetime->date.year   = (uint16_t)year;
+    datetime->time.hour   = (uint8_t)hour;
+    datetime->time.minute = (uint8_t)minute;
+    datetime->time.second = (uint8_t)second;
 
     const int monthIndex = findMatchingStr( monthStr, monthMap, MONTH_COUNT );
     if ( monthIndex == NOT_FOUND_VALUE )
