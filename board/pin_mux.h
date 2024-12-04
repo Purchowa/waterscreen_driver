@@ -599,6 +599,17 @@ void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitOLEDPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 /*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_26_DIGIMODE_DIGITAL 0x01u
+
+/*! @name PIO0_26 (number 60), P17[13]/P23[6]/LSPI_HS_MOSI
+  @{ */
+#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN 26U                   /*!<@brief PORT pin number */
+#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN_MASK (1U << 26U)      /*!<@brief PORT pin mask */
+                                                                       /* @} */
+
+/*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */

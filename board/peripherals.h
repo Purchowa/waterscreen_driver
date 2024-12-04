@@ -31,12 +31,18 @@ extern "C" {
 #define VALVES_SPI_FC3_PERIPHERAL ((SPI_Type *)FLEXCOMM3)
 /* Definition of the clock source frequency */
 #define VALVES_SPI_FC3_CLOCK_SOURCE 12000000UL
+/* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM8 */
+/* Definition of peripheral ID */
+#define NEOPIXELS_SPI_FC8_PERIPHERAL ((SPI_Type *)FLEXCOMM8)
+/* Definition of the clock source frequency */
+#define NEOPIXELS_SPI_FC8_CLOCK_SOURCE 12000000UL
 
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
 extern const i2c_master_config_t OLED_I2C_FC1_config;
 extern const spi_master_config_t VALVES_SPI_FC3_config;
+extern const spi_master_config_t NEOPIXELS_SPI_FC8_config;
 
 /***********************************************************************************************************************
  * Initialization functions

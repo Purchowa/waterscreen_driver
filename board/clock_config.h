@@ -243,7 +243,7 @@ void BOARD_BootClockPLL100M(void);
 #define BOARD_BOOTCLOCKPLL150M_FXCOM5_CLOCK           0UL            /* Clock consumers of FXCOM5_clock output : FLEXCOMM5 */
 #define BOARD_BOOTCLOCKPLL150M_FXCOM6_CLOCK           0UL            /* Clock consumers of FXCOM6_clock output : FLEXCOMM6 */
 #define BOARD_BOOTCLOCKPLL150M_FXCOM7_CLOCK           0UL            /* Clock consumers of FXCOM7_clock output : FLEXCOMM7 */
-#define BOARD_BOOTCLOCKPLL150M_HSLSPI_CLOCK           0UL            /* Clock consumers of HSLSPI_clock output : FLEXCOMM8 */
+#define BOARD_BOOTCLOCKPLL150M_HSLSPI_CLOCK           12000000UL     /* Clock consumers of HSLSPI_clock output : FLEXCOMM8 */
 #define BOARD_BOOTCLOCKPLL150M_MCLK_CLOCK             0UL            /* Clock consumers of MCLK_clock output : N/A */
 #define BOARD_BOOTCLOCKPLL150M_OSC32KHZ_CLOCK         0UL            /* Clock consumers of OSC32KHZ_clock output : FLEXCOMM0, FLEXCOMM1, FLEXCOMM2, FLEXCOMM3, FLEXCOMM4, FLEXCOMM5, FLEXCOMM6, FLEXCOMM7, FLEXCOMM8, USBHSD, USBHSH, USBPHY */
 #define BOARD_BOOTCLOCKPLL150M_OSTIMER32KHZ_CLOCK     0UL            /* Clock consumers of OSTIMER32KHZ_clock output : OSTIMER */

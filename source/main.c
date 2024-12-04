@@ -3,8 +3,11 @@
 
 #include "rtos_tasks/rtos_tasks.h"
 #include "datetime/rtc_provider.h"
+#include "neopixels/neopixel_defines.h"
 
 #include "external/oled/oled.h"
+#include "external/neopixel/neopixels.h"
+
 
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
@@ -39,6 +42,7 @@ int main()
 
     initRTC();
     OLED_Init( OLED_I2C );
+    Neopixels_Init( NEOPIXELS_SPI_FC8_PERIPHERAL, TEST_NEOPIXEL_COUNT ); // TODO: Temporary neopixel amount for testing
 
     if ( xTaskCreate( waterscreenActionTask, "WaterScreenActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
                       WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )

@@ -18,6 +18,8 @@ pin_labels:
 - {pin_num: '81', pin_signal: PIO0_2/FC3_TXD_SCL_MISO_WS/CT_INP1/SCT0_OUT0/SCT_GPI2/SECURE_GPIO0_2, label: 'U6[11]/P20[5]/FC3_SPI_MISO', identifier: VALVE_MISO}
 - {pin_num: '83', pin_signal: PIO0_3/FC3_RXD_SDA_MOSI_DATA/CTIMER0_MAT1/SCT0_OUT1/SCT_GPI3/SECURE_GPIO0_3, label: 'U3[11]/P20[3]/FC3_SPI_MOSI', identifier: VALVE_MOSI}
 - {pin_num: '89', pin_signal: PIO0_6/FC3_SCK/CT_INP13/CTIMER4_MAT0/SCT_GPI6/SECURE_GPIO0_6, label: 'U3[13]/P20[7]/FC3_SPI_SCK', identifier: VALVE_MOSI}
+- {pin_num: '60', pin_signal: PIO0_26/FC2_RXD_SDA_MOSI_DATA/CLKOUT/CT_INP14/SCT0_OUT5/USB0_IDVALUE/FC0_SCK/HS_SPI_MOSI/SECURE_GPIO0_26, label: 'P17[13]/P23[6]/LSPI_HS_MOSI',
+  identifier: NEOPIXEL_MOSI}
 - {pin_num: '62', pin_signal: PIO1_3/SCT0_OUT4/HS_SPI_MISO/USB0_PORTPWRN/PLU_OUT6, label: 'P17[11]/P23[5]/LSPI_HS_MISO', identifier: VALVE_RELAY}
 - {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: NEOPIXEL_MOSI}
 - {pin_num: '57', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, label: 'P18[4]/SD1_CMD', identifier: PUMP}
@@ -1182,7 +1184,8 @@ void BOARD_InitOLEDPins(void)
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitNeopixelPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
-- pin_list: []
+- pin_list:
+  - {pin_num: '60', peripheral: FLEXCOMM8, signal: HS_SPI_MOSI, pin_signal: PIO0_26/FC2_RXD_SDA_MOSI_DATA/CLKOUT/CT_INP14/SCT0_OUT5/USB0_IDVALUE/FC0_SCK/HS_SPI_MOSI/SECURE_GPIO0_26}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1196,6 +1199,21 @@ BOARD_InitNeopixelPins:
 /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitNeopixelPins(void)
 {
+    /* Enables the clock for the I/O controller.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_Iocon);
+
+    IOCON->PIO[0][26] = ((IOCON->PIO[0][26] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT026 (pin 60) is configured as HS_SPI_MOSI. */
+                         | IOCON_PIO_FUNC(0x09u)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO0_26_DIGIMODE_DIGITAL));
 }
 /***********************************************************************************************************************
  * EOF

@@ -230,6 +230,7 @@ outputs:
 - {id: FXCOM1_clock.outFreq, value: 12 MHz}
 - {id: FXCOM2_clock.outFreq, value: 12 MHz}
 - {id: FXCOM3_clock.outFreq, value: 12 MHz}
+- {id: HSLSPI_clock.outFreq, value: 12 MHz}
 - {id: System_clock.outFreq, value: 150 MHz}
 settings:
 - {id: PLL0_Mode, value: Normal}
@@ -238,6 +239,7 @@ settings:
 - {id: SYSCON.FCCLKSEL1.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.FCCLKSEL2.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.FCCLKSEL3.sel, value: ANACTRL.fro_12m_clk}
+- {id: SYSCON.HSLSPICLKSEL.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.MAINCLKSELB.sel, value: SYSCON.PLL0_BYPASS}
 - {id: SYSCON.PLL0CLKSEL.sel, value: SYSCON.CLK_IN_EN}
 - {id: SYSCON.PLL0M_MULT.scale, value: '150', locked: true}
@@ -310,6 +312,7 @@ void BOARD_BootClockPLL150M(void)
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM1);                 /*!< Switch FLEXCOMM1 to FRO12M */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);                 /*!< Switch FLEXCOMM2 to FRO12M */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM3);                 /*!< Switch FLEXCOMM3 to FRO12M */
+    CLOCK_AttachClk(kFRO12M_to_HSLSPI);                 /*!< Switch HSLSPI to FRO12M */
 
     /*!< Set SystemCoreClock variable. */
     SystemCoreClock = BOARD_BOOTCLOCKPLL150M_CORE_CLOCK;
