@@ -7,7 +7,7 @@
 #include "external_communication/weather_types.h"
 
 
-const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *, const WeatherCondition_t );
+const PictureInfo_t *getOccasionalPicture( const Datetime_t *, const WeatherCondition_t );
 
 
 #endif /* STANDARD_MODE_PICTURE_LOGIC_H_ */

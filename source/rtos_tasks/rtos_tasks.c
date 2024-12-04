@@ -24,7 +24,7 @@
 
 static WaterscreenContext_t s_context = { .waterscreenStateHandler         = standardModeState,
                                           .previousWaterscreenStateHandler = demoModeState,
-                                          .picture                         = NULL,
+                                          .pictureInfo                     = NULL,
                                           .valveOpenCounter                = 0,
                                           .currentStateStatus              = kStatus_Success,
                                           .currentStateDelay               = SECOND_MS };
@@ -83,7 +83,7 @@ static void requestDatetime( Datetime_t *datetime )
     s_httpReturnCode = httpGetDatetime( datetime );
     while ( s_httpReturnCode != Http_Success )
     {
-        LogError( "GET request for datetime failed. Code: %d", s_httpReturnCode );
+        LogError( "GET request for date-time failed. Code: %d", s_httpReturnCode );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
         s_httpReturnCode = httpGetDatetime( datetime );

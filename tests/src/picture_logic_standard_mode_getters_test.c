@@ -35,98 +35,99 @@ void givenTime_getCurrentTimeAsPicture_returnEndLoopAndProvideTimePicture()
         0b1111111111111101111111111111100000000011111111000000000000111110,
         0b0000000000000000000000000000000000000000000000000000000000000000 };
 
-    const PictureDataSpan_t *picture;
+    const PictureInfo_t     *picture;
     const Datetime_t         datetime             = { .time = { .hour = 12, .minute = 4 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getCurrentTimeAsPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, EXPECTED_TIME_PICTURE_SIZE );
-    assert_memory_equal( picture->data, expectedTimePicture, sizeof( pictureRow_t ) * EXPECTED_TIME_PICTURE_SIZE );
+    assert_int_equal( picture->picture.size, EXPECTED_TIME_PICTURE_SIZE );
+    assert_memory_equal( picture->picture.data, expectedTimePicture,
+                         sizeof( pictureRow_t ) * EXPECTED_TIME_PICTURE_SIZE );
 }
 
 void givenLowerRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = January, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getSeasonalPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, MOCKED_WINTER_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, MOCKED_WINTER_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenHigherRangeWinterDate_getSeasonalPicture_returnWinterMockedSize()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = December, .day = 29 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getSeasonalPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, MOCKED_WINTER_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, MOCKED_WINTER_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenDateEqualToSummer_getSeasonalPicture_returnSummerMockedSize()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = June, .day = 21 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getSeasonalPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, MOCKED_SUMMER_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, MOCKED_SUMMER_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenDateInRangeOfAutumn_getSeasonalPicture_returnAutumnMockedSize()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = October, .day = 10 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getSeasonalPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, MOCKED_AUTUMN_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, MOCKED_AUTUMN_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenSingleDateRange_getHolidaysPicture_returnMockedSizeAndEndLoop()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = January, .day = 1 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getHolidaysPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, SINGLE_DAY_RANGE_MOCKED_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, SINGLE_DAY_RANGE_MOCKED_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenNormalDateRange_getHolidaysPicture_returnMockedSizeAndEndLoop()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = February, .day = 25 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     const PictureGetterLoopStatus_t loopStatus = getHolidaysPicture( &picture, &datetime, insignificantWeather );
 
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_int_equal( picture->size, NORMAL_RANGE_MOCKED_SIZE );
-    assert_non_null( picture->data );
+    assert_int_equal( picture->picture.size, MULTIPLE_DAY_RANGE_MOCKED_SIZE );
+    assert_non_null( picture->picture.data );
 }
 
 void givenDateOutsideAnyRange_getHolidaysPicture_returnProperCodeWithoutPicture()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = April, .day = 1 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
@@ -138,31 +139,19 @@ void givenDateOutsideAnyRange_getHolidaysPicture_returnProperCodeWithoutPicture(
 
 void givenDateInRangeWithTwoPictures_getHolidaysPicture_returnMultiplePictures()
 {
-    const PictureDataSpan_t *picture              = NULL;
+    const PictureInfo_t     *picture              = NULL;
     const Datetime_t         datetime             = { .date = { .month = March, .day = 17 } };
     const WeatherCondition_t insignificantWeather = Rain;
 
     PictureGetterLoopStatus_t loopStatus = getHolidaysPicture( &picture, &datetime, insignificantWeather );
     assert_int_equal( loopStatus, PictureGetterLoop );
-    assert_non_null( picture->data );
-    assert_int_equal( picture->size, MULTIPLE_PICTURES_MOCKED_SIZE_0 );
+    assert_non_null( picture->picture.data );
+    assert_int_equal( picture->picture.size, MULTIPLE_PICTURES_MOCKED_SIZE_0 );
 
     loopStatus = getHolidaysPicture( &picture, &datetime, insignificantWeather );
     assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_non_null( picture->data );
-    assert_int_equal( picture->size, MULTIPLE_PICTURES_MOCKED_SIZE_1 );
-}
-
-void givenCustomPicture_getCustomPicture_returnSingleCustomPicture()
-{
-    const PictureDataSpan_t *picture              = NULL;
-    const Datetime_t         datetime             = { .date = { .month = March, .day = 17 } };
-    const WeatherCondition_t insignificantWeather = Rain;
-
-    PictureGetterLoopStatus_t loopStatus = getCustomPicture( &picture, &datetime, insignificantWeather );
-    assert_int_equal( loopStatus, PictureGetterEndLoop );
-    assert_non_null( picture->data );
-    assert_int_equal( picture->size, 5 );
+    assert_non_null( picture->picture.data );
+    assert_int_equal( picture->picture.size, MULTIPLE_PICTURES_MOCKED_SIZE_1 );
 }
 
 int main()
@@ -179,7 +168,6 @@ int main()
         cmocka_unit_test( givenNormalDateRange_getHolidaysPicture_returnMockedSizeAndEndLoop ),
         cmocka_unit_test( givenDateOutsideAnyRange_getHolidaysPicture_returnProperCodeWithoutPicture ),
         cmocka_unit_test( givenDateInRangeWithTwoPictures_getHolidaysPicture_returnMultiplePictures ),
-        cmocka_unit_test( givenCustomPicture_getCustomPicture_returnSingleCustomPicture ),
     };
 
     return cmocka_run_group_tests_name( "Standard mode picture getters logic test ", tests, NULL, NULL );

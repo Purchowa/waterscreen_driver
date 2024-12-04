@@ -6,9 +6,9 @@
 #include <cmocka.h>
 
 
-const PictureDataSpan_t *getEachPicture()
+const PictureInfo_t *getEachPicture()
 {
-    return mock_ptr_type( PictureDataSpan_t * );
+    return mock_ptr_type( PictureInfo_t * );
 }
 
 const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const WeatherCondition_t condition )

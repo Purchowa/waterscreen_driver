@@ -11,24 +11,24 @@
 
 #include "utils/common_state_assert.h"
 
-static const uint64_t pictureSample[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
-                                          0b0100000000000000000000000000000000000000000000000000000000000000,
-                                          0b0010000000000000000000000000000000000000000000000000000000000000,
-                                          0b0001000000000000000000000000000000000000000000000000000000000000 };
+static const pictureRow_t pictureSample[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
+                                              0b0100000000000000000000000000000000000000000000000000000000000000,
+                                              0b0010000000000000000000000000000000000000000000000000000000000000,
+                                              0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureDataSpan_t picture = { .data = pictureSample, .size = 4 };
+static const PictureInfo_t picture = { .picture = { .size = 4, .data = pictureSample } };
 
 static void givenPicture_presentationState_printBottomUp()
 {
     will_return( getEachPicture, &picture );
-    const PictureDataSpan_t *mockedPicture = getEachPicture();
+    const PictureInfo_t *mockedPicture = getEachPicture();
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
-                                     .picture                 = mockedPicture,
-                                     .valveOpenCounter        = mockedPicture->size - 1 };
-    for ( int8_t i = mockedPicture->size - 1; 0 <= i; --i )
+                                     .pictureInfo             = mockedPicture,
+                                     .valveOpenCounter        = mockedPicture->picture.size - 1 };
+    for ( int8_t i = mockedPicture->picture.size - 1; 0 <= i; --i )
     { // Print picture
-        expect_value( sendDataToValves, *data, mockedPicture->data[i] );
+        expect_value( sendDataToValves, *data, mockedPicture->picture.data[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlarmTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );

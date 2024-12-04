@@ -1,6 +1,7 @@
 #include "waterscreen_state_context.h"
 
 #include "gpio/power_control.h"
+#include "neopixels/neopixel_provider.h"
 #include "waterscreen_states.h"
 
 
@@ -12,6 +13,7 @@ void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunc
 
 void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState )
 {
+    dimNeopixels();
     manageValvePower( OffDeviceState );
     closeValvesSubState( context );
     changeWaterscreenState( context, newState );

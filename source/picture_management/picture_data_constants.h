@@ -5,10 +5,13 @@
 #define PICTURE_WIDTH 64 // number bits in a picture
 #endif
 
-#define ALL_PICTURE_COUNT 22
+// Constants describing how many pictures to print.
+#define ALL_PICTURE_COUNT                  24 // Used in demo
+#define STANDARD_MODE_STATIC_PICTURE_COUNT 9
+// ---
 
-#define STANDARD_MODE_STATIC_PICTURE_COUNT 7
-#define STANDARD_MODE_PICTURE_GETTER_COUNT 7
+#define STANDARD_MODE_PICTURE_GETTER_COUNT 6
+
 
 #define MAX_CUSTOM_PICTURE_HEIGHT 128
 

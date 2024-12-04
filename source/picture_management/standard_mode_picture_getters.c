@@ -1,7 +1,7 @@
-#include "picture_data.h"
-
 #include "picture_management/standard_mode_picture_getters.h"
+
 #include "datetime/datetime_utils.h"
+#include "picture_data.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -24,8 +24,8 @@
 
 
 const pictureGetterFun_t g_pictureGetterFunctions[STANDARD_MODE_PICTURE_GETTER_COUNT] = {
-    getCustomPicture,       getWeatherAsPicture, getCurrentTimeAsPicture, getSeasonalPicture,
-    getStandardModePicture, getHolidaysPicture,  getCurrentTimeAsPicture };
+    getWeatherAsPicture,    getCurrentTimeAsPicture, getSeasonalPicture,
+    getStandardModePicture, getHolidaysPicture,      getCurrentTimeAsPicture };
 
 static uint8_t extractOnesFromNumber( const uint8_t number )
 {
@@ -37,9 +37,10 @@ static uint8_t extractTensFromNumber( const uint8_t number )
     return ( number / ONES_EXTRACTOR ) % TENS_EXTRACTOR;
 }
 
-static PictureDataSpan_t s_timePicture = { .size = CHARACTER_TO_PICTURE_ROW_COUNT, .data = NULL };
+static PictureInfo_t s_timePictureInfo = { .picture = { .size = CHARACTER_TO_PICTURE_ROW_COUNT, .data = NULL },
+                                           .colors  = { .main = { 0, 153, 255 }, .secondary = { 0, 255, 47 } } };
 
-PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureInfo_t **const picture, const Datetime_t *datetime,
                                                    const WeatherCondition_t )
 {
     memset( g_timePicture, 0, sizeof( *g_timePicture ) * CHARACTER_TO_PICTURE_ROW_COUNT );
@@ -62,24 +63,24 @@ PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureDataSpan_t **const pic
             (pictureRow_t)g_characterToPictureMap[minuteOnes][i] >> MINUTE_ONES_SHIFT;
     }
 
-    s_timePicture.data = g_timePicture;
+    s_timePictureInfo.picture.data = g_timePicture;
 
-    *picture = &s_timePicture;
+    *picture = &s_timePictureInfo;
 
     return PictureGetterEndLoop;
 }
 
-PictureGetterLoopStatus_t getWeatherAsPicture( PictureDataSpan_t **const picture, const Datetime_t *,
-                                               const WeatherCondition_t  weatherCondition )
+PictureGetterLoopStatus_t getWeatherAsPicture( PictureInfo_t **const    picture, const Datetime_t *,
+                                               const WeatherCondition_t weatherCondition )
 {
     assert( 0 <= weatherCondition && weatherCondition < WEATHER_CONDITION_SIZE );
 
-    *picture = &g_weatherPictures[weatherCondition];
+    *picture = g_weatherPictures[weatherCondition];
 
     return PictureGetterEndLoop;
 }
 
-PictureGetterLoopStatus_t getSeasonalPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getSeasonalPicture( PictureInfo_t **const picture, const Datetime_t *datetime,
                                               const WeatherCondition_t )
 {
     const ShortDate_t currentShortDate = { .day = datetime->date.day, .month = datetime->date.month };
@@ -95,7 +96,7 @@ PictureGetterLoopStatus_t getSeasonalPicture( PictureDataSpan_t **const picture,
     if ( i - 1 < 0 )
         i = SEASONS_COUNT;
 
-    *picture = &g_seasonsInfo[i - 1].pictureSpan;
+    *picture = g_seasonsInfo[i - 1].picture;
 
     return PictureGetterEndLoop;
 }
@@ -130,7 +131,7 @@ static int32_t tryToFindMatchingHoliday( const Datetime_t *datetime )
     return NOT_FOUND;
 }
 
-PictureGetterLoopStatus_t getHolidaysPicture( PictureDataSpan_t **const picture, const Datetime_t *datetime,
+PictureGetterLoopStatus_t getHolidaysPicture( PictureInfo_t **const picture, const Datetime_t *datetime,
                                               const WeatherCondition_t )
 {
     static size_t  s_holidayPictureCounter = 0;
@@ -144,9 +145,9 @@ PictureGetterLoopStatus_t getHolidaysPicture( PictureDataSpan_t **const picture,
             return NoAvailablePicture;
     }
 
-    *picture = &g_holidaysInfo[s_foundHolidayInfoIndex].pictureSpanArray.data[s_holidayPictureCounter++];
+    *picture = g_holidaysInfo[s_foundHolidayInfoIndex].pictures.data[s_holidayPictureCounter++];
 
-    if ( g_holidaysInfo[s_foundHolidayInfoIndex].pictureSpanArray.size <= s_holidayPictureCounter )
+    if ( g_holidaysInfo[s_foundHolidayInfoIndex].pictures.size <= s_holidayPictureCounter )
     {
         s_holidayPictureCounter = 0;
         s_foundHolidayInfoIndex = NOT_FOUND;
@@ -156,25 +157,12 @@ PictureGetterLoopStatus_t getHolidaysPicture( PictureDataSpan_t **const picture,
     return PictureGetterLoop;
 }
 
-PictureGetterLoopStatus_t getCustomPicture( PictureDataSpan_t **const picture, const Datetime_t *,
-                                            const WeatherCondition_t )
-{
-    static PictureDataSpan_t customPic = {};
-
-    customPic.data = g_customPicture.data;
-    customPic.size = g_customPicture.size;
-
-    *picture = &customPic;
-
-    return PictureGetterEndLoop;
-}
-
-PictureGetterLoopStatus_t getStandardModePicture( PictureDataSpan_t **const picture, const Datetime_t *,
+PictureGetterLoopStatus_t getStandardModePicture( PictureInfo_t **const picture, const Datetime_t *,
                                                   const WeatherCondition_t )
 {
     static size_t s_standardPictureIndex = 0;
 
-    *picture = &g_standardModePictures[s_standardPictureIndex++];
+    *picture = g_standardModePictures[s_standardPictureIndex++];
 
     if ( STANDARD_MODE_STATIC_PICTURE_COUNT <= s_standardPictureIndex )
     {
@@ -185,7 +173,7 @@ PictureGetterLoopStatus_t getStandardModePicture( PictureDataSpan_t **const pict
     return PictureGetterLoop;
 }
 
-PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, PictureDataSpan_t **const picture,
+PictureGetterLoopStatus_t callPictureGetterAtIndex( const size_t getterIndex, PictureInfo_t **const picture,
                                                     const Datetime_t        *datetime,
                                                     const WeatherCondition_t weatherCondition )
 {

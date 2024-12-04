@@ -7,12 +7,12 @@
 #include <assert.h>
 
 
-const PictureDataSpan_t *getEachPicture()
+const PictureInfo_t *getEachPicture()
 {
     static size_t s_pictureIndex = 0;
 
-    const PictureDataSpan_t *currentPicture = &g_allPictures[s_pictureIndex];
-    s_pictureIndex                          = cyclicIncrement( s_pictureIndex, ALL_PICTURE_COUNT );
+    const PictureInfo_t *currentPicture = g_allPictures[s_pictureIndex];
+    s_pictureIndex                      = cyclicIncrement( s_pictureIndex, ALL_PICTURE_COUNT );
 
     return currentPicture;
 }

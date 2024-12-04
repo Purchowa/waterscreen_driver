@@ -1,18 +1,21 @@
-#include "picture_management/demo_mode_picture_logic.h"
-#include "picture_management/picture_logic_utils.h"
 #include "waterscreen_states.h"
 #include "waterscreen_state_context.h"
+#include "picture_management/demo_mode_picture_logic.h"
+#include "picture_management/picture_logic_utils.h"
 
 #include "gpio/power_control.h"
 #include "gpio/sensors_control.h"
 
 #include "spi_transfer/spi_transfer.h"
+#include "neopixels/neopixel_provider.h"
+
+#include <string.h>
 
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->picture          = getEachPicture();
-    context->valveOpenCounter = getLastPictureIndex( context->picture );
+    context->pictureInfo      = getEachPicture();
+    context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
 }
@@ -44,13 +47,19 @@ void presentationState( WaterscreenContext_t *context )
 
     if ( context->valveOpenCounter < 0 )
     {
+        dimNeopixels();
         closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
         context->currentStateDelay = BETWEEN_PICTURES_DELAY_MS;
     }
     else
     {
-        const status_t status       = sendDataToValves( &context->picture->data[context->valveOpenCounter--] );
+        const PictureDataSpan_t *picture = &context->pictureInfo->picture;
+        const PictureColors_t   *colors  = &context->pictureInfo->colors;
+
+        lightUpNeopixels( picture->data[context->valveOpenCounter], colors->main, colors->secondary );
+
+        const status_t status       = sendDataToValves( &picture->data[context->valveOpenCounter--] );
         context->currentStateStatus = status;
         context->currentStateDelay  = PRESENTING_DELAY_MS;
     }

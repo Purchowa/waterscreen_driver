@@ -7,6 +7,8 @@
 #define NEOPIXEL_COUNT 128
 #endif
 
+#define TEST_NEOPIXEL_COUNT 12
+
 typedef uint8_t byte_t;
 
 

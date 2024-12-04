@@ -3,10 +3,11 @@
 
 #include "datetime/datetime_types.h"
 #include "picture_data_constants.h"
+#include "neopixels/color.h"
 
 #include <stdint.h>
 
-#define RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY 8
+#define RESIZABLE_PICTURES_CAPACITY 8
 
 typedef uint64_t pictureRow_t;
 typedef uint16_t pictureCharacter_t;
@@ -19,24 +20,29 @@ typedef struct
 
 typedef struct
 {
-    const uint8_t capacity;
-    uint8_t       size;
-    pictureRow_t  data[MAX_CUSTOM_PICTURE_HEIGHT];
-} ResizableCustomPicture_t;
+    ColorRGB_t main;
+    ColorRGB_t secondary;
+} PictureColors_t;
+
+typedef struct
+{
+    PictureDataSpan_t picture;
+    PictureColors_t   colors;
+} PictureInfo_t;
 
 /**
- * @brief Array of `PictureSpan` type that its size can vary from 0 to `RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY`
+ * @brief Resizable container that its size can vary, but has constant capacity
  */
 typedef struct
 {
-    const uint8_t     size;
-    PictureDataSpan_t data[RESIZABLE_PICTURE_VIEW_ARRAY_CAPACITY];
-} ResizablePictureSpanArray_t;
+    const uint8_t  size;
+    PictureInfo_t *data[RESIZABLE_PICTURES_CAPACITY];
+} ResizablePictureInfoArray_t;
 
 typedef struct
 {
     const ShortDate_t seasonDateStart;
-    PictureDataSpan_t pictureSpan;
+    PictureInfo_t    *picture;
 } SeasonalPicture_t;
 
 typedef struct
@@ -48,7 +54,7 @@ typedef struct
 typedef struct
 {
     const HolidaysRange_t       range;
-    ResizablePictureSpanArray_t pictureSpanArray;
+    ResizablePictureInfoArray_t pictures;
 } HolidaysPictureArray_t;
 
 #endif /* PICTURE_TYPES_H_ */

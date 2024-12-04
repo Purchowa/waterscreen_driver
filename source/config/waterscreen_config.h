@@ -33,9 +33,9 @@ typedef struct
 
 typedef struct
 {
-    WaterscreenMode_t               mode;
-    StandardModeConfig_t            standardModeConfig;
-    ResizableCustomPicture_t *const customPicture;
+    WaterscreenMode_t    mode;
+    StandardModeConfig_t standardModeConfig;
+    PictureInfo_t *const customPicture;
 } WaterscreenConfig_t;
 
 extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];

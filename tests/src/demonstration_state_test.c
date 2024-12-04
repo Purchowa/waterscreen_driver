@@ -11,12 +11,12 @@
 
 #include "utils/common_state_assert.h"
 
-static const uint64_t pictureSample[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
-                                          0b0100000000000000000000000000000000000000000000000000000000000000,
-                                          0b0010000000000000000000000000000000000000000000000000000000000000,
-                                          0b0001000000000000000000000000000000000000000000000000000000000000 };
+static const pictureRow_t pictureSample[] = { 0b1000000000000000000000000000000000000000000000000000000000000000,
+                                              0b0100000000000000000000000000000000000000000000000000000000000000,
+                                              0b0010000000000000000000000000000000000000000000000000000000000000,
+                                              0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureDataSpan_t picture = { .data = pictureSample, .size = 4 };
+static const PictureInfo_t picture = { .picture = { .size = 4, .data = pictureSample } };
 
 static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
 {
@@ -25,7 +25,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
     static const uint8_t mockedInfiniteLoopCount = 32;
 
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
-                                     .picture                 = NULL,
+                                     .pictureInfo             = NULL,
                                      .valveOpenCounter        = 0,
                                      .currentStateStatus      = SuccessSPI };
 
@@ -36,7 +36,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
         will_return( getEachPicture, &picture );
         performWaterscreenAction( &context );
 
-        assert_ptr_equal( context.picture, &picture );
+        assert_ptr_equal( context.pictureInfo, &picture );
         assert_int_equal( context.valveOpenCounter, lastIndexFromPicture );
 
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
@@ -49,7 +49,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );
             performWaterscreenAction( &context );
-            assert_ptr_equal( context.picture, &picture );
+            assert_ptr_equal( context.pictureInfo, &picture );
         }
         assert_int_equal( context.valveOpenCounter, endOfDemoCounterValue );
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );

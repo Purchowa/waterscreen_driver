@@ -7,11 +7,11 @@
 #include <assert.h>
 
 
-const PictureDataSpan_t *getOccasionalPicture( const Datetime_t *datetime, const WeatherCondition_t weatherCondition )
+const PictureInfo_t *getOccasionalPicture( const Datetime_t *datetime, const WeatherCondition_t weatherCondition )
 {
     static size_t s_callCounter = 0;
 
-    PictureDataSpan_t        *picture = NULL;
+    PictureInfo_t            *picture = NULL;
     PictureGetterLoopStatus_t getterStatus =
         callPictureGetterAtIndex( s_callCounter, &picture, datetime, weatherCondition );
 

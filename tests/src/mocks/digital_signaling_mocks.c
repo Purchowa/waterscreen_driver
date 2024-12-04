@@ -1,7 +1,8 @@
 #include "power_control.h"
 #include "spi_transfer.h"
 #include "sensors_control.h"
-#include "spi_transfer.h"
+#include "picture_types.h"
+#include "color.h"
 
 #include <setjmp.h>
 #include <cmocka.h>
@@ -26,7 +27,12 @@ bool shouldWaterPumpTrigger()
 {
     return mock_type( bool );
 }
+
 bool shouldWaterAlarmTrigger()
 {
     return mock_type( bool );
 }
+
+void dimNeopixels() {}
+
+void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor ) {}

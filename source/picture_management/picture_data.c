@@ -57,6 +57,9 @@ static pictureRow_t s_pictPumpkin[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_pumpkinInfo = { .picture = CREATE_PICTURE_SPAN( s_pictPumpkin ),
+                                       .colors  = { .main = { 255, 222, 89 }, .secondary = { 0, 214, 255 } } };
+
 
 static pictureRow_t s_pictKI[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -216,6 +219,9 @@ static pictureRow_t s_pictKI[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_kiInfo = { .picture = CREATE_PICTURE_SPAN( s_pictKI ),
+                                  .colors  = { .main = { 255, 255, 255 }, .secondary = { 0, 0, 255 } } };
+
 static pictureRow_t s_zig[] = {
     0b0000000000000000000000000001111111111000000000000000000000000000,
     0b0000000000000000000000001111111111111111000000000000000000000000,
@@ -286,6 +292,9 @@ static pictureRow_t s_zig[] = {
     0b0000000000000000000000001111111111111111000000000000000000000000,
     0b0000000000000000000000000001111111111000000000000000000000000000,
 };
+
+static PictureInfo_t s_zigInfo = { .picture = CREATE_PICTURE_SPAN( s_zig ),
+                                   .colors  = { .main = { 255, 167, 0 }, .secondary = { 201, 255, 0 } } };
 
 static pictureRow_t s_chessboard_1[] = {
     0b1111111111111111000000000000000011111111111111110000000000000000,
@@ -371,6 +380,9 @@ static pictureRow_t s_chessboard_1[] = {
     0b0000000000000000111111111111111100000000000000001111111111111111,
 };
 
+static PictureInfo_t s_chessboard1Info = { .picture = CREATE_PICTURE_SPAN( s_chessboard_1 ),
+                                           .colors  = { .main = { 255, 0, 0 }, .secondary = { 146, 0, 255 } } };
+
 static pictureRow_t s_chessboard_2[] = {
     0b0000000000000000000000000000000000000000000000000000000000110100,
     0b1111111100000000111111110000000011111111000000001111111100000000,
@@ -426,6 +438,9 @@ static pictureRow_t s_chessboard_2[] = {
     0b0000000011111111000000001111111100000000111111110000000011111111,
     0b0000000011111111000000001111111100000000111111110000000011111111,
 };
+
+static PictureInfo_t s_chessboard2Info = { .picture = CREATE_PICTURE_SPAN( s_chessboard_2 ),
+                                           .colors  = { .main = { 255, 255, 0 }, .secondary = { 146, 0, 255 } } };
 
 static pictureRow_t s_binaryShift_1[] = {
     0b1111111100000000111111110000000011111111000000001111111100000000,
@@ -492,7 +507,44 @@ static pictureRow_t s_binaryShift_1[] = {
     0b1111100000000111111110000000011111111000000001111111100000000111,
     0b1111110000000011111111000000001111111100000000111111110000000011,
     0b1111111000000001111111100000000111111110000000011111111000000001,
+    0b1111111000000001111111100000000111111110000000011111111000000001,
+    0b1111111100000000111111110000000011111111000000001111111100000000,
+    0b0111111110000000011111111000000001111111100000000111111110000000,
+    0b0011111111000000001111111100000000111111110000000011111111000000,
+    0b0001111111100000000111111110000000011111111000000001111111100000,
+    0b0000111111110000000011111111000000001111111100000000111111110000,
+    0b0000011111111000000001111111100000000111111110000000011111111000,
+    0b0000001111111100000000111111110000000011111111000000001111111100,
+    0b0000000111111110000000011111111000000001111111100000000111111110,
+    0b0000000011111111000000001111111100000000111111110000000011111111,
+    0b1000000001111111100000000111111110000000011111111000000001111111,
+    0b1100000000111111110000000011111111000000001111111100000000111111,
+    0b1110000000011111111000000001111111100000000111111110000000011111,
+    0b1111000000001111111100000000111111110000000011111111000000001111,
+    0b1111100000000111111110000000011111111000000001111111100000000111,
+    0b1111110000000011111111000000001111111100000000111111110000000011,
+    0b1111111000000001111111100000000111111110000000011111111000000001,
+    0b1111111000000001111111100000000111111110000000011111111000000001,
+    0b1111111100000000111111110000000011111111000000001111111100000000,
+    0b0111111110000000011111111000000001111111100000000111111110000000,
+    0b0011111111000000001111111100000000111111110000000011111111000000,
+    0b0001111111100000000111111110000000011111111000000001111111100000,
+    0b0000111111110000000011111111000000001111111100000000111111110000,
+    0b0000011111111000000001111111100000000111111110000000011111111000,
+    0b0000001111111100000000111111110000000011111111000000001111111100,
+    0b0000000111111110000000011111111000000001111111100000000111111110,
+    0b0000000011111111000000001111111100000000111111110000000011111111,
+    0b1000000001111111100000000111111110000000011111111000000001111111,
+    0b1100000000111111110000000011111111000000001111111100000000111111,
+    0b1110000000011111111000000001111111100000000111111110000000011111,
+    0b1111000000001111111100000000111111110000000011111111000000001111,
+    0b1111100000000111111110000000011111111000000001111111100000000111,
+    0b1111110000000011111111000000001111111100000000111111110000000011,
+    0b1111111000000001111111100000000111111110000000011111111000000001,
 };
+
+static PictureInfo_t s_binaryShift1Info = { .picture = CREATE_PICTURE_SPAN( s_binaryShift_1 ),
+                                            .colors  = { .main = { 0, 237, 255 }, .secondary = { 90, 255, 0 } } };
 
 static pictureRow_t s_binaryShift_2[] = {
     0b0111111100000000111111110000000011111111000000001111111100000000,
@@ -625,6 +677,9 @@ static pictureRow_t s_binaryShift_2[] = {
     0b0111111100000000111111110000000011111111000000001111111100000000,
 };
 
+static PictureInfo_t s_binaryShift2Info = { .picture = CREATE_PICTURE_SPAN( s_binaryShift_2 ),
+                                            .colors  = { .main = { 255, 0, 192 }, .secondary = { 90, 255, 0 } } };
+
 static pictureRow_t s_eagle[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -692,6 +747,8 @@ static pictureRow_t s_eagle[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_eagleInfo = { .picture = CREATE_PICTURE_SPAN( s_eagle ),
+                                     .colors  = { .main = { 255, 0, 0 }, .secondary = { 255, 255, 255 } } };
 
 static pictureRow_t s_poland[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -760,6 +817,9 @@ static pictureRow_t s_poland[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_polandInfo = { .picture = CREATE_PICTURE_SPAN( s_poland ),
+                                      .colors  = { .main = { 255, 0, 0 }, .secondary = { 255, 255, 255 } } };
+
 static pictureRow_t s_heart[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -826,6 +886,9 @@ static pictureRow_t s_heart[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
+
+static PictureInfo_t s_heartInfo = { .picture = CREATE_PICTURE_SPAN( s_heart ),
+                                     .colors  = { .main = { 255, 0, 255 }, .secondary = { 255, 255, 255 } } };
 
 static pictureRow_t s_rose[] = {
     0b0000000000000000000000000000001110000000000000000000000000000000,
@@ -894,6 +957,9 @@ static pictureRow_t s_rose[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_roseInfo = { .picture = CREATE_PICTURE_SPAN( s_rose ),
+                                    .colors  = { .main = { 163, 255, 0 }, .secondary = { 255, 68, 0 } } };
+
 static pictureRow_t s_easterEgg[] = {
     0b0000000000000000000000000000110000110000000000000000000000000000,
     0b0000000000000000000000000011110000111100000000000000000000000000,
@@ -960,6 +1026,9 @@ static pictureRow_t s_easterEgg[] = {
     0b0000000000000000000000011111111111111111100000000000000000000000,
     0b0000000000000000000000000001111111111000000000000000000000000000,
 };
+
+static PictureInfo_t s_easterInfo = { .picture = CREATE_PICTURE_SPAN( s_easterEgg ),
+                                      .colors  = { .main = { 255, 0, 219 }, .secondary = { 146, 0, 255 } } };
 
 static pictureRow_t s_rabbit[] = {
     0b0000000000000000000000000000000001111111000000000000000000000000,
@@ -1028,6 +1097,9 @@ static pictureRow_t s_rabbit[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_rabbitInfo = { .picture = CREATE_PICTURE_SPAN( s_rabbit ),
+                                      .colors  = { .main = { 150, 75, 0 }, .secondary = { 118, 166, 0 } } };
+
 static pictureRow_t s_gift[] = {
     0b0000000000000000001111110000000000000000111111000000000000000000,
     0b0000000000000000011111111100000000000011111111100000000000000000,
@@ -1094,6 +1166,9 @@ static pictureRow_t s_gift[] = {
     0b0000000111111111111111111111110000111111111111111111111110000000,
     0b0000000111111111111111111111110000111111111111111111111110000000,
 };
+
+static PictureInfo_t s_giftInfo = { .picture = CREATE_PICTURE_SPAN( s_gift ),
+                                    .colors  = { .main = { 255, 0, 0 }, .secondary = { 255, 215, 0 } } };
 
 static pictureRow_t s_christmasTree[] = {
     0b0000000000000000000000000000001110000000000000000000000000000000,
@@ -1162,6 +1237,9 @@ static pictureRow_t s_christmasTree[] = {
     0b0000000000000000000000000111111111111110000000000000000000000000,
 };
 
+static PictureInfo_t s_christmasTreeInfo = { .picture = CREATE_PICTURE_SPAN( s_christmasTree ),
+                                             .colors  = { .main = { 255, 0, 0 }, .secondary = { 0, 255, 0 } } };
+
 static pictureRow_t s_candle[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
@@ -1228,6 +1306,9 @@ static pictureRow_t s_candle[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
+
+static PictureInfo_t s_candleInfo = { .picture = CREATE_PICTURE_SPAN( s_candle ),
+                                      .colors  = { .main = { 212, 159, 37 }, .secondary = { 103, 0, 171 } } };
 
 static pictureRow_t s_mourning[] = {
     0b0000000000000000000000000000011111111110000000000000000000000000,
@@ -1296,6 +1377,9 @@ static pictureRow_t s_mourning[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_mourningInfo = { .picture = CREATE_PICTURE_SPAN( s_mourning ),
+                                        .colors  = { .main = { 212, 37, 37 }, .secondary = { 255, 255, 255 } } };
+
 static pictureRow_t s_sun[] = {
     0b0000000000000000000000000000001111000000000000000000000000000000,
     0b0000000000000000000000000000011111100000000000000000000000000000,
@@ -1341,6 +1425,9 @@ static pictureRow_t s_sun[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_sunInfo = { .picture = CREATE_PICTURE_SPAN( s_sun ),
+                                   .colors  = { .main = { 255, 255, 0 }, .secondary = { 255, 255, 255 } } };
+
 static pictureRow_t s_rain[] = {
     0b0000000000000000001111111111100000000000000000000000000000000000,
     0b0000000000000111111111111111111111111111111111000000000000000000,
@@ -1368,6 +1455,9 @@ static pictureRow_t s_rain[] = {
     0b0000000000000001111100000000001111110000000000000000000000000000,
 };
 
+static PictureInfo_t s_rainInfo = { .picture = CREATE_PICTURE_SPAN( s_rain ),
+                                    .colors  = { .main = { 0, 245, 255 }, .secondary = { 255, 255, 255 } } };
+
 static pictureRow_t s_clouds[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
     0b0000000000000000111111111000000000000000000000000000000000000000,
@@ -1386,6 +1476,9 @@ static pictureRow_t s_clouds[] = {
     0b0000000000000000001111111111111111111111111111111111111111100000,
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
+
+static PictureInfo_t s_cloudsInfo = { .picture = CREATE_PICTURE_SPAN( s_clouds ),
+                                      .colors  = { .main = { 200, 200, 200 }, .secondary = { 0, 0, 255 } } };
 
 static pictureRow_t s_leaf[] = {
     0b0000000000000000000000000000000110000000000000000000000000000000,
@@ -1434,6 +1527,9 @@ static pictureRow_t s_leaf[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_leafInfo = { .picture = CREATE_PICTURE_SPAN( s_leaf ),
+                                    .colors  = { .main = { 150, 75, 0 }, .secondary = { 255, 215, 0 } } };
+
 static pictureRow_t s_snowflake[] = {
     0b0000000000000000000000000000000110000000000000000000000000000000,
     0b0000000000000000000000000000011111100000000000000000000000000000,
@@ -1474,32 +1570,31 @@ static pictureRow_t s_snowflake[] = {
     0b0000000000000000000000000000000000000000000000000000000000000000,
 };
 
+static PictureInfo_t s_snowflakeInfo = { .picture = CREATE_PICTURE_SPAN( s_snowflake ),
+                                         .colors  = { .main = { 0, 210, 255 }, .secondary = { 0, 0, 255 } } };
 
-const PictureDataSpan_t g_allPictures[ALL_PICTURE_COUNT] = {
-    CREATE_PICTURE_SPAN( s_pictPumpkin ),   CREATE_PICTURE_SPAN( s_pictKI ),
-    CREATE_PICTURE_SPAN( s_zig ),           CREATE_PICTURE_SPAN( s_chessboard_1 ),
-    CREATE_PICTURE_SPAN( s_chessboard_2 ),  CREATE_PICTURE_SPAN( s_binaryShift_1 ),
-    CREATE_PICTURE_SPAN( s_binaryShift_2 ), CREATE_PICTURE_SPAN( s_eagle ),
-    CREATE_PICTURE_SPAN( s_poland ),        CREATE_PICTURE_SPAN( s_heart ),
-    CREATE_PICTURE_SPAN( s_rose ),          CREATE_PICTURE_SPAN( s_easterEgg ),
-    CREATE_PICTURE_SPAN( s_rabbit ),        CREATE_PICTURE_SPAN( s_gift ),
-    CREATE_PICTURE_SPAN( s_christmasTree ), CREATE_PICTURE_SPAN( s_candle ),
-    CREATE_PICTURE_SPAN( s_mourning ),      CREATE_PICTURE_SPAN( s_sun ),
-    CREATE_PICTURE_SPAN( s_rain ),          CREATE_PICTURE_SPAN( s_clouds ),
-    CREATE_PICTURE_SPAN( s_leaf ),          CREATE_PICTURE_SPAN( s_snowflake ) };
 
-PictureDataSpan_t g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {
-    CREATE_PICTURE_SPAN( s_pictKI ),        CREATE_PICTURE_SPAN( s_pictPumpkin ),
-    CREATE_PICTURE_SPAN( s_zig ),           CREATE_PICTURE_SPAN( s_chessboard_1 ),
-    CREATE_PICTURE_SPAN( s_chessboard_2 ),  CREATE_PICTURE_SPAN( s_binaryShift_1 ),
-    CREATE_PICTURE_SPAN( s_binaryShift_2 ),
-};
+static pictureRow_t s_customPictureBuffer[MAX_CUSTOM_PICTURE_HEIGHT] = {};
 
-PictureDataSpan_t g_weatherPictures[WEATHER_CONDITION_SIZE] = { CREATE_PICTURE_SPAN( s_rain ),      // Rain
-                                                                CREATE_PICTURE_SPAN( s_snowflake ), // Snow
-                                                                CREATE_PICTURE_SPAN( s_clouds ),    // Mist
-                                                                CREATE_PICTURE_SPAN( s_sun ),       // Clear
-                                                                CREATE_PICTURE_SPAN( s_clouds ) };  // Clouds
+PictureInfo_t g_customPicture = { .picture = { .size = 0, .data = s_customPictureBuffer },
+                                  .colors  = { .main = { 0, 0, 0 }, .secondary = { 0, 0, 0 } } };
+
+const PictureInfo_t *g_allPictures[ALL_PICTURE_COUNT] = {
+    &g_customPicture,     &s_pumpkinInfo,      &s_kiInfo,           &s_zigInfo,      &s_chessboard1Info,
+    &s_chessboard2Info,   &s_binaryShift1Info, &s_binaryShift2Info, &s_eagleInfo,    &s_polandInfo,
+    &s_heartInfo,         &s_roseInfo,         &s_easterInfo,       &s_rabbitInfo,   &s_giftInfo,
+    &s_christmasTreeInfo, &s_candleInfo,       &s_mourningInfo,     &s_sunInfo,      &s_rainInfo,
+    &s_cloudsInfo,        &s_leafInfo,         &s_snowflakeInfo,    &g_customPicture };
+
+PictureInfo_t *g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {
+    &g_customPicture,   &s_kiInfo,           &s_pumpkinInfo,      &s_zigInfo,      &s_chessboard1Info,
+    &s_chessboard2Info, &s_binaryShift1Info, &s_binaryShift2Info, &g_customPicture };
+
+PictureInfo_t *g_weatherPictures[WEATHER_CONDITION_SIZE] = { &s_rainInfo,      // Rain
+                                                             &s_snowflakeInfo, // Snow
+                                                             &s_cloudsInfo,    // Mist
+                                                             &s_sunInfo,       // Clear
+                                                             &s_cloudsInfo };  // Clouds
 
 
 const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
@@ -1539,35 +1634,28 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
 pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = { 0 };
 
 SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
-    { .seasonDateStart = { .day = 20, .month = March }, .pictureSpan = CREATE_PICTURE_SPAN( s_rose ) },        // Spring
-    { .seasonDateStart = { .day = 21, .month = June }, .pictureSpan = CREATE_PICTURE_SPAN( s_sun ) },          // Summer
-    { .seasonDateStart = { .day = 22, .month = September }, .pictureSpan = CREATE_PICTURE_SPAN( s_leaf ) },    // Autumn
-    { .seasonDateStart = { .day = 21, .month = December }, .pictureSpan = CREATE_PICTURE_SPAN( s_snowflake ) } // Winter
+    { .seasonDateStart = { .day = 20, .month = March }, .picture = &s_roseInfo },        // Spring
+    { .seasonDateStart = { .day = 21, .month = June }, .picture = &s_sunInfo },          // Summer
+    { .seasonDateStart = { .day = 22, .month = September }, .picture = &s_leafInfo },    // Autumn
+    { .seasonDateStart = { .day = 21, .month = December }, .picture = &s_snowflakeInfo } // Winter
 };
 
 HolidaysPictureArray_t g_holidaysInfo[HOLIDAYS_COUNT] = {
-    { .range            = { .from = { .day = 14, .month = February }, .to = { .day = 14, .month = February } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_rose ), CREATE_PICTURE_SPAN( s_heart ) },
-                            .size = 2 } }, // Valentines day
+    { .range    = { .from = { .day = 14, .month = February }, .to = { .day = 14, .month = February } },
+      .pictures = { .data = { &s_roseInfo, &s_heartInfo }, .size = 2 } },         // Valentines day
 
-    { .range            = { .from = { .day = 22, .month = March }, .to = { .day = 25, .month = April } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_easterEgg ), CREATE_PICTURE_SPAN( s_rabbit ) },
-                            .size = 2 } }, // Easter
+    { .range    = { .from = { .day = 22, .month = March }, .to = { .day = 25, .month = April } },
+      .pictures = { .data = { &s_easterInfo, &s_rabbitInfo }, .size = 2 } },      // Easter
 
-    { .range            = { .from = { .day = 3, .month = May }, .to = { .day = 7, .month = May } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_poland ), CREATE_PICTURE_SPAN( s_mourning ) },
-                            .size = 2 } },                                              // Feast of the Constitution
+    { .range    = { .from = { .day = 3, .month = May }, .to = { .day = 7, .month = May } },
+      .pictures = { .data = { &s_polandInfo, &s_mourningInfo }, .size = 2 } },    // Feast of the Constitution
 
-    { .range            = { .from = { .day = 1, .month = November }, .to = { .day = 3, .month = November } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_candle ) }, .size = 1 } }, // All Saint's Day
+    { .range    = { .from = { .day = 1, .month = November }, .to = { .day = 3, .month = November } },
+      .pictures = { .data = { &s_candleInfo }, .size = 1 } },                     // All Saint's Day
 
-    { .range            = { .from = { .day = 11, .month = November }, .to = { .day = 15, .month = November } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_poland ), CREATE_PICTURE_SPAN( s_eagle ) },
-                            .size = 2 } }, // Independence Day
+    { .range    = { .from = { .day = 11, .month = November }, .to = { .day = 15, .month = November } },
+      .pictures = { .data = { &s_polandInfo, &s_eagleInfo }, .size = 2 } },       // Independence Day
 
-    { .range            = { .from = { .day = 5, .month = December }, .to = { .day = 29, .month = December } },
-      .pictureSpanArray = { .data = { CREATE_PICTURE_SPAN( s_christmasTree ), CREATE_PICTURE_SPAN( s_gift ) },
-                            .size = 2 } }, // Christmas
+    { .range    = { .from = { .day = 5, .month = December }, .to = { .day = 29, .month = December } },
+      .pictures = { .data = { &s_christmasTreeInfo, &s_giftInfo }, .size = 2 } }, // Christmas
 };
-
-ResizableCustomPicture_t g_customPicture = { .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 0, .data = { 0 } };

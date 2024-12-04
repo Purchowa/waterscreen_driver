@@ -7,7 +7,8 @@
 
 #include <string.h>
 
-static ResizableCustomPicture_t customPicture = { .capacity = MAX_CUSTOM_PICTURE_HEIGHT };
+static pictureRow_t  customPictureBuffer[MAX_CUSTOM_PICTURE_HEIGHT];
+static PictureInfo_t customPicture = { .picture = { .data = customPictureBuffer } };
 
 static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenConfig_t *second )
 {
@@ -20,10 +21,10 @@ static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenC
     areEqual &= first->standardModeConfig.workRange.from == second->standardModeConfig.workRange.from;
     areEqual &= first->standardModeConfig.workRange.to == second->standardModeConfig.workRange.to;
 
-    areEqual &= first->customPicture->size == second->customPicture->size;
+    areEqual &= first->customPicture->picture.size == second->customPicture->picture.size;
     if ( areEqual )
-        areEqual &= !memcmp( first->customPicture, second->customPicture,
-                             first->customPicture->size * sizeof( *first->customPicture->data ) );
+        areEqual &= !memcmp( first->customPicture->picture.data, second->customPicture->picture.data,
+                             first->customPicture->picture.size * sizeof( *first->customPicture->picture.data ) );
 
     return areEqual;
 }
@@ -56,8 +57,8 @@ void givenRawValidJson_configParser_fillConfigStructure()
         "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
-    ResizableCustomPicture_t expectedCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 4, .data = { 0, 0, 24, 1567 } };
+    pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =
@@ -114,8 +115,8 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
         "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "-1,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
-    ResizableCustomPicture_t expecteCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 0, .data = { 0, 0, 24, 1567 } };
+    pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 0, .data = expectedPictureData } };
 
     WaterscreenConfig_t expectedConfig = { .mode = Mode_Service,
                                            .standardModeConfig =
@@ -125,7 +126,7 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
                                                    .idleTimeInStandardMode  = 5,
                                                    .workRange               = { .from = 5, .to = 11 },
                                                },
-                                           .customPicture = &expecteCustomPicture };
+                                           .customPicture = &expectedCustomPicture };
 
     assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_lower, &configLower, isInitialRequest ), Http_Success );
     assert_true( compareConfigs( &expectedConfig, &configLower ) );
@@ -138,9 +139,9 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
         "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
         "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
 
-    expectedConfig.customPicture->size = MAX_CUSTOM_PICTURE_HEIGHT;
-    memset( expectedConfig.customPicture->data, 0,
-            expectedConfig.customPicture->size * sizeof( *expectedConfig.customPicture->data ) );
+    expectedConfig.customPicture->picture.size = MAX_CUSTOM_PICTURE_HEIGHT;
+    memset( expectedConfig.customPicture->picture.data, 0,
+            expectedConfig.customPicture->picture.size * sizeof( *expectedConfig.customPicture->picture.data ) );
 
     assert_int_equal( fromJsonToWaterscreenCfg( invlaidSize_higher, &configHigher, isInitialRequest ), Http_Success );
     assert_true( compareConfigs( &expectedConfig, &configHigher ) );
@@ -152,8 +153,8 @@ void givenWorkHoursOutsideRange_configParser_returnSuccessAndClamp()
         "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
         "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": -1, \"to\": 25}}";
 
-    ResizableCustomPicture_t expecteCustomPicture = {
-        .capacity = MAX_CUSTOM_PICTURE_HEIGHT, .size = 4, .data = { 0, 0, 24, 1567 } };
+    pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =
@@ -163,7 +164,7 @@ void givenWorkHoursOutsideRange_configParser_returnSuccessAndClamp()
                                                            .idleTimeInStandardMode  = 5,
                                                            .workRange               = { .from = 0, .to = 24 },
                                                      },
-                                                   .customPicture = &expecteCustomPicture };
+                                                   .customPicture = &expectedCustomPicture };
     const bool                isInitialRequest = false;
 
     WaterscreenConfig_t config = { .customPicture = &customPicture };
@@ -185,8 +186,8 @@ void givenInvlaidWorkRange_configParser_returnParsingError()
 
 static int setupCustomPicture()
 {
-    customPicture.size = 0;
-    memset( customPicture.data, 0, customPicture.capacity * sizeof( *customPicture.data ) );
+    customPicture.picture.size = 0;
+    memset( customPicture.picture.data, 0, MAX_CUSTOM_PICTURE_HEIGHT * sizeof( *customPicture.picture.data ) );
 
     return 0;
 }
