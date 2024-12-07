@@ -57,22 +57,29 @@ void givenReadConfig_configParser_returnNoUpdate()
 void givenReadConfigAndInitialRequest_configParser_ignoreWasReadFlagAndParse()
 {
     WaterscreenConfig_t cfg = { .customPicture = &customPicture };
-    const char         *sampleJson =
-        "{\"wasRead\":true,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
-        "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
-    const bool isInitialRequest = true;
+    const char *sampleJson  = "{\"wasRead\":true,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
+                              "\"picture\":{\"size\":4,\"data\":[0,0,24,1567],"
+                              " \"colors\": { "
+                              "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
+                              "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } } },"
+                              "\"workRange\":{\"from\": 5, \"to\": 11}}";
+    const bool  isInitialRequest = true;
 
     assert_int_equal( fromJsonToWaterscreenCfg( sampleJson, &cfg, isInitialRequest ), Http_Success );
 }
 
 void givenRawValidJson_configParser_fillConfigStructure()
 {
-    const char *sampleJson =
-        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
-        "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
+    const char *sampleJson = "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
+                             "\"picture\":{\"size\":4,\"data\":[0,0,24,1567],"
+                             " \"colors\": { "
+                             "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
+                             "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } } },"
+                             "\"workRange\":{\"from\": 5, \"to\": 11}}";
 
     pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
-    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData } };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData },
+                                            .colors  = { .main = { 0, 100, 200 }, .secondary = { 200, 100, 0 } } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =
@@ -126,11 +133,16 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
     const bool          isInitialRequest = false;
 
     const char *invlaidSize_lower =
-        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
-        "-1,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
+        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
+        "\"picture\":{\"size\":-1,\"data\":[0,0,24,1567],"
+        " \"colors\": { "
+        "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
+        "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } } },"
+        "\"workRange\":{\"from\": 5, \"to\": 11}}";
 
     pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
-    PictureInfo_t expectedCustomPicture = { .picture = { .size = 0, .data = expectedPictureData } };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 0, .data = expectedPictureData },
+                                            .colors  = { .main = { 0, 100, 200 }, .secondary = { 200, 100, 0 } } };
 
     WaterscreenConfig_t expectedConfig = { .mode = Mode_Service,
                                            .standardModeConfig =
@@ -147,11 +159,17 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
 
     WaterscreenConfig_t configHigher = { .customPicture = &customPicture };
     const char         *invlaidSize_higher =
-        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
-        "130,\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
+        "\"picture\":{\"size\":130,\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
         "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
-        "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
-        "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}, \"workRange\":{\"from\": 5, \"to\": 11}}";
+        "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"
+        " \"colors\": { "
+        "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
+        "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } "
+        " } "
+        "},"
+        "\"workRange\":{\"from\": 5, \"to\": 11}}";
+
 
     expectedConfig.customPicture->picture.size = MAX_CUSTOM_PICTURE_HEIGHT;
     memset( expectedConfig.customPicture->picture.data, 0,
@@ -163,12 +181,16 @@ void givenInvalidSize_configParser_returnSuccessAndClamp()
 
 void givenWorkHoursOutsideRange_configParser_returnSuccessAndClamp()
 {
-    const char *sampleJson =
-        "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,\"picture\":{\"size\":"
-        "4,\"data\":[0,0,24,1567]}, \"workRange\":{\"from\": -1, \"to\": 25}}";
+    const char *sampleJson = "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
+                             "\"picture\":{\"size\":4,\"data\":[0,0,24,1567],"
+                             " \"colors\": { "
+                             "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
+                             "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } } },"
+                             "\"workRange\":{\"from\": -1, \"to\": 24}}";
 
     pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
-    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData } };
+    PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData },
+                                            .colors  = { .main = { 0, 100, 200 }, .secondary = { 200, 100, 0 } } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =
