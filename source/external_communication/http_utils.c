@@ -6,11 +6,11 @@
 #include <string.h>
 
 
-#define HTTP_GET_BUFFER_LEN  2046
 #define CONTENT_LEN_BUFF_LEN 32
 
-#define HTTP_CODE_BUFF_LEN 64
-#define HTTP_CODE_PREFIX   "HTTP/1.1"
+#define HTTP_GET_BUFFER_LEN 4096
+#define HTTP_CODE_BUFF_LEN  64
+#define HTTP_CODE_PREFIX    "HTTP/1.1"
 
 #define BASE_10 10
 

@@ -71,15 +71,15 @@ void givenReadConfigAndInitialRequest_configParser_ignoreWasReadFlagAndParse()
 void givenRawValidJson_configParser_fillConfigStructure()
 {
     const char *sampleJson = "{\"wasRead\":false,\"mode\":2,\"enableWeekends\":true,\"workTime\":10,\"idleTime\":5,"
-                             "\"picture\":{\"size\":4,\"data\":[0,0,24,1567],"
+                             "\"picture\":{\"size\":4,\"data\":[18446744073709551615,0,24,-1],"
                              " \"colors\": { "
-                             "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 200 },"
-                             "  \"secondary\":{ \"r\": 200, \"g\": 100, \"b\": 0 } } },"
+                             "  \"main\": { \"r\": 0, \"g\": 100, \"b\": 255 },"
+                             "  \"secondary\":{ \"r\": 255, \"g\": 100, \"b\": 0 } } },"
                              "\"workRange\":{\"from\": 5, \"to\": 11}}";
 
-    pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, 1567 };
+    pictureRow_t  expectedPictureData[MAX_CUSTOM_PICTURE_HEIGHT] = { 0, 0, 24, UINT64_MAX };
     PictureInfo_t expectedCustomPicture = { .picture = { .size = 4, .data = expectedPictureData },
-                                            .colors  = { .main = { 0, 100, 200 }, .secondary = { 200, 100, 0 } } };
+                                            .colors  = { .main = { 0, 100, 255 }, .secondary = { 255, 100, 0 } } };
 
     const WaterscreenConfig_t expectedConfig   = { .mode = Mode_Service,
                                                    .standardModeConfig =

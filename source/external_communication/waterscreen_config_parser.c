@@ -61,7 +61,7 @@ static bool parsePictureObject( const cJSON *pictureObject, PictureInfo_t *const
         if ( customPicture->picture.size <= i )
             break;
 
-        customPicture->picture.data[i++] = element->valueint;
+        customPicture->picture.data[i++] = (pictureRow_t)element->valuedouble;
     }
 
     if ( i < customPicture->picture.size )
