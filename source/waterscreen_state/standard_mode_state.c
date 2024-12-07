@@ -34,9 +34,10 @@ static inline bool isTimeInWorkRange( const Time_t *time )
 
 static inline bool isIdleTime( const Time_t *time )
 {
-    return ( time->minute % ( s_standardModeCfg->workTimeInStandardMode + s_standardModeCfg->idleTimeInStandardMode ) +
-                 1 <=
-             s_standardModeCfg->workTimeInStandardMode );
+    const uint8_t timePosition =
+        time->minute % ( s_standardModeCfg->workTimeInStandardMode + s_standardModeCfg->idleTimeInStandardMode ) + 1;
+
+    return s_standardModeCfg->workTimeInStandardMode < timePosition;
 }
 
 static inline bool isWorkingConditionSatisfied( const Datetime_t *datetime )

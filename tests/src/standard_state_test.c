@@ -12,7 +12,7 @@
 
 #include <waterscreen_states.h>
 
-static const pictureRow_t      s_mockedSingleRow = 128;
+static pictureRow_t            s_mockedSingleRow = 128;
 static const PictureDataSpan_t s_expectedPicture = { .size = 1, .data = &s_mockedSingleRow };
 
 void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
@@ -36,14 +36,14 @@ void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
 void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndChangeToPresentationState()
 {
     const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = true,
-                                       .workTimeInStandardMode  = 1,
-                                       .idleTimeInStandardMode  = 1,
+                                       .workTimeInStandardMode  = 3,
+                                       .idleTimeInStandardMode  = 2,
                                        .workRange               = { .from = 7, .to = 18 } };
     initStandardModeConfig( &cfg );
 
     WaterscreenContext_t context  = { .waterscreenStateHandler = standardModeState };
     const Datetime_t     datetime = { .date = { .year = 2024, .month = September, .day = 6, .weekday = Friday },
-                                      .time = { .hour = 7, .minute = 1, .second = 5 } };
+                                      .time = { .hour = 7, .minute = 5, .second = 5 } };
 
     const Weather_t expectedWeather = { .temperature = 31, .pressure = 1024, .weatherCondition = Clear };
 

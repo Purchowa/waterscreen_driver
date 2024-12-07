@@ -6,10 +6,86 @@
 #define MAX_WORK_TIME        30
 #define MAX_WORK_RANGE_VALUE 24
 
-static uint16_t clamp_uint16( const int32_t value, const uint16_t min, const uint16_t max )
+#define MAX_COLOR_CHANNEL_VALUE 255
+
+static uint32_t clamp( const int32_t value, const uint32_t min, const uint32_t max )
 {
-    const uint16_t lower = value < min ? min : value;
+    const uint32_t lower = value < min ? min : value;
     return max < lower ? max : lower;
+}
+
+static bool parseRGBColor( const cJSON *obj, ColorRGB_t *color )
+{
+    const cJSON *r = cJSON_GetObjectItemCaseSensitive( obj, "r" );
+    if ( !cJSON_IsNumber( r ) )
+        return false;
+
+    color->r = clamp( r->valueint, 0, MAX_COLOR_CHANNEL_VALUE );
+
+    const cJSON *g = cJSON_GetObjectItemCaseSensitive( obj, "g" );
+    if ( !cJSON_IsNumber( g ) )
+        return false;
+
+    color->g = clamp( g->valueint, 0, MAX_COLOR_CHANNEL_VALUE );
+
+    const cJSON *b = cJSON_GetObjectItemCaseSensitive( obj, "b" );
+    if ( !cJSON_IsNumber( b ) )
+        return false;
+
+    color->b = clamp( b->valueint, 0, MAX_COLOR_CHANNEL_VALUE );
+
+    return true;
+}
+
+static bool parsePictureObject( const cJSON *pictureObject, PictureInfo_t *const customPicture )
+{
+    if ( !cJSON_IsObject( pictureObject ) )
+        return false;
+
+    const cJSON *pictureSize = cJSON_GetObjectItemCaseSensitive( pictureObject, "size" );
+    if ( !cJSON_IsNumber( pictureSize ) )
+        return false;
+    customPicture->picture.size = clamp( pictureSize->valueint, 0, MAX_CUSTOM_PICTURE_HEIGHT );
+
+    const cJSON *pictureArray = cJSON_GetObjectItemCaseSensitive( pictureObject, "data" );
+    if ( !cJSON_IsArray( pictureArray ) )
+        return false;
+
+    const cJSON *element = NULL;
+    uint16_t     i       = 0;
+    cJSON_ArrayForEach( element, pictureArray )
+    {
+        if ( !cJSON_IsNumber( element ) )
+            return false;
+
+        if ( customPicture->picture.size <= i )
+            break;
+
+        customPicture->picture.data[i++] = element->valueint;
+    }
+
+    if ( i < customPicture->picture.size )
+        return false;
+
+    const cJSON *colorsObj = cJSON_GetObjectItemCaseSensitive( pictureObject, "colors" );
+    if ( !cJSON_IsObject( colorsObj ) )
+        return false;
+
+    const cJSON *mainColorObj = cJSON_GetObjectItemCaseSensitive( colorsObj, "main" );
+    if ( !cJSON_IsObject( mainColorObj ) )
+        return false;
+
+    if ( !parseRGBColor( mainColorObj, &customPicture->colors.main ) )
+        return false;
+
+    const cJSON *secondaryColorObj = cJSON_GetObjectItemCaseSensitive( colorsObj, "secondary" );
+    if ( !cJSON_IsObject( secondaryColorObj ) )
+        return false;
+
+    if ( !parseRGBColor( secondaryColorObj, &customPicture->colors.secondary ) )
+        return false;
+
+    return true;
 }
 
 static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest )
@@ -42,40 +118,15 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     const cJSON *workTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "workTime" );
     if ( !cJSON_IsNumber( workTime ) )
         return Http_WaterscreenConfigParsingError;
-    standardCfg->workTimeInStandardMode = clamp_uint16( workTime->valueint, 0, MAX_WORK_TIME );
+    standardCfg->workTimeInStandardMode = clamp( workTime->valueint, 0, MAX_WORK_TIME );
 
     const cJSON *idleTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "idleTime" );
     if ( !cJSON_IsNumber( idleTime ) )
         return Http_WaterscreenConfigParsingError;
-    standardCfg->idleTimeInStandardMode = clamp_uint16( idleTime->valueint, 0, MAX_IDLE_TIME );
+    standardCfg->idleTimeInStandardMode = clamp( idleTime->valueint, 0, MAX_IDLE_TIME );
 
     const cJSON *pictureObject = cJSON_GetObjectItemCaseSensitive( cfgJson, "picture" );
-    if ( !cJSON_IsObject( pictureObject ) )
-        return Http_WaterscreenConfigParsingError;
-
-    const cJSON *pictureSize = cJSON_GetObjectItemCaseSensitive( pictureObject, "size" );
-    if ( !cJSON_IsNumber( pictureSize ) )
-        return Http_WaterscreenConfigParsingError;
-    config->customPicture->picture.size = clamp_uint16( pictureSize->valueint, 0, MAX_CUSTOM_PICTURE_HEIGHT );
-
-    const cJSON *pictureArray = cJSON_GetObjectItemCaseSensitive( pictureObject, "data" );
-    if ( !cJSON_IsArray( pictureArray ) )
-        return Http_WaterscreenConfigParsingError;
-
-    const cJSON *element = NULL;
-    uint16_t     i       = 0;
-    cJSON_ArrayForEach( element, pictureArray )
-    {
-        if ( !cJSON_IsNumber( element ) )
-            return Http_WaterscreenConfigParsingError;
-
-        if ( config->customPicture->picture.size <= i )
-            break;
-
-        config->customPicture->picture.data[i++] = element->valueint;
-    }
-
-    if ( i < config->customPicture->picture.size )
+    if ( !parsePictureObject( pictureObject, config->customPicture ) )
         return Http_WaterscreenConfigParsingError;
 
     const cJSON *workRange = cJSON_GetObjectItemCaseSensitive( cfgJson, "workRange" );
@@ -86,13 +137,13 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     if ( !cJSON_IsNumber( workRangeFrom ) )
         return Http_WaterscreenConfigParsingError;
 
-    const uint8_t workRangeFromValue = clamp_uint16( workRangeFrom->valueint, 0, MAX_WORK_RANGE_VALUE );
+    const uint8_t workRangeFromValue = clamp( workRangeFrom->valueint, 0, MAX_WORK_RANGE_VALUE );
 
     const cJSON *workRangeTo = cJSON_GetObjectItemCaseSensitive( workRange, "to" );
     if ( !cJSON_IsNumber( workRangeTo ) )
         return Http_WaterscreenConfigParsingError;
 
-    const uint8_t workRangeToValue = clamp_uint16( workRangeTo->valueint, 0, MAX_WORK_RANGE_VALUE );
+    const uint8_t workRangeToValue = clamp( workRangeTo->valueint, 0, MAX_WORK_RANGE_VALUE );
 
     if ( workRangeToValue < workRangeFromValue )
         return Http_WaterscreenConfigParsingError;

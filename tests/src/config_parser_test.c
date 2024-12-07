@@ -10,6 +10,17 @@
 static pictureRow_t  customPictureBuffer[MAX_CUSTOM_PICTURE_HEIGHT];
 static PictureInfo_t customPicture = { .picture = { .data = customPictureBuffer } };
 
+static bool compareRGB( const ColorRGB_t *first, const ColorRGB_t *second )
+{
+    bool areEqual = true;
+
+    areEqual &= first->r == second->r;
+    areEqual &= first->g == second->g;
+    areEqual &= first->b == second->b;
+
+    return areEqual;
+}
+
 static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenConfig_t *second )
 {
     bool areEqual = true;
@@ -25,6 +36,9 @@ static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenC
     if ( areEqual )
         areEqual &= !memcmp( first->customPicture->picture.data, second->customPicture->picture.data,
                              first->customPicture->picture.size * sizeof( *first->customPicture->picture.data ) );
+
+    areEqual &= compareRGB( &first->customPicture->colors.main, &second->customPicture->colors.main );
+    areEqual &= compareRGB( &first->customPicture->colors.secondary, &second->customPicture->colors.secondary );
 
     return areEqual;
 }
