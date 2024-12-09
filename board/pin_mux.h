@@ -301,20 +301,6 @@ void BOARD_InitBUTTONsPins(void); /* Function assigned for the Cortex-M33 (Core 
 #define BOARD_INITI2SPINS_FC7_I2S_SCK_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
                                                                 /* @} */
 
-/*! @name PIO0_20 (number 74), P17[10]/FC7_I2S_TX
-  @{ */
-#define BOARD_INITI2SPINS_FC7_I2S_TX_PORT 0U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITI2SPINS_FC7_I2S_TX_PIN 20U                   /*!<@brief PORT pin number */
-#define BOARD_INITI2SPINS_FC7_I2S_TX_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
-                                                               /* @} */
-
-/*! @name PIO0_19 (number 90), P17[12]/FC7_I2S_WS
-  @{ */
-#define BOARD_INITI2SPINS_FC7_I2S_WS_PORT 0U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITI2SPINS_FC7_I2S_WS_PIN 19U                   /*!<@brief PORT pin number */
-#define BOARD_INITI2SPINS_FC7_I2S_WS_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
-                                                               /* @} */
-
 /*! @name PIO0_10 (number 21), U14[12]/SWO_TRGT
   @{ */
 #define BOARD_INITI2SPINS_FC6_I2S_CLK_PORT 0U                   /*!<@brief PORT peripheral base pointer */
@@ -614,6 +600,39 @@ void BOARD_InitOLEDPins(void); /* Function assigned for the Cortex-M33 (Core #0)
  *
  */
 void BOARD_InitNeopixelPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_19_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 7. */
+#define PIO0_19_FUNC_ALT7 0x07u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO0_20_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 7. */
+#define PIO0_20_FUNC_ALT7 0x07u
+
+/*! @name PIO0_20 (number 74), P17[10]/FC7_I2S_TX
+  @{ */
+#define BOARD_INITBLEPINS_FC7_I2S_TX_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITBLEPINS_FC7_I2S_TX_PIN 20U                   /*!<@brief PORT pin number */
+#define BOARD_INITBLEPINS_FC7_I2S_TX_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*! @name PIO0_19 (number 90), P17[12]/FC7_I2S_WS
+  @{ */
+#define BOARD_INITBLEPINS_FC7_I2S_WS_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITBLEPINS_FC7_I2S_WS_PIN 19U                   /*!<@brief PORT pin number */
+#define BOARD_INITBLEPINS_FC7_I2S_WS_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitBLEPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 #if defined(__cplusplus)
 }

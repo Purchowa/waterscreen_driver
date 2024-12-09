@@ -230,6 +230,7 @@ outputs:
 - {id: FXCOM1_clock.outFreq, value: 12 MHz}
 - {id: FXCOM2_clock.outFreq, value: 12 MHz}
 - {id: FXCOM3_clock.outFreq, value: 12 MHz}
+- {id: FXCOM7_clock.outFreq, value: 12 MHz}
 - {id: HSLSPI_clock.outFreq, value: 12 MHz}
 - {id: System_clock.outFreq, value: 150 MHz}
 settings:
@@ -239,6 +240,7 @@ settings:
 - {id: SYSCON.FCCLKSEL1.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.FCCLKSEL2.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.FCCLKSEL3.sel, value: ANACTRL.fro_12m_clk}
+- {id: SYSCON.FCCLKSEL7.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.HSLSPICLKSEL.sel, value: ANACTRL.fro_12m_clk}
 - {id: SYSCON.MAINCLKSELB.sel, value: SYSCON.PLL0_BYPASS}
 - {id: SYSCON.PLL0CLKSEL.sel, value: SYSCON.CLK_IN_EN}
@@ -305,6 +307,11 @@ void BOARD_BootClockPLL150M(void)
     #else
       CLOCK_SetClkDiv(kCLOCK_DivFlexFrg3, 256U, false);         /*!< Set DIV to value 0xFF and MULT to value 0U in related FLEXFRGCTRL register */
     #endif
+    #if FSL_CLOCK_DRIVER_VERSION >= MAKE_VERSION(2, 3, 4)
+      CLOCK_SetClkDiv(kCLOCK_DivFlexFrg7, 0U, false);         /*!< Set DIV to value 0xFF and MULT to value 0U in related FLEXFRGCTRL register */
+    #else
+      CLOCK_SetClkDiv(kCLOCK_DivFlexFrg7, 256U, false);         /*!< Set DIV to value 0xFF and MULT to value 0U in related FLEXFRGCTRL register */
+    #endif
     CLOCK_SetClkDiv(kCLOCK_DivAhbClk, 1U, false);         /*!< Set AHBCLKDIV divider to value 1 */
 
     /*!< Set up clock selectors - Attach clocks to the peripheries */
@@ -312,6 +319,7 @@ void BOARD_BootClockPLL150M(void)
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM1);                 /*!< Switch FLEXCOMM1 to FRO12M */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);                 /*!< Switch FLEXCOMM2 to FRO12M */
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM3);                 /*!< Switch FLEXCOMM3 to FRO12M */
+    CLOCK_AttachClk(kFRO12M_to_FLEXCOMM7);                 /*!< Switch FLEXCOMM7 to FRO12M */
     CLOCK_AttachClk(kFRO12M_to_HSLSPI);                 /*!< Switch HSLSPI to FRO12M */
 
     /*!< Set SystemCoreClock variable. */

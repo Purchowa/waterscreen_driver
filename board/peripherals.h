@@ -12,6 +12,9 @@
 #include "fsl_common.h"
 #include "fsl_i2c.h"
 #include "fsl_spi.h"
+#include "fsl_reset.h"
+#include "fsl_usart.h"
+#include "fsl_clock.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -36,6 +39,16 @@ extern "C" {
 #define NEOPIXELS_SPI_FC8_PERIPHERAL ((SPI_Type *)FLEXCOMM8)
 /* Definition of the clock source frequency */
 #define NEOPIXELS_SPI_FC8_CLOCK_SOURCE 12000000UL
+/* Definition of peripheral ID */
+#define BLE_USART_FC7_PERIPHERAL ((USART_Type *)FLEXCOMM7)
+/* Definition of the clock source frequency */
+#define BLE_USART_FC7_CLOCK_SOURCE 12000000UL
+/* BLE_USART_FC7 interrupt vector ID (number). */
+#define BLE_USART_FC7_FLEXCOMM_IRQN FLEXCOMM7_IRQn
+/* BLE_USART_FC7 interrupt vector priority. */
+#define BLE_USART_FC7_FLEXCOMM_IRQ_PRIORITY 3
+/* BLE_USART_FC7 interrupt handler identifier. */
+#define BLE_USART_FC7_FLEXCOMM_IRQHANDLER FLEXCOMM7_IRQHandler
 
 /***********************************************************************************************************************
  * Global variables
@@ -43,6 +56,7 @@ extern "C" {
 extern const i2c_master_config_t OLED_I2C_FC1_config;
 extern const spi_master_config_t VALVES_SPI_FC3_config;
 extern const spi_master_config_t NEOPIXELS_SPI_FC8_config;
+extern const usart_config_t BLE_USART_FC7_config;
 
 /***********************************************************************************************************************
  * Initialization functions

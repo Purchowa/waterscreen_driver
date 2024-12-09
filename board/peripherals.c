@@ -71,7 +71,8 @@ instance:
 - peripheral: 'NVIC'
 - config_sets:
   - nvic:
-    - interrupt_table: []
+    - interrupt_table:
+      - 0: []
     - interrupts: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
@@ -245,6 +246,81 @@ static void NEOPIXELS_SPI_FC8_init(void) {
 }
 
 /***********************************************************************************************************************
+ * BLE_USART_FC7 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'BLE_USART_FC7'
+- type: 'flexcomm_usart'
+- mode: 'interrupts'
+- custom_name_enabled: 'true'
+- editing_lock: 'true'
+- type_id: 'flexcomm_usart_af6b92423b2c384096121979731b5f28'
+- functional_group: 'BOARD_InitPeripherals_cm33_core0'
+- peripheral: 'FLEXCOMM7'
+- config_sets:
+  - interruptsCfg:
+    - interrupts: 'kUSART_RxLevelInterruptEnable'
+    - interrupt_vectors:
+      - enable_rx_tx_irq: 'true'
+      - interrupt_rx_tx:
+        - IRQn: 'FLEXCOMM7_IRQn'
+        - enable_interrrupt: 'enabled'
+        - enable_priority: 'true'
+        - priority: '3'
+        - enable_custom_name: 'false'
+  - usartConfig_t:
+    - usartConfig:
+      - clockSource: 'FXCOMFunctionClock'
+      - clockSourceFreq: 'BOARD_BootClockPLL150M'
+      - baudRate_Bps: '115200'
+      - syncMode: 'kUSART_SyncModeDisabled'
+      - parityMode: 'kUSART_ParityDisabled'
+      - stopBitCount: 'kUSART_OneStopBit'
+      - bitCountPerChar: 'kUSART_8BitsPerChar'
+      - loopback: 'false'
+      - txWatermark: 'kUSART_TxFifo0'
+      - rxWatermark: 'kUSART_RxFifo1'
+      - enableMatchAddress: 'false'
+      - matchAddressConfig:
+        - matchAddress: '0'
+        - addressMode: 'automatic'
+      - enableRx: 'true'
+      - enableTx: 'true'
+      - enableHardwareFlowControl: 'false'
+      - enableRTS: 'false'
+      - clockPolarity: 'kUSART_RxSampleOnFallingEdge'
+      - enableContinuousSCLK: 'false'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const usart_config_t BLE_USART_FC7_config = {
+  .baudRate_Bps = 115200UL,
+  .syncMode = kUSART_SyncModeDisabled,
+  .parityMode = kUSART_ParityDisabled,
+  .stopBitCount = kUSART_OneStopBit,
+  .bitCountPerChar = kUSART_8BitsPerChar,
+  .loopback = false,
+  .txWatermark = kUSART_TxFifo0,
+  .rxWatermark = kUSART_RxFifo1,
+  .enableRx = true,
+  .enableTx = true,
+  .enableHardwareFlowControl = false,
+  .enableMode32k = false,
+  .clockPolarity = kUSART_RxSampleOnFallingEdge,
+  .enableContinuousSCLK = false
+};
+
+static void BLE_USART_FC7_init(void) {
+  USART_Init(BLE_USART_FC7_PERIPHERAL, &BLE_USART_FC7_config, BLE_USART_FC7_CLOCK_SOURCE);
+  USART_EnableInterrupts(BLE_USART_FC7_PERIPHERAL, kUSART_RxLevelInterruptEnable);
+  /* Interrupt vector FLEXCOMM7_IRQn priority settings in the NVIC. */
+  NVIC_SetPriority(BLE_USART_FC7_FLEXCOMM_IRQN, BLE_USART_FC7_FLEXCOMM_IRQ_PRIORITY);
+  /* Enable interrupt FLEXCOMM7_IRQn request in the NVIC. */
+  EnableIRQ(BLE_USART_FC7_FLEXCOMM_IRQN);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals_cm33_core0(void)
@@ -253,6 +329,7 @@ void BOARD_InitPeripherals_cm33_core0(void)
   OLED_I2C_FC1_init();
   VALVES_SPI_FC3_init();
   NEOPIXELS_SPI_FC8_init();
+  BLE_USART_FC7_init();
 }
 
 /***********************************************************************************************************************

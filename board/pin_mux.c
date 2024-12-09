@@ -51,6 +51,7 @@ void BOARD_InitBootPins(void)
     MWM_InitPins();
     BOARD_InitOLEDPins();
     BOARD_InitNeopixelPins();
+    BOARD_InitBLEPins();
 }
 
 /* clang-format off */
@@ -585,10 +586,6 @@ BOARD_InitI2SPins:
     open_drain: disabled}
   - {pin_num: '76', peripheral: FLEXCOMM7, signal: SCK, pin_signal: PIO0_21/FC3_RTS_SCL_SSEL1/UTICK_CAP3/CTIMER3_MAT3/SCT_GPI3/FC7_SCK/PLU_CLKIN/SECURE_GPIO0_21,
     mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
-  - {pin_num: '74', peripheral: FLEXCOMM7, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO0_20/FC3_CTS_SDA_SSEL0/CTIMER1_MAT1/CT_INP15/SCT_GPI2/FC7_RXD_SDA_MOSI_DATA/HS_SPI_SSEL0/PLU_IN5/SECURE_GPIO0_20/FC4_TXD_SCL_MISO_WS,
-    mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
-  - {pin_num: '90', peripheral: FLEXCOMM7, signal: TXD_SCL_MISO_WS, pin_signal: PIO0_19/FC4_RTS_SCL_SSEL1/UTICK_CAP0/CTIMER0_MAT2/SCT0_OUT2/FC7_TXD_SCL_MISO_WS/PLU_IN4/SECURE_GPIO0_19,
-    mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
   - {pin_num: '21', peripheral: FLEXCOMM6, signal: SCK, pin_signal: PIO0_10/FC6_SCK/CT_INP10/CTIMER2_MAT0/FC1_TXD_SCL_MISO_WS/SCT0_OUT2/SWO/SECURE_GPIO0_10/ADC0_1,
     identifier: FC6_I2S_CLK, mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled, asw: enabled}
   - {pin_num: '2', peripheral: FLEXCOMM6, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO1_13/FC6_RXD_SDA_MOSI_DATA/CT_INP6/USB0_OVERCURRENTN/USB0_FRAME/SD0_CARD_DET_N,
@@ -627,36 +624,6 @@ void BOARD_InitI2SPins(void)
                                   IOCON_PIO_ASW_EN);
     /* PORT0 PIN10 (coords: 21) is configured as FC6_SCK */
     IOCON_PinMuxSet(IOCON, BOARD_INITI2SPINS_FC6_I2S_CLK_PORT, BOARD_INITI2SPINS_FC6_I2S_CLK_PIN, FC6_I2S_CLK);
-
-    const uint32_t FC7_I2S_WS = (/* Pin is configured as FC7_TXD_SCL_MISO_WS */
-                                 IOCON_PIO_FUNC7 |
-                                 /* Selects pull-up function */
-                                 IOCON_PIO_MODE_PULLUP |
-                                 /* Standard mode, output slew rate control is enabled */
-                                 IOCON_PIO_SLEW_STANDARD |
-                                 /* Input function is not inverted */
-                                 IOCON_PIO_INV_DI |
-                                 /* Enables digital function */
-                                 IOCON_PIO_DIGITAL_EN |
-                                 /* Open drain is disabled */
-                                 IOCON_PIO_OPENDRAIN_DI);
-    /* PORT0 PIN19 (coords: 90) is configured as FC7_TXD_SCL_MISO_WS */
-    IOCON_PinMuxSet(IOCON, BOARD_INITI2SPINS_FC7_I2S_WS_PORT, BOARD_INITI2SPINS_FC7_I2S_WS_PIN, FC7_I2S_WS);
-
-    const uint32_t FC7_I2S_TX = (/* Pin is configured as FC7_RXD_SDA_MOSI_DATA */
-                                 IOCON_PIO_FUNC7 |
-                                 /* Selects pull-up function */
-                                 IOCON_PIO_MODE_PULLUP |
-                                 /* Standard mode, output slew rate control is enabled */
-                                 IOCON_PIO_SLEW_STANDARD |
-                                 /* Input function is not inverted */
-                                 IOCON_PIO_INV_DI |
-                                 /* Enables digital function */
-                                 IOCON_PIO_DIGITAL_EN |
-                                 /* Open drain is disabled */
-                                 IOCON_PIO_OPENDRAIN_DI);
-    /* PORT0 PIN20 (coords: 74) is configured as FC7_RXD_SDA_MOSI_DATA */
-    IOCON_PinMuxSet(IOCON, BOARD_INITI2SPINS_FC7_I2S_TX_PORT, BOARD_INITI2SPINS_FC7_I2S_TX_PIN, FC7_I2S_TX);
 
     const uint32_t FC7_I2S_SCK = (/* Pin is configured as FC7_SCK */
                                   IOCON_PIO_FUNC7 |
@@ -1214,6 +1181,57 @@ void BOARD_InitNeopixelPins(void)
                           * : Enable Digital mode.
                           * Digital input is enabled. */
                          | IOCON_PIO_DIGIMODE(PIO0_26_DIGIMODE_DIGITAL));
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitBLEPins:
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '74', peripheral: FLEXCOMM7, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO0_20/FC3_CTS_SDA_SSEL0/CTIMER1_MAT1/CT_INP15/SCT_GPI2/FC7_RXD_SDA_MOSI_DATA/HS_SPI_SSEL0/PLU_IN5/SECURE_GPIO0_20/FC4_TXD_SCL_MISO_WS}
+  - {pin_num: '90', peripheral: FLEXCOMM7, signal: TXD_SCL_MISO_WS, pin_signal: PIO0_19/FC4_RTS_SCL_SSEL1/UTICK_CAP0/CTIMER0_MAT2/SCT0_OUT2/FC7_TXD_SCL_MISO_WS/PLU_IN4/SECURE_GPIO0_19}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitBLEPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitBLEPins(void)
+{
+    /* Enables the clock for the I/O controller.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_Iocon);
+
+    IOCON->PIO[0][19] = ((IOCON->PIO[0][19] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT019 (pin 90) is configured as FC7_TXD_SCL_MISO_WS. */
+                         | IOCON_PIO_FUNC(PIO0_19_FUNC_ALT7)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO0_19_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[0][20] = ((IOCON->PIO[0][20] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT020 (pin 74) is configured as FC7_RXD_SDA_MOSI_DATA. */
+                         | IOCON_PIO_FUNC(PIO0_20_FUNC_ALT7)
+
+                         /* Select Digital mode.
+                          * : Enable Digital mode.
+                          * Digital input is enabled. */
+                         | IOCON_PIO_DIGIMODE(PIO0_20_DIGIMODE_DIGITAL));
 }
 /***********************************************************************************************************************
  * EOF
