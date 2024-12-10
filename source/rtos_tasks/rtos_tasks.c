@@ -19,6 +19,9 @@
 #include "external/wlan/wlan_mwm.h"
 #include "logging_config.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include <fsl_common.h>
 
 

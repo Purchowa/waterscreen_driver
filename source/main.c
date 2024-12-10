@@ -2,18 +2,17 @@
 #include "config/oled_i2c_cfg.h"
 
 #include "rtos_tasks/rtos_tasks.h"
+#include "ble/ble_handler_task.h"
+
 #include "datetime/rtc_provider.h"
 #include "neopixels/neopixel_defines.h"
 
 #include "external/oled/oled.h"
 #include "external/neopixel/neopixels.h"
 
-
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-#include "queue.h"
-#include "timers.h"
 
 /* Freescale includes. */
 #include "fsl_debug_console.h"
@@ -58,6 +57,12 @@ int main()
     if ( xTaskCreate( wifiTask, "WiFiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WIFI task creation failed!.\r\n" );
+    }
+
+    if ( xTaskCreate( bleReceiveTask, "BLE-Receive", BLE_RECEIVE_TASK_STACK_SIZE, NULL, BLE_RECEIVE_TASK_PRIORITY,
+                      NULL ) != pdPASS )
+    {
+        PRINTF( "[RTOS]-Task: BLE-Receive task creation failed!.\r\n" );
     }
 
     vTaskStartScheduler();
