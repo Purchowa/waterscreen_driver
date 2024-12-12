@@ -17,7 +17,7 @@
 
 #include "datetime/rtc_provider.h"
 #include "external/wlan/wlan_mwm.h"
-#include "logging_config.h"
+#include "logging.h"
 
 #include "FreeRTOS.h"
 #include "task.h"

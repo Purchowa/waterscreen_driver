@@ -2,7 +2,8 @@
 #include "config/oled_i2c_cfg.h"
 
 #include "rtos_tasks/rtos_tasks.h"
-#include "ble/ble_handler_task.h"
+#include "ble/ble_receiver.h"
+#include "ble/ble_sender.h"
 
 #include "datetime/rtc_provider.h"
 #include "neopixels/neopixel_defines.h"
@@ -43,7 +44,19 @@ int main()
     OLED_Init( OLED_I2C );
     Neopixels_Init( NEOPIXELS_SPI_FC8_PERIPHERAL, TEST_NEOPIXEL_COUNT ); // TODO: Temporary neopixel amount for testing
 
-    if ( xTaskCreate( waterscreenActionTask, "WaterScreenActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
+    if ( xTaskCreate( bleReceiverTask, "BLE-Receiver", BLE_RECEIVE_TASK_STACK_SIZE, NULL, BLE_RECEIVE_TASK_PRIORITY,
+                      NULL ) != pdPASS )
+    {
+        PRINTF( "[RTOS]-Task: BLE-Receive task creation failed!.\r\n" );
+    }
+
+    if ( xTaskCreate( bleSenderTask, "BLE-Sender", BLE_SEND_TASK_STACK_SIZE, NULL, BLE_SEND_TASK_PRIORITY, NULL ) !=
+         pdPASS )
+    {
+        PRINTF( "[RTOS]-Task: BLE-Send task creation failed!.\r\n" );
+    }
+
+    if ( xTaskCreate( waterscreenActionTask, "WS-ActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
                       WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WaterScreenAction task creation failed!\r\n" );
@@ -57,12 +70,6 @@ int main()
     if ( xTaskCreate( wifiTask, "WiFiTask", WIFI_TASK_STACK_SIZE, NULL, WIFI_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WIFI task creation failed!.\r\n" );
-    }
-
-    if ( xTaskCreate( bleReceiveTask, "BLE-Receive", BLE_RECEIVE_TASK_STACK_SIZE, NULL, BLE_RECEIVE_TASK_PRIORITY,
-                      NULL ) != pdPASS )
-    {
-        PRINTF( "[RTOS]-Task: BLE-Receive task creation failed!.\r\n" );
     }
 
     vTaskStartScheduler();

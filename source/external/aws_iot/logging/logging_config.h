@@ -2,16 +2,17 @@
 #define LOGGING_CONFIG_H_
 
 #include "logging_levels.h"
+
+#include "ble/ble_send_provider.h"
 #include "fsl_debug_console.h"
 
-#ifndef LOG_LEVEL
-#define LOG_LEVEL LOG_DEBUG
-#endif
+#define LOG_LEVEL            LOG_DEBUG
+#define REDIRECT_LOGS_TO_BLE 1
 
-#ifndef LogHandler
+#if REDIRECT_LOGS_TO_BLE
+#define LogHandler( msg ) bleTextWrite( msg )
+#else
 #define LogHandler( msg ) PRINTF( msg )
 #endif
-
-#include "logging.h"
 
 #endif /* LOGGING_CONFIG_H_ */

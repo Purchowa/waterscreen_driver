@@ -1,6 +1,6 @@
-#include "ble_handler_task.h"
+#include "ble_receiver.h"
 
-#include "peripherals.h"
+#include <peripherals.h>
 
 
 void FLEXCOMM7_IRQHandler()

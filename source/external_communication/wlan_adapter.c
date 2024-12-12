@@ -1,7 +1,7 @@
 #include "wlan_adapter.h"
 #include "wifi_cfg.h"
 
-#include "logging_config.h"
+#include "logging.h"
 
 #include "external/wlan/wlan_mwm.h"
 

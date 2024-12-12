@@ -1,9 +1,9 @@
-#include "ble_handler_task.h"
+#include "ble_receiver.h"
 
-#include "logging_config.h"
+#include "logging.h"
 
 #include <inttypes.h>
-#include "task.h"
+#include <task.h>
 
 #define BLE_RECEIVE_BUFFER_CAPACITY 128
 #define WORD_BUFFER_CAPACITY        64
@@ -20,9 +20,10 @@ typedef uint64_t bigNum_t;
 typedef uint8_t  typeInfo_t;
 typedef uint8_t  textSize_t;
 
-StreamBufferHandle_t g_rxBLEBuffer = NULL;
+StreamBufferHandle_t g_rxBLEBuffer       = NULL;
+static bool          s_isClientConnected = true;
 
-void bleReceiveTask( void * )
+void bleReceiverTask( void * )
 {
     g_rxBLEBuffer = xStreamBufferCreate( BLE_RECEIVE_BUFFER_CAPACITY, sizeof( typeInfo_t ) );
     if ( !g_rxBLEBuffer )
@@ -78,4 +79,9 @@ void bleReceiveTask( void * )
 
         xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( typeInfo_t ) );
     }
+}
+
+bool isClientConnected()
+{
+    return s_isClientConnected;
 }

@@ -4,11 +4,13 @@
 #include "external_communication/weather_types.h"
 #include "datetime/datetime_types.h"
 
-#include "config/logging_config.h"
+#include "logging.h"
 #include "wlan/wlan_mwm.h"
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/standard_mode_state.h"
 #include "waterscreen_state/state_utils.h"
+
+#include "ble/ble_send_provider.h"
 
 #include <fsl_common.h>
 #include <stdint.h>

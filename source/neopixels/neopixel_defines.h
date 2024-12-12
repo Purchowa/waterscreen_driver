@@ -9,7 +9,4 @@
 
 #define TEST_NEOPIXEL_COUNT 12
 
-typedef uint8_t byte_t;
-
-
 #endif /* NEOPIXEL_DEFINES_H_ */
