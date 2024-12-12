@@ -56,7 +56,7 @@ int main()
         PRINTF( "[RTOS]-Task: BLE-Send task creation failed!.\r\n" );
     }
 
-    if ( xTaskCreate( waterscreenActionTask, "WS-ActionTask", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
+    if ( xTaskCreate( waterscreenActionTask, "PresentStateMachine", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
                       WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WaterScreenAction task creation failed!\r\n" );

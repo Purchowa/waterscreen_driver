@@ -13,6 +13,10 @@ typedef enum
     Http_WaterscreenConfigNoUpdate,
     Http_WaterscreenStatusSerializationError,
     Http_UnknownError,
+
+    Http_ReturnCodes_Count
 } HttpReturnCodes_t;
+
+const char *getHttpReturnCodeName( const HttpReturnCodes_t returnCode );
 
 #endif /* HTTP_RETURN_CODES_H_ */

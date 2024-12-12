@@ -24,7 +24,7 @@ void logWaterscreenStatus( const WaterscreenContext_t *context )
     static waterscreenStateFunction_t previousState = NULL;
     if ( context->waterscreenStateHandler != previousState )
     {
-        LogDebug( "Current water screen state: %s", getStateName( context->waterscreenStateHandler ) );
+        LogDebug( "State: %s", getStateName( context->waterscreenStateHandler ) );
         previousState = context->waterscreenStateHandler;
     }
 }
@@ -37,7 +37,7 @@ void logWlanStatus()
     if ( prevWlanState == wlanState )
         return;
 
-    LogDebug( "Current MWM WLAN state: %d", wlanState );
+    LogDebug( "MWM WLAN state: %d", wlanState );
     prevWlanState = wlanState;
 }
 
@@ -75,4 +75,13 @@ void logWaterPumpState( DeviceState_t state )
         LogDebug( "[GPIO] Water pump %s", state == OffDeviceState ? "off" : "on" );
         recentState = state;
     }
+}
+
+static const char *s_requestMethodsNames[] = { "GET", "POST" };
+
+void logHttpRequest( const char *requestTargetName, const HttpReturnCodes_t responseCode,
+                     const RequestMethod_t requestMethod )
+{
+    LogDebug( "%s %s request. Response: [%d]-%s", requestTargetName, s_requestMethodsNames[requestMethod], responseCode,
+              getHttpReturnCodeName( responseCode ) );
 }

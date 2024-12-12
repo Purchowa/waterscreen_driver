@@ -12,6 +12,8 @@
 #include "external_communication/waterscreen_status.h"
 #include "external_communication/waterscreen_status_api.h"
 #include "external_communication/wlan_adapter.h"
+#include "external_communication/http_return_codes.h"
+
 #include "status_logging.h"
 #include "oled_screen/oled_panel.h"
 
@@ -78,7 +80,7 @@ static void requestWeather()
 {
     s_httpReturnCode = httpGetWeather();
 
-    LogDebug( "Weather GET request. Code: %d", s_httpReturnCode );
+    logHttpRequest( "Weather", s_httpReturnCode, GET );
 }
 
 static void requestDatetime( Datetime_t *datetime )
@@ -86,7 +88,7 @@ static void requestDatetime( Datetime_t *datetime )
     s_httpReturnCode = httpGetDatetime( datetime );
     while ( s_httpReturnCode != Http_Success )
     {
-        LogError( "GET request for date-time failed. Code: %d", s_httpReturnCode );
+        logHttpRequest( "Date-time", s_httpReturnCode, GET );
         vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
         s_httpReturnCode = httpGetDatetime( datetime );
@@ -99,14 +101,14 @@ static void requestWaterscreenConfig( bool isInitialRequest )
 
     if ( s_httpReturnCode == Http_Success )
     {
-        LogDebug( "Water-screen configuration updated!" );
+        LogDebug( "WS-config updated!" );
 
         forceChangeWaterscreenState( &s_context, g_waterscreenModes[s_waterscreenConfig.mode] );
         initStandardModeConfig( &s_waterscreenConfig.standardModeConfig );
     }
     else
     {
-        LogDebug( "Water-screen configuration GET request. Code: %d", s_httpReturnCode );
+        logHttpRequest( "WS-config", s_httpReturnCode, GET );
     }
 }
 
@@ -135,7 +137,7 @@ static void handleRequests()
         const WaterscreenStatus_t status = generateWaterscreenStatus( s_waterscreenConfig.mode, &s_context );
         s_httpReturnCode                 = httpPostWaterscreenStatus( &status );
 
-        LogDebug( "Water-screen status POST request. Code: %d", s_httpReturnCode );
+        logHttpRequest( "WS-status", s_httpReturnCode, POST );
     }
 
     ++callCounter; // no overflow for unsigned it's just modulo
