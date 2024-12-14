@@ -1,8 +1,8 @@
 #ifndef WATERSCREEN_STATE_CONTEXT_H_
 #define WATERSCREEN_STATE_CONTEXT_H_
 
+#include "config/rtos_time_defines.h"
 #include "picture_management/picture_types.h"
-#include "rtos_tasks/rtos_time_defines.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -24,10 +24,6 @@ typedef struct WaterscreenContext
     delayMs_t                  currentStateDelay;
 } WaterscreenContext_t;
 
-
-void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState );
-void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState );
-void performWaterscreenAction( WaterscreenContext_t *context );
-void goBackToPreviousWaterscreenState( WaterscreenContext_t *context );
+extern WaterscreenContext_t g_context;
 
 #endif /* WATERSCREEN_STATE_CONTEXT_H_ */

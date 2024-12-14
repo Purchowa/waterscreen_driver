@@ -1,5 +1,6 @@
 #include "standard_mode_state.h"
 #include "waterscreen_state/waterscreen_states.h"
+#include "waterscreen_state/waterscreen_state_context_handler.h"
 
 #include "datetime/datetime_types.h"
 #include "datetime/rtc_provider.h"

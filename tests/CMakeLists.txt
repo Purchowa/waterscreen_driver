@@ -47,31 +47,31 @@ endfunction()
 enable_testing()
 
 generate_test("presentation_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("demonstration_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("low_water_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("idle_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("standard_state_test"
-        "waterscreen_state/standard_mode_state.c;waterscreen_state/waterscreen_state_context.c;waterscreen_state/waterscreen_states.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/standard_mode_state.c;waterscreen_state/waterscreen_state_context_handler.c;waterscreen_state/waterscreen_states.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c;datetime_mocks.c;weather_mocks.c")
 
 generate_test("sensors_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("valves_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("config_parser_test"

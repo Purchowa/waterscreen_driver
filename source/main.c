@@ -1,7 +1,9 @@
 #include "config/valves_spi_cfg.h"
 #include "config/oled_i2c_cfg.h"
 
-#include "rtos_tasks/rtos_tasks.h"
+#include "oled_screen/hmi_task.h"
+#include "external_communication/wifi_task.h"
+#include "waterscreen_state/presentation_state_machine_task.h"
 #include "ble/ble_receiver.h"
 #include "ble/ble_sender.h"
 
@@ -56,8 +58,8 @@ int main()
         PRINTF( "[RTOS]-Task: BLE-Send task creation failed!.\r\n" );
     }
 
-    if ( xTaskCreate( waterscreenActionTask, "PresentStateMachine", WATERSCREEN_ACTION_TASK_STACK_SIZE, NULL,
-                      WATERSCREEN_ACTION_TASK_PRIORITY, NULL ) != pdPASS )
+    if ( xTaskCreate( presentationStateMachineTask, "PresentStateMachine", PRESENTATION_SM_TASK_STACK_SIZE, NULL,
+                      PRESENTATION_SM_TASK_PRIORITY, NULL ) != pdPASS )
     {
         PRINTF( "[RTOS]-Task: WaterScreenAction task creation failed!\r\n" );
     }

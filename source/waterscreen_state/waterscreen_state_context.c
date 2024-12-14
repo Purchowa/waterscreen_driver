@@ -1,30 +1,14 @@
 #include "waterscreen_state_context.h"
 
-#include "gpio/power_control.h"
-#include "neopixels/neopixel_provider.h"
 #include "waterscreen_states.h"
+#include "standard_mode_state.h"
+
+#include <stddef.h>
 
 
-void changeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState )
-{
-    context->previousWaterscreenStateHandler = context->waterscreenStateHandler;
-    context->waterscreenStateHandler         = newState;
-}
-
-void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStateFunction_t newState )
-{
-    dimNeopixels();
-    manageValvePower( OffDeviceState );
-    closeValvesSubState( context );
-    changeWaterscreenState( context, newState );
-}
-
-void performWaterscreenAction( WaterscreenContext_t *context )
-{
-    context->waterscreenStateHandler( context );
-}
-
-void goBackToPreviousWaterscreenState( WaterscreenContext_t *context )
-{
-    context->waterscreenStateHandler = context->previousWaterscreenStateHandler;
-}
+WaterscreenContext_t g_context = { .waterscreenStateHandler         = standardModeState,
+                                   .previousWaterscreenStateHandler = demoModeState,
+                                   .pictureInfo                     = NULL,
+                                   .valveOpenCounter                = 0,
+                                   .currentStateStatus              = 0,
+                                   .currentStateDelay               = SECOND_MS };

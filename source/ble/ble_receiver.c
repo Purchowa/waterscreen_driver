@@ -38,7 +38,7 @@ void bleReceiverTask( void * )
     bigNum_t   bigNum                     = 0;
     for ( ;; )
     {
-        // { 1B[typeInfo]xB[rest...] }
+        // { 1B[typeInfo]|xB[rest...] }
         xStreamBufferReceive( g_rxBLEBuffer, &typeInfo, sizeof( typeInfo_t ), portMAX_DELAY );
 
         switch ( typeInfo )
@@ -61,7 +61,7 @@ void bleReceiverTask( void * )
             {
                 textSize_t textSize = 0;
 
-                // Assume that word comes as { 1B[size]sizeB[text] }
+                // Assume that word comes as { 1B[size]|sizeB[text] }
                 xStreamBufferReceive( g_rxBLEBuffer, &textSize, sizeof( textSize_t ), portMAX_DELAY );
                 if ( 0 < textSize && textSize < WORD_BUFFER_CAPACITY )
                 {

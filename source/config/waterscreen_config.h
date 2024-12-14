@@ -38,6 +38,7 @@ typedef struct
     PictureInfo_t *const customPicture;
 } WaterscreenConfig_t;
 
+extern WaterscreenConfig_t              g_waterscreenConfig;
 extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];
 
 #endif /* WATERSCREEN_CONFIG_H_ */

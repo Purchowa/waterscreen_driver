@@ -4,10 +4,10 @@
 
 #include "mocks/datetime_mocks.h"
 
+#include "waterscreen_state/waterscreen_state_context_handler.h"
 #include "waterscreen_state/standard_mode_state.h"
 #include "picture_management/standard_mode_picture_logic.h"
 #include "datetime/datetime_types.h"
-#include "external_communication/weather_api.h"
 #include "gpio/power_control.h"
 
 #include <waterscreen_states.h>

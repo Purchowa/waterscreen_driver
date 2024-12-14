@@ -1,0 +1,12 @@
+#ifndef PRESENTATION_STATE_MACHINE_TASK_H_
+#define PRESENTATION_STATE_MACHINE_TASK_H_
+
+#include "FreeRTOSConfig.h"
+
+
+#define PRESENTATION_SM_TASK_PRIORITY   ( configTIMER_TASK_PRIORITY - 1 )
+#define PRESENTATION_SM_TASK_STACK_SIZE 1024
+
+void presentationStateMachineTask( void *params );
+
+#endif /* PRESENTATION_STATE_MACHINE_TASK_H_ */

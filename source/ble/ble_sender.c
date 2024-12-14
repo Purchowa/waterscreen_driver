@@ -40,8 +40,10 @@ bool bleWrite( const byte_t *data, const size_t size )
     if ( !isClientConnected() || s_txBLEBuffer == NULL )
         return false;
 
+    taskENTER_CRITICAL();
     const size_t bytesSend =
         xStreamBufferSend( s_txBLEBuffer, data, size, pdMS_TO_TICKS( STREAM_BUFFER_MAX_SEND_WAIT_MS ) );
+    taskEXIT_CRITICAL();
 
     return bytesSend == size;
 }
