@@ -1,5 +1,6 @@
 #include "ble_receiver.h"
 
+#include "receiver_handlers.h"
 #include "logging.h"
 
 #include <inttypes.h>
@@ -21,7 +22,7 @@ typedef uint8_t  typeInfo_t;
 typedef uint8_t  textSize_t;
 
 StreamBufferHandle_t g_rxBLEBuffer       = NULL;
-static bool          s_isClientConnected = true;
+static bool          s_isClientConnected = false;
 
 void bleReceiverTask( void * )
 {
@@ -69,12 +70,16 @@ void bleReceiverTask( void * )
                     xStreamBufferReceive( g_rxBLEBuffer, text, textSize, portMAX_DELAY );
 
                     text[textSize] = 0; // EOL
+                    handleBLENotifyEvents( text, &s_isClientConnected );
                     LogDebug( "Got text: %s", text );
                 }
                 break;
             }
         default:
-            LogDebug( "Unknown incoming data type" );
+            {
+
+                LogDebug( "Unknown incoming data" );
+            }
         }
 
         xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( typeInfo_t ) );
