@@ -1,9 +1,3 @@
-/*
- * button_control.c
- *
- *  Created on: 2 cze 2024
- *      Author: purch
- */
 #include "button_control.h"
 
 #include "pin_mux.h"

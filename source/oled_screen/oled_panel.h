@@ -6,6 +6,7 @@
 #include "config/waterscreen_config.h"
 
 
-void drawInfoPanel( const WaterscreenContext_t *, const WaterscreenMode_t, const HttpReturnCodes_t );
+void drawInfoPanel( const WaterscreenContext_t *, const WaterscreenMode_t, const HttpReturnCodes_t,
+                    bool isModeSelection );
 
 #endif /* OLED_PANEL_H_ */

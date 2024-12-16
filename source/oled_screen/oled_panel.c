@@ -25,10 +25,12 @@ typedef enum
 
 static char textBuffer[TEXT_BUFFER_SIZE] = {};
 
-static void drawHeader( const WaterscreenMode_t mode )
+static void drawHeader( const WaterscreenMode_t mode, bool isModeSelection )
 {
-    static const uint8_t xOffset = 24;
-    snprintf( textBuffer, sizeof( textBuffer ), "%s", getModeName( mode ) );
+    static const uint8_t xOffset       = 34;
+    const char          *modeStrFormat = isModeSelection ? "> %s <" : "  %s  ";
+
+    snprintf( textBuffer, sizeof( textBuffer ), modeStrFormat, getModeName( mode ) );
 
     OLED_Puts( OLED_WIDTH / 2 - xOffset, OLED_FIRST_PAGE, textBuffer );
 
@@ -77,14 +79,14 @@ static const char *getHttpCodesStr( const HttpReturnCodes_t newCode )
     return httpStrBuffer;
 }
 
-void drawInfoPanel( const WaterscreenContext_t *context, const WaterscreenMode_t mode,
-                    const HttpReturnCodes_t httpCode )
+void drawInfoPanel( const WaterscreenContext_t *context, const WaterscreenMode_t mode, const HttpReturnCodes_t httpCode,
+                    bool isModeSelection )
 {
     OLED_Clear_Screen( OLED_Black );
 
     const uint8_t bodyLineStart = 2;
 
-    drawHeader( mode );
+    drawHeader( mode, isModeSelection );
 
     drawInfoLineStr( "State", getStateName( context->waterscreenStateHandler ), bodyLineStart );
     drawInfoLineStr( "HttpCodes", getHttpCodesStr( httpCode ), bodyLineStart + 1 );

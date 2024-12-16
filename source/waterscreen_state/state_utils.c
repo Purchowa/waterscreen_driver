@@ -39,7 +39,7 @@ const char *getModeName( const WaterscreenMode_t mode )
         return "Standard";
 
     case Mode_Demo:
-        return "Demonstration";
+        return "Demo";
 
     case Mode_Service:
         return "Service";

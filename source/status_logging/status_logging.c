@@ -44,13 +44,13 @@ void logWlanStatus()
 
 void logWeather( const Weather_t *weather )
 {
-    LogInfo( "Weather: condition - %d, temperature - %.2f C, pressure - %d hPa", weather->weatherCondition,
+    LogInfo( "Weather - condition: %d, temperature: %.2f C, pressure: %d hPa", weather->weatherCondition,
              weather->temperature, weather->pressure );
 }
 
 void logDatetime( const Datetime_t *datetime )
 {
-    LogInfo( "Time: weekday - %d, date: %d.%d.%d time: %d:%d:%d", datetime->date.weekday, datetime->date.day,
+    LogInfo( "Time - weekday: %d, date: %d.%d.%d time: %d:%d:%d", datetime->date.weekday, datetime->date.day,
              datetime->date.month, datetime->date.year, datetime->time.hour, datetime->time.minute,
              datetime->time.second );
 }
