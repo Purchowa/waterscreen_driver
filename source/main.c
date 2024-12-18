@@ -1,7 +1,7 @@
 #include "config/valves_spi_cfg.h"
 #include "config/oled_i2c_cfg.h"
 
-#include "oled_screen/hmi_task.h"
+#include "lcd_screen/hmi_task.h"
 #include "external_communication/wifi_task.h"
 #include "waterscreen_state/presentation_state_machine_task.h"
 #include "ble/ble_receiver.h"

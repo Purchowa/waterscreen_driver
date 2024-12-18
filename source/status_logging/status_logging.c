@@ -9,6 +9,7 @@
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/standard_mode_state.h"
 #include "waterscreen_state/state_utils.h"
+#include "gpio/button_control.h"
 
 #include "ble/ble_send_provider.h"
 
@@ -61,7 +62,7 @@ void logValvePowerState( DeviceState_t state )
 
     if ( recentState != state )
     {
-        LogDebug( "[GPIO] Valve power %s", state == OffDeviceState ? "off" : "on" );
+        LogDebug( "[GPIO] Valve power %s", getDeviceStateStr( state ) );
         recentState = state;
     }
 }
@@ -72,7 +73,7 @@ void logWaterPumpState( DeviceState_t state )
 
     if ( recentState != state )
     {
-        LogDebug( "[GPIO] Water pump %s", state == OffDeviceState ? "off" : "on" );
+        LogDebug( "[GPIO] Water pump %s", getDeviceStateStr( state ) );
         recentState = state;
     }
 }

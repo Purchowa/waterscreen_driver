@@ -1,5 +1,5 @@
 #include "hmi_task.h"
-#include "oled_screen/oled_panel.h"
+#include "lcd_screen/lcd_panel.h"
 
 #include "gpio/button_control.h"
 

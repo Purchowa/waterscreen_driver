@@ -9,7 +9,11 @@ typedef enum
 } DeviceState_t;
 
 void manageValvePower( DeviceState_t state );
-
 void manageWaterPump( DeviceState_t state );
+
+DeviceState_t getValvePowerState();
+DeviceState_t getWaterPumpState();
+
+const char *getDeviceStateStr( DeviceState_t state );
 
 #endif /* POWER_CONTROL_H_ */
