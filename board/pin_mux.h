@@ -561,38 +561,93 @@ void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
-#define PIO0_13_DIGIMODE_DIGITAL 0x01u
-/*!
- * @brief Switch between GPIO mode and I2C mode.: I2C mode. */
-#define PIO0_13_EGP_I2C_MODE 0x00u
-/*!
- * @brief Selects pin function.: Alternative connection 1. */
-#define PIO0_13_FUNC_ALT1 0x01u
+#define PIO0_26_DIGIMODE_DIGITAL 0x01u
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
-#define PIO0_14_DIGIMODE_DIGITAL 0x01u
+#define PIO1_1_DIGIMODE_DIGITAL 0x01u
 /*!
- * @brief Switch between GPIO mode and I2C mode.: I2C mode. */
-#define PIO0_14_EGP_I2C_MODE 0x00u
+ * @brief Selects pin function.: Alternative connection 5. */
+#define PIO1_1_FUNC_ALT5 0x05u
 /*!
- * @brief Selects pin function.: Alternative connection 1. */
-#define PIO0_14_FUNC_ALT1 0x01u
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_2_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 6. */
+#define PIO1_2_FUNC_ALT6 0x06u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_3_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_3_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_5_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_5_FUNC_ALT0 0x00u
+
+/*! @name PIO1_2 (number 61), P17[9]/P23[4]/LSPI_HS_SCK
+  @{ */
+#define BOARD_INITLCDPINS_LCD_CLK_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_CLK_PIN 2U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_CLK_PIN_MASK (1U << 2U)      /*!<@brief PORT pin mask */
+                                                           /* @} */
+
+/*! @name PIO1_3 (number 62), P17[11]/P23[5]/LSPI_HS_MISO
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITLCDPINS_LCD_DC_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_DC_GPIO_PIN_MASK (1U << 3U) /*!<@brief GPIO pin mask */
+#define BOARD_INITLCDPINS_LCD_DC_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_DC_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_DC_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                          /* @} */
+
+/*! @name PIO0_26 (number 60), P17[13]/P23[6]/LSPI_HS_MOSI
+  @{ */
+#define BOARD_INITLCDPINS_LCD_DIN_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_DIN_PIN 26U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_DIN_PIN_MASK (1U << 26U)      /*!<@brief PORT pin mask */
+                                                            /* @} */
+
+/*! @name PIO1_1 (number 59), P17[15]/P23[3]/LSPI_HS_SSEL1
+  @{ */
+#define BOARD_INITLCDPINS_LCD_CS_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_CS_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_CS_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                          /* @} */
+
+/*! @name PIO1_5 (number 31), P17[17]/P24[1]/PIO1_5_GPIO_ARD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITLCDPINS_LCD_RST_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_RST_GPIO_PIN_MASK (1U << 5U) /*!<@brief GPIO pin mask */
+#define BOARD_INITLCDPINS_LCD_RST_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_RST_PIN 5U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_RST_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
+                                                           /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitOLEDPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
+void BOARD_InitLCDPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
-#define PIO0_26_DIGIMODE_DIGITAL 0x01u
+#define PIO0_13_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 5. */
+#define PIO0_13_FUNC_ALT5 0x05u
 
-/*! @name PIO0_26 (number 60), P17[13]/P23[6]/LSPI_HS_MOSI
+/*! @name PIO0_13 (number 71), P19[9]/P19[10]/U2[E6]/P20[8]/FC1_I2C_SDA
   @{ */
 #define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PORT 0U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN 26U                   /*!<@brief PORT pin number */
-#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN_MASK (1U << 26U)      /*!<@brief PORT pin mask */
+#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN 13U                   /*!<@brief PORT pin number */
+#define BOARD_INITNEOPIXELPINS_NEOPIXEL_MOSI_PIN_MASK (1U << 13U)      /*!<@brief PORT pin mask */
                                                                        /* @} */
 
 /*!

@@ -7,7 +7,7 @@
 #include "fsl_debug_console.h"
 
 #define LOG_LEVEL            LOG_DEBUG
-#define REDIRECT_LOGS_TO_BLE 0
+#define REDIRECT_LOGS_TO_BLE 1
 
 #if REDIRECT_LOGS_TO_BLE
 #define LogHandler( msg ) bleTextWrite( msg )

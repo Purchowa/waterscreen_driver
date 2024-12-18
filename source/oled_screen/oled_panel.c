@@ -3,69 +3,73 @@
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/state_utils.h"
 #include "datetime/rtc_provider.h"
-#include "external/oled/oled.h"
+#include "external/lcd/lcd.h"
 
 #include <stdio.h>
 
 
-#define TEXT_BUFFER_SIZE       OLED_WIDTH
-#define SCREEN_SECOND_HALF_POS ( OLED_WIDTH / 2 )
-#define HORIZONTAL_MARGIN      2
+#define TEXT_BUFFER_SIZE       LCD_WIDTH
+#define SCREEN_SECOND_HALF_POS ( LCD_WIDTH / 2 )
+#define MARGIN                 2
 
-#define OLED_LAST_PAGE  ( OLED_PAGES - 1 )
-#define OLED_FIRST_PAGE 0
+#define LAST_LINE  ( LCD_FONT_HEIGHT * LCD_TXT_LINES )
+#define FIRST_LINE 0
 
-#define LINE_OFFSET ( OLED_PAGE_HEIGHT + OLED_PAGE_HEIGHT / 2 )
+#define LINE_OFFSET ( LCD_FONT_HEIGHT + LCD_FONT_HEIGHT / 2 )
 
 typedef enum
 {
-    OLED_Black,
-    OLED_Color
-} OledColors_t;
+    Screen_BGColor   = 0x3044,
+    Screen_FontColor = 0xffff
+} ScreenColors_t;
 
 static char textBuffer[TEXT_BUFFER_SIZE] = {};
 
+static size_t getTextMiddleXPos( size_t txtLen )
+{
+    return ( txtLen * LCD_FONT_WIDTH ) / 2;
+}
+
 static void drawHeader( const WaterscreenMode_t mode, bool isModeSelection )
 {
-    static const uint8_t xOffset       = 34;
-    const char          *modeStrFormat = isModeSelection ? "> %s <" : "  %s  ";
+    const char *modeStrFormat = isModeSelection ? "> %s <" : "  %s  ";
 
     snprintf( textBuffer, sizeof( textBuffer ), modeStrFormat, getModeName( mode ) );
 
-    OLED_Puts( OLED_WIDTH / 2 - xOffset, OLED_FIRST_PAGE, textBuffer );
+    LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( textBuffer ) ), FIRST_LINE + MARGIN, textBuffer,
+              Screen_FontColor );
 
-    OLED_Draw_Line( 0, LINE_OFFSET, OLED_WIDTH, LINE_OFFSET );
+    LCD_Draw_Line( 0, LINE_OFFSET, LCD_WIDTH, LINE_OFFSET, Screen_FontColor );
 }
 
 static void drawFooter()
 {
     const Datetime_t datetime = getRTCDatetime();
 
-    OLED_Draw_Line( 0, OLED_HEIGHT - LINE_OFFSET, OLED_WIDTH, OLED_HEIGHT - LINE_OFFSET );
+    LCD_Draw_Line( 0, LCD_HEIGHT - LINE_OFFSET, LCD_WIDTH, LCD_HEIGHT - LINE_OFFSET, Screen_FontColor );
 
     snprintf( textBuffer, sizeof( textBuffer ), "%u:%u:%u", datetime.time.hour, datetime.time.minute,
               datetime.time.second );
-    OLED_Puts( 0, OLED_LAST_PAGE, textBuffer );
+    LCD_Puts( MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 
     snprintf( textBuffer, sizeof( textBuffer ), "%u.%u.%u", datetime.date.day, datetime.date.month,
               datetime.date.year );
-    OLED_Puts( SCREEN_SECOND_HALF_POS + HORIZONTAL_MARGIN, OLED_LAST_PAGE, textBuffer );
+    LCD_Puts( SCREEN_SECOND_HALF_POS + 20 - MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 }
 
 static void drawInfoLineStr( const char *title, const char *str, const uint8_t lineNumber )
 {
     snprintf( textBuffer, sizeof( textBuffer ), "%s: %s", title, str );
-    OLED_Puts( HORIZONTAL_MARGIN, lineNumber, textBuffer );
+    LCD_Puts( MARGIN, lineNumber, textBuffer, Screen_FontColor );
 }
 
-#define HTTP_CODES_BUFFER_SIZE 4
+#define HTTP_CODES_BUFFER_SIZE 2
 #define HTTP_CODE_STR_LEN      32
 
 static const char *getHttpCodesStr( const HttpReturnCodes_t newCode )
 {
-    static HttpReturnCodes_t httpCodes[HTTP_CODES_BUFFER_SIZE] = { Http_UnknownError, Http_UnknownError,
-                                                                   Http_UnknownError, Http_UnknownError };
-    static char              httpStrBuffer[HTTP_CODE_STR_LEN]  = { 0 };
+    static HttpReturnCodes_t httpCodes[HTTP_CODES_BUFFER_SIZE] = { Http_UnknownError, Http_UnknownError };
+    static char              httpStrBuffer[LCD_WIDTH]          = { 0 };
 
     if ( httpCodes[0] != newCode )
     {
@@ -73,8 +77,8 @@ static const char *getHttpCodesStr( const HttpReturnCodes_t newCode )
         httpCodes[0] = newCode;
     }
 
-    snprintf( httpStrBuffer, sizeof( httpStrBuffer ), "%d,%d,%d,%d", httpCodes[0], httpCodes[1], httpCodes[2],
-              httpCodes[3] );
+    snprintf( httpStrBuffer, sizeof( httpStrBuffer ), "%s,%s", getHttpReturnCodeName( httpCodes[0] ),
+              getHttpReturnCodeName( httpCodes[1] ) );
 
     return httpStrBuffer;
 }
@@ -82,16 +86,20 @@ static const char *getHttpCodesStr( const HttpReturnCodes_t newCode )
 void drawInfoPanel( const WaterscreenContext_t *context, const WaterscreenMode_t mode, const HttpReturnCodes_t httpCode,
                     bool isModeSelection )
 {
-    OLED_Clear_Screen( OLED_Black );
-
-    const uint8_t bodyLineStart = 2;
+    LCD_Clear( Screen_BGColor );
 
     drawHeader( mode, isModeSelection );
 
-    drawInfoLineStr( "State", getStateName( context->waterscreenStateHandler ), bodyLineStart );
-    drawInfoLineStr( "HttpCodes", getHttpCodesStr( httpCode ), bodyLineStart + 1 );
+    drawInfoLineStr( "State", getStateName( context->waterscreenStateHandler ), 2 * LCD_FONT_HEIGHT );
+    // drawInfoLineStr( "HttpCodes", getHttpCodesStr( httpCode ), 3 * LCD_FONT_HEIGHT );
+
+    static const char *httpCodesTitle = "HttpCodes";
+    LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( httpCodesTitle ) ), LCD_FONT_HEIGHT * 11, "HttpCodes",
+              Screen_FontColor );
+    LCD_Draw_DotLine( 0, LCD_FONT_HEIGHT * 12, LCD_WIDTH, LCD_FONT_HEIGHT * 12, Screen_FontColor );
+    LCD_Puts( 0, LCD_FONT_HEIGHT * 13, getHttpCodesStr( httpCode ), Screen_FontColor );
 
     drawFooter();
 
-    OLED_Refresh_Gram();
+    LCD_GramRefresh();
 }

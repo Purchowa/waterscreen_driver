@@ -82,44 +82,6 @@ static void NVIC_init(void) {
 } */
 
 /***********************************************************************************************************************
- * OLED_I2C_FC1 initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'OLED_I2C_FC1'
-- type: 'flexcomm_i2c'
-- mode: 'I2C_Polling'
-- custom_name_enabled: 'true'
-- editing_lock: 'true'
-- type_id: 'flexcomm_i2c_c8597948f61bd571ab263ea4330b9dd6'
-- functional_group: 'BOARD_InitPeripherals_cm33_core0'
-- peripheral: 'FLEXCOMM1'
-- config_sets:
-  - fsl_i2c:
-    - i2c_mode: 'kI2C_Master'
-    - clockSource: 'FXCOMFunctionClock'
-    - clockSourceFreq: 'BOARD_BootClockPLL150M'
-    - i2c_master_config:
-      - enableMaster: 'true'
-      - baudRate_Bps: '1000000'
-      - enableTimeout: 'false'
-      - timeout_Ms: '35'
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-const i2c_master_config_t OLED_I2C_FC1_config = {
-  .enableMaster = true,
-  .baudRate_Bps = 1000000UL,
-  .enableTimeout = false,
-  .timeout_Ms = 35U
-};
-
-static void OLED_I2C_FC1_init(void) {
-  /* Initialization function */
-  I2C_MasterInit(OLED_I2C_FC1_PERIPHERAL, &OLED_I2C_FC1_config, OLED_I2C_FC1_CLOCK_SOURCE);
-}
-
-/***********************************************************************************************************************
  * VALVES_SPI_FC3 initialization code
  **********************************************************************************************************************/
 /* clang-format off */
@@ -183,19 +145,19 @@ static void VALVES_SPI_FC3_init(void) {
 }
 
 /***********************************************************************************************************************
- * NEOPIXELS_SPI_FC8 initialization code
+ * NEOPIXELS_SPI_FC1 initialization code
  **********************************************************************************************************************/
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 instance:
-- name: 'NEOPIXELS_SPI_FC8'
+- name: 'NEOPIXELS_SPI_FC1'
 - type: 'flexcomm_spi'
 - mode: 'SPI_Polling'
 - custom_name_enabled: 'true'
 - editing_lock: 'true'
 - type_id: 'flexcomm_spi_b6bbc4b9dd1d40a58bb9821123930d3a'
 - functional_group: 'BOARD_InitPeripherals_cm33_core0'
-- peripheral: 'FLEXCOMM8'
+- peripheral: 'FLEXCOMM1'
 - config_sets:
   - fsl_spi:
     - spi_mode: 'kSPI_Master'
@@ -220,7 +182,7 @@ instance:
         - transferDelay: '0'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
-const spi_master_config_t NEOPIXELS_SPI_FC8_config = {
+const spi_master_config_t NEOPIXELS_SPI_FC1_config = {
   .enableLoopback = false,
   .enableMaster = true,
   .polarity = kSPI_ClockPolarityActiveHigh,
@@ -240,9 +202,9 @@ const spi_master_config_t NEOPIXELS_SPI_FC8_config = {
   }
 };
 
-static void NEOPIXELS_SPI_FC8_init(void) {
+static void NEOPIXELS_SPI_FC1_init(void) {
   /* Initialization function */
-  SPI_MasterInit(NEOPIXELS_SPI_FC8_PERIPHERAL, &NEOPIXELS_SPI_FC8_config, NEOPIXELS_SPI_FC8_CLOCK_SOURCE);
+  SPI_MasterInit(NEOPIXELS_SPI_FC1_PERIPHERAL, &NEOPIXELS_SPI_FC1_config, NEOPIXELS_SPI_FC1_CLOCK_SOURCE);
 }
 
 /***********************************************************************************************************************
@@ -321,15 +283,78 @@ static void BLE_USART_FC7_init(void) {
 }
 
 /***********************************************************************************************************************
+ * LCD_SPI_FC8 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'LCD_SPI_FC8'
+- type: 'flexcomm_spi'
+- mode: 'SPI_Polling'
+- custom_name_enabled: 'true'
+- editing_lock: 'true'
+- type_id: 'flexcomm_spi_b6bbc4b9dd1d40a58bb9821123930d3a'
+- functional_group: 'BOARD_InitPeripherals_cm33_core0'
+- peripheral: 'FLEXCOMM8'
+- config_sets:
+  - fsl_spi:
+    - spi_mode: 'kSPI_Master'
+    - clockSource: 'FXCOMFunctionClock'
+    - clockSourceFreq: 'BOARD_BootClockPLL150M'
+    - spi_master_config:
+      - enableLoopback: 'false'
+      - enableMaster: 'true'
+      - polarity: 'kSPI_ClockPolarityActiveHigh'
+      - phase: 'kSPI_ClockPhaseFirstEdge'
+      - direction: 'kSPI_MsbFirst'
+      - baudRate_Bps: '30000000'
+      - dataWidth: 'kSPI_Data8Bits'
+      - sselNum: 'kSPI_Ssel1'
+      - sselPol_set: ''
+      - txWatermark: 'kSPI_TxFifo0'
+      - rxWatermark: 'kSPI_RxFifo1'
+      - delayConfig:
+        - preDelay: '0'
+        - postDelay: '0'
+        - frameDelay: '0'
+        - transferDelay: '0'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const spi_master_config_t LCD_SPI_FC8_config = {
+  .enableLoopback = false,
+  .enableMaster = true,
+  .polarity = kSPI_ClockPolarityActiveHigh,
+  .phase = kSPI_ClockPhaseFirstEdge,
+  .direction = kSPI_MsbFirst,
+  .baudRate_Bps = 30000000UL,
+  .dataWidth = kSPI_Data8Bits,
+  .sselNum = kSPI_Ssel1,
+  .sselPol = kSPI_SpolActiveAllLow,
+  .txWatermark = kSPI_TxFifo0,
+  .rxWatermark = kSPI_RxFifo1,
+  .delayConfig = {
+    .preDelay = 0U,
+    .postDelay = 0U,
+    .frameDelay = 0U,
+    .transferDelay = 0U
+  }
+};
+
+static void LCD_SPI_FC8_init(void) {
+  /* Initialization function */
+  SPI_MasterInit(LCD_SPI_FC8_PERIPHERAL, &LCD_SPI_FC8_config, LCD_SPI_FC8_CLOCK_SOURCE);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals_cm33_core0(void)
 {
   /* Initialize components */
-  OLED_I2C_FC1_init();
   VALVES_SPI_FC3_init();
-  NEOPIXELS_SPI_FC8_init();
+  NEOPIXELS_SPI_FC1_init();
   BLE_USART_FC7_init();
+  LCD_SPI_FC8_init();
 }
 
 /***********************************************************************************************************************

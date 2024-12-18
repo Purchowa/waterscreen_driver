@@ -1,4 +1,3 @@
-#include "fsl_spi.h"
 #include "neopixels.h"
 
 #include <assert.h>
@@ -9,8 +8,8 @@
 #define CODE_0          0b10000
 #define CODE_1          0b11100
 
-SPI_Type *SPI_base   = NULL;
-uint32_t  ledsNumber = 0;
+static SPI_Type *SPI_base   = NULL;
+static uint32_t  ledsNumber = 0;
 
 void Neopixels_Init( SPI_Type *base, uint32_t n )
 {

@@ -8,7 +8,7 @@
 
 
 static colorGRB_t  s_grbColors[NEOPIXEL_COUNT];
-static const float s_secondaryColorFactor = 0.5f;
+static const float s_secondaryColorFactor = 0.1f;
 
 void dimNeopixels()
 {

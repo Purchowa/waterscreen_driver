@@ -10,7 +10,7 @@
 #include "datetime/rtc_provider.h"
 #include "neopixels/neopixel_defines.h"
 
-#include "external/oled/oled.h"
+#include "external/lcd/lcd.h"
 #include "external/neopixel/neopixels.h"
 
 /* FreeRTOS kernel includes. */
@@ -43,8 +43,8 @@ int main()
     SystemCoreClockUpdate();
 
     initRTC();
-    OLED_Init( OLED_I2C );
-    Neopixels_Init( NEOPIXELS_SPI_FC8_PERIPHERAL, TEST_NEOPIXEL_COUNT ); // TODO: Temporary neopixel amount for testing
+    LCD_Init( LCD_SPI_FC8_PERIPHERAL );
+    Neopixels_Init( NEOPIXELS_SPI_FC1_PERIPHERAL, TEST_NEOPIXEL_COUNT ); // TODO: Temporary neopixel amount for testing
 
     if ( xTaskCreate( bleReceiverTask, "BLE-Receiver", BLE_RECEIVE_TASK_STACK_SIZE, NULL, BLE_RECEIVE_TASK_PRIORITY,
                       NULL ) != pdPASS )

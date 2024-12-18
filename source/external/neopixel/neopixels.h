@@ -1,9 +1,9 @@
 #ifndef NEOPIXELS_H_
 #define NEOPIXELS_H_
 
+#include "fsl_spi.h"
 #include <stdint.h>
 
-typedef SPI_Type;
 
 void Neopixels_Init( SPI_Type *base, uint32_t n );
 void Neopixels_Send( uint32_t *value );

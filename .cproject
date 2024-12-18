@@ -238,6 +238,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/oled}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/neopixels}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/neopixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/lcd}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.1023465353" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.2006366839" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -430,12 +431,12 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/ble"/>
 						<entry excluding="WiFiCfg-example.h" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/config"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/datetime"/>
-						<entry excluding="aws_iot|neopixel|oled|wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry excluding="lcd|aws_iot|neopixel|oled|wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
 						<entry excluding="logging" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/aws_iot"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/aws_iot/logging"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/cjson"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/lcd"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/neopixel"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/oled"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/wlan"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external_communication"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/gpio"/>
@@ -682,6 +683,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/oled}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/neopixels}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/neopixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/lcd}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.783918223" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.1085135446" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -824,12 +826,12 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/ble"/>
 						<entry excluding="WiFiCfg-example.h" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/config"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/datetime"/>
-						<entry excluding="aws_iot|neopixel|oled|wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
+						<entry excluding="lcd|aws_iot|neopixel|oled|wlan|cjson" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external"/>
 						<entry excluding="logging" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/aws_iot"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/aws_iot/logging"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/cjson"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/lcd"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/neopixel"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/oled"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external/wlan"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/external_communication"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source/gpio"/>

@@ -10,7 +10,6 @@
  * Included files
  **********************************************************************************************************************/
 #include "fsl_common.h"
-#include "fsl_i2c.h"
 #include "fsl_spi.h"
 #include "fsl_reset.h"
 #include "fsl_usart.h"
@@ -24,21 +23,16 @@ extern "C" {
  * Definitions
  **********************************************************************************************************************/
 /* Definitions for BOARD_InitPeripherals_cm33_core0 functional group */
-/* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM1 */
-/* Definition of peripheral ID */
-#define OLED_I2C_FC1_PERIPHERAL ((I2C_Type *)FLEXCOMM1)
-/* Definition of the clock source frequency */
-#define OLED_I2C_FC1_CLOCK_SOURCE 12000000UL
 /* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM3 */
 /* Definition of peripheral ID */
 #define VALVES_SPI_FC3_PERIPHERAL ((SPI_Type *)FLEXCOMM3)
 /* Definition of the clock source frequency */
 #define VALVES_SPI_FC3_CLOCK_SOURCE 12000000UL
-/* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM8 */
+/* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM1 */
 /* Definition of peripheral ID */
-#define NEOPIXELS_SPI_FC8_PERIPHERAL ((SPI_Type *)FLEXCOMM8)
+#define NEOPIXELS_SPI_FC1_PERIPHERAL ((SPI_Type *)FLEXCOMM1)
 /* Definition of the clock source frequency */
-#define NEOPIXELS_SPI_FC8_CLOCK_SOURCE 12000000UL
+#define NEOPIXELS_SPI_FC1_CLOCK_SOURCE 12000000UL
 /* Definition of peripheral ID */
 #define BLE_USART_FC7_PERIPHERAL ((USART_Type *)FLEXCOMM7)
 /* Definition of the clock source frequency */
@@ -49,14 +43,19 @@ extern "C" {
 #define BLE_USART_FC7_FLEXCOMM_IRQ_PRIORITY 3
 /* BLE_USART_FC7 interrupt handler identifier. */
 #define BLE_USART_FC7_FLEXCOMM_IRQHANDLER FLEXCOMM7_IRQHandler
+/* BOARD_InitPeripherals_cm33_core0 defines for FLEXCOMM8 */
+/* Definition of peripheral ID */
+#define LCD_SPI_FC8_PERIPHERAL ((SPI_Type *)FLEXCOMM8)
+/* Definition of the clock source frequency */
+#define LCD_SPI_FC8_CLOCK_SOURCE 30000000UL
 
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
-extern const i2c_master_config_t OLED_I2C_FC1_config;
 extern const spi_master_config_t VALVES_SPI_FC3_config;
-extern const spi_master_config_t NEOPIXELS_SPI_FC8_config;
+extern const spi_master_config_t NEOPIXELS_SPI_FC1_config;
 extern const usart_config_t BLE_USART_FC7_config;
+extern const spi_master_config_t LCD_SPI_FC8_config;
 
 /***********************************************************************************************************************
  * Initialization functions
