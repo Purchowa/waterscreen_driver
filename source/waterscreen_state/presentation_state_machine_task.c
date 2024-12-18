@@ -19,6 +19,7 @@ void presentationStateMachineTask( void *params )
     for ( ;; )
     {
         performWaterscreenAction( &g_context );
+        handleForcedStateChange( &g_context );
         logWaterscreenStatus( &g_context );
 
         vTaskDelayUntil( &lastWakeTime, pdMS_TO_TICKS( g_context.currentStateDelay ) );
