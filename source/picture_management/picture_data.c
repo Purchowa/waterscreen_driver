@@ -1597,7 +1597,7 @@ PictureInfo_t *g_weatherPictures[WEATHER_CONDITION_SIZE] = { &s_rainInfo,      /
                                                              &s_cloudsInfo };  // Clouds
 
 
-const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
+const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][NUMBER_OF_ROWS_IN_PICTURE_CHARACTER] = {
     { 0x0000, 0x0ff0, 0x1ff8, 0x3ffc, 0x7ffe, 0x7ffe, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e,
       0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7ffe, 0x7ffe, 0x3ffc, 0x1ff8, 0x0ff0, 0x0000 },   // 0
 
@@ -1631,7 +1631,7 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
     { 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x03c0, 0x03c0, 0x03c0, 0x0000, 0x0000, 0x0000,
       0x0000, 0x0000, 0x0000, 0x03c0, 0x03c0, 0x03c0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 } }; // :
 
-pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = { 0 };
+pictureRow_t g_timePicture[NUMBER_OF_ROWS_IN_PICTURE_CHARACTER] = { 0 };
 
 SeasonalPicture_t g_seasonsInfo[SEASONS_COUNT] = {
     { .seasonDateStart = { .day = 20, .month = March }, .picture = &s_roseInfo },        // Spring

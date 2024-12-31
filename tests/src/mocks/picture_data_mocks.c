@@ -10,7 +10,7 @@ PictureInfo_t *g_standardModePictures[STANDARD_MODE_STATIC_PICTURE_COUNT] = {};
 
 PictureInfo_t *g_weatherPictures[WEATHER_CONDITION_SIZE] = {};
 
-const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][CHARACTER_TO_PICTURE_ROW_COUNT] = {
+const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][NUMBER_OF_ROWS_IN_PICTURE_CHARACTER] = {
     { 0x0000, 0x0ff0, 0x1ff8, 0x3ffc, 0x7ffe, 0x7ffe, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e,
       0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7c3e, 0x7ffe, 0x7ffe, 0x3ffc, 0x1ff8, 0x0ff0, 0x0000 },   // 0
 
@@ -44,7 +44,7 @@ const pictureCharacter_t g_characterToPictureMap[CHARACTER_TO_PICTURE_MAP_SIZE][
     { 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x03c0, 0x03c0, 0x03c0, 0x0000, 0x0000, 0x0000,
       0x0000, 0x0000, 0x0000, 0x03c0, 0x03c0, 0x03c0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 } }; // :
 
-pictureRow_t g_timePicture[CHARACTER_TO_PICTURE_ROW_COUNT] = {};
+pictureRow_t g_timePicture[NUMBER_OF_ROWS_IN_PICTURE_CHARACTER] = {};
 
 static PictureInfo_t sprinInfo  = { .picture = { .size = MOCKED_SPRING_SIZE, .data = s_mockedPicture } };
 static PictureInfo_t summerInfo = { .picture = { .size = MOCKED_SUMMER_SIZE, .data = s_mockedPicture } };

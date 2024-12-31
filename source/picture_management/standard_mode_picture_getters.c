@@ -37,13 +37,13 @@ static uint8_t extractTensFromNumber( const uint8_t number )
     return ( number / ONES_EXTRACTOR ) % TENS_EXTRACTOR;
 }
 
-static PictureInfo_t s_timePictureInfo = { .picture = { .size = CHARACTER_TO_PICTURE_ROW_COUNT, .data = NULL },
+static PictureInfo_t s_timePictureInfo = { .picture = { .size = NUMBER_OF_ROWS_IN_PICTURE_CHARACTER, .data = NULL },
                                            .colors  = { .main = { 0, 153, 255 }, .secondary = { 0, 255, 47 } } };
 
 PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureInfo_t **const picture, const Datetime_t *datetime,
                                                    const WeatherCondition_t )
 {
-    memset( g_timePicture, 0, sizeof( *g_timePicture ) * CHARACTER_TO_PICTURE_ROW_COUNT );
+    memset( g_timePicture, 0, sizeof( *g_timePicture ) * NUMBER_OF_ROWS_IN_PICTURE_CHARACTER );
 
     const uint8_t hourOnes = extractOnesFromNumber( datetime->time.hour );
     const uint8_t hourTens = extractTensFromNumber( datetime->time.hour );
@@ -54,7 +54,7 @@ PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureInfo_t **const picture
     assert( hourOnes < CHARACTER_TO_PICTURE_MAP_SIZE && hourTens < CHARACTER_TO_PICTURE_MAP_SIZE &&
             minuteOnes < CHARACTER_TO_PICTURE_MAP_SIZE && minuteTens < CHARACTER_TO_PICTURE_MAP_SIZE );
 
-    for ( size_t i = 0; i < CHARACTER_TO_PICTURE_ROW_COUNT; ++i )
+    for ( size_t i = 0; i < NUMBER_OF_ROWS_IN_PICTURE_CHARACTER; ++i )
     {
         g_timePicture[i] = (pictureRow_t)g_characterToPictureMap[hourTens][i] << HOUR_TENS_SHIFT |
             (pictureRow_t)g_characterToPictureMap[hourOnes][i] << HOUR_ONES_SHIFT |
