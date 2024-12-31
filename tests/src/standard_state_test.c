@@ -10,12 +10,20 @@
 #include "datetime/datetime_types.h"
 #include "gpio/power_control.h"
 
+#include <sensors_control.h>
 #include <waterscreen_states.h>
+
+static void checkSensorsMock()
+{
+    will_return( shouldWaterAlarmTrigger, false );
+    will_return( shouldWaterPumpTrigger, false );
+    expect_any( manageWaterPump, state );
+}
 
 static pictureRow_t            s_mockedSingleRow = 128;
 static const PictureDataSpan_t s_expectedPicture = { .size = 1, .data = &s_mockedSingleRow };
 
-void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
+void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePowerAndCheckSensors()
 {
     const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = false,
                                        .workTimeInStandardMode  = 1,
@@ -28,6 +36,7 @@ void givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower()
 
     will_return_datetime( datetime );
     expect_value( manageValvePower, state, OffDeviceState );
+    checkSensorsMock();
     performWaterscreenAction( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
@@ -56,7 +65,7 @@ void givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndC
     assert_ptr_equal( context.waterscreenStateHandler, presentationState );
 }
 
-void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePower()
+void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePowerAndCheckSensors()
 {
     const StandardModeConfig_t cfg = { .isWorkingDuringWeekends = true,
                                        .workTimeInStandardMode  = 1,
@@ -70,6 +79,7 @@ void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffVal
 
     will_return_datetime( datetime );
     expect_value( manageValvePower, state, OffDeviceState );
+    checkSensorsMock();
     performWaterscreenAction( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
@@ -78,10 +88,11 @@ void givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffVal
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test( givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePower ),
+        cmocka_unit_test( givenWeekendWithoutEnabledWeekends_standardModeState_turnOffValvePowerAndCheckSensors ),
         cmocka_unit_test(
             givenWeekWithEnabledWeekendsAndInWorkRange_standardModeState_getPictureAndChangeToPresentationState ),
-        cmocka_unit_test( givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePower ),
+        cmocka_unit_test(
+            givenWeekWithEnabledWeekendsOutsideOfWorkRange_standardModeState_turnOffValvePowerAndCheckSensors ),
     };
 
     return cmocka_run_group_tests_name( "Standard mode state test ", tests, NULL, NULL );

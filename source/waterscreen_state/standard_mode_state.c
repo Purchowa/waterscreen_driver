@@ -55,6 +55,7 @@ void standardModeState( WaterscreenContext_t *context )
     if ( !isWorkingConditionSatisfied( &datetime ) )
     {
         manageValvePower( OffDeviceState );
+        checkSensorsSubState( context );
         return;
     }
 

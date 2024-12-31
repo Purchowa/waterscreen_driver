@@ -16,6 +16,7 @@ void forceChangeWaterscreenState( WaterscreenContext_t *context, waterscreenStat
     changeWaterscreenState( context, newState );
     dimNeopixels();
     manageValvePower( OffDeviceState );
+    manageWaterPump( OffDeviceState );
     closeValvesSubState( context );
 }
 
