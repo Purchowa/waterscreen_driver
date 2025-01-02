@@ -9,11 +9,18 @@
 #define BLE_RECEIVE_BUFFER_CAPACITY 128
 #define WORD_BUFFER_CAPACITY        64
 
+// TODO: config, bigger custom picture, wifi password and reload ability.
+
 typedef enum
 {
     SmallNum,
     BigNum,
-    Text
+    Text,
+
+    Configuration,
+    CustomPicture,
+    TurnOnRTMode,
+    TurnOffRTMode,
 } DataType_t;
 
 typedef uint32_t smallNum_t;
@@ -77,8 +84,8 @@ void bleReceiverTask( void * )
             }
         default:
             {
-
                 LogDebug( "Unknown incoming data" );
+                xStreamBufferReset( g_rxBLEBuffer );
             }
         }
 
