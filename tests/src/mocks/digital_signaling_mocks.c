@@ -16,9 +16,9 @@ void manageWaterPump( DeviceState_t state )
     check_expected( state );
 }
 
-status_t sendDataToValves( const uint64_t *data )
+status_t sendDataToValves( const uint64_t data )
 {
-    check_expected( *data );
+    check_expected( data );
 
     return mock_type( status_t );
 }

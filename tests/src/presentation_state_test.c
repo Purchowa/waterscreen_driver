@@ -28,7 +28,7 @@ static void givenPicture_presentationState_printBottomUp()
                                      .valveOpenCounter        = mockedPicture->picture.size - 1 };
     for ( int8_t i = mockedPicture->picture.size - 1; 0 <= i; --i )
     { // Print picture
-        expect_value( sendDataToValves, *data, mockedPicture->picture.data[i] );
+        expect_value( sendDataToValves, data, mockedPicture->picture.data[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlarmTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );

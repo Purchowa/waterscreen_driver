@@ -13,6 +13,6 @@
 
 void assertClosedValves()
 {
-    expect_value( sendDataToValves, *data, 0 );
+    expect_value( sendDataToValves, data, 0 );
     will_return( sendDataToValves, SuccessSPI );
 }

@@ -75,7 +75,7 @@ generate_test("valves_test"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("config_parser_test"
-        "external_communication/waterscreen_config_parser.c;external/cjson/cjson.c"
+        "external_communication/waterscreen_config_parser.c;config/waterscreen_config.c;external/cjson/cjson.c"
         "")
 
 generate_test("datetime_parser_test"

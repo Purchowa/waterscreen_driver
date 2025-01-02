@@ -104,9 +104,9 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     }
 
     const cJSON *mode = cJSON_GetObjectItemCaseSensitive( cfgJson, "mode" );
-    if ( !cJSON_IsNumber( mode ) || !( Mode_Standard <= mode->valueint && mode->valueint < Mode_SIZE ) )
+    if ( !cJSON_IsNumber( mode ) || !( 0 <= mode->valueint && mode->valueint < Mode_SIZE ) )
         return Http_WaterscreenConfigParsingError;
-    config->mode = mode->valueint;
+    setWaterscreenMode( &config->mode, mode->valueint );
 
     const cJSON *enableWeekends = cJSON_GetObjectItemCaseSensitive( cfgJson, "enableWeekends" );
     if ( !cJSON_IsBool( enableWeekends ) )

@@ -51,7 +51,7 @@ static void requestWaterscreenConfig( bool isInitialRequest )
     {
         LogDebug( "WS-config updated!" );
 
-        forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode] );
+        forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode.current] );
         initStandardModeConfig( &g_waterscreenConfig.standardModeConfig );
     }
     else
@@ -82,7 +82,7 @@ static void handleRequests()
 
     if ( callCounter % WATERSCREEN_STATE_POST_CALLS_NUMBER == 0 )
     {
-        const WaterscreenStatus_t status = generateWaterscreenStatus( g_waterscreenConfig.mode, &g_context );
+        const WaterscreenStatus_t status = generateWaterscreenStatus( g_waterscreenConfig.mode.current, &g_context );
         s_httpReturnCode                 = httpPostWaterscreenStatus( &status );
 
         logHttpRequest( "WS-status", s_httpReturnCode, POST );

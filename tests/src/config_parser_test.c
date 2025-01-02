@@ -25,7 +25,7 @@ static bool compareConfigs( const WaterscreenConfig_t *first, const WaterscreenC
 {
     bool areEqual = true;
 
-    areEqual &= first->mode == second->mode;
+    areEqual &= first->mode.current == second->mode.current;
     areEqual &= first->standardModeConfig.isWorkingDuringWeekends == second->standardModeConfig.isWorkingDuringWeekends;
     areEqual &= first->standardModeConfig.workTimeInStandardMode == second->standardModeConfig.workTimeInStandardMode;
     areEqual &= first->standardModeConfig.idleTimeInStandardMode == second->standardModeConfig.idleTimeInStandardMode;

@@ -60,7 +60,7 @@ void idleMenuState()
         }
     }
 
-    drawInfoPanel( &g_context, g_waterscreenConfig.mode, getLastHttpCode(), changeState );
+    drawInfoPanel( &g_context, g_waterscreenConfig.mode.current, getLastHttpCode(), changeState );
 }
 
 void modeSelectionMenuState()
@@ -80,8 +80,8 @@ void modeSelectionMenuState()
             LogDebug( "Mode changed to %s", getModeName( mode ) );
             pressStart = 0;
 
-            g_waterscreenConfig.mode = mode;
-            forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode] );
+            setWaterscreenMode( &g_waterscreenConfig.mode, mode );
+            forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode.current] );
 
             s_menuState = idleMenuState;
         }

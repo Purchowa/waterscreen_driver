@@ -2,7 +2,7 @@
 #include "valves_spi_cfg.h"
 #include <fsl_spi.h>
 
-status_t sendDataToValves( const uint64_t *data )
+status_t sendDataToValves( const uint64_t data )
 {
     static uint64_t       readMock       = 0;
     static spi_transfer_t valvesTransfer = { .txData      = NULL,
@@ -10,7 +10,7 @@ status_t sendDataToValves( const uint64_t *data )
                                              .dataSize    = VALVE_BUFFER_SIZE,
                                              .configFlags = kSPI_FrameAssert };
 
-    valvesTransfer.txData = (uint8_t *)data;
+    valvesTransfer.txData = (uint8_t *)&data;
 
     return SPI_MasterTransferBlocking( VALVES_SPI_MASTER, &valvesTransfer );
 }

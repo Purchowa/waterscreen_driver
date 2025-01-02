@@ -33,12 +33,20 @@ typedef struct
 
 typedef struct
 {
-    WaterscreenMode_t    mode;
+    WaterscreenMode_t current;
+    WaterscreenMode_t previous;
+} ModeInfo_t;
+
+typedef struct
+{
+    ModeInfo_t           mode;
     StandardModeConfig_t standardModeConfig;
     PictureInfo_t *const customPicture;
 } WaterscreenConfig_t;
 
 extern WaterscreenConfig_t              g_waterscreenConfig;
 extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];
+
+void setWaterscreenMode( ModeInfo_t *, WaterscreenMode_t );
 
 #endif /* WATERSCREEN_CONFIG_H_ */

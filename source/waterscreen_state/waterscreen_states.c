@@ -56,10 +56,13 @@ void presentationState( WaterscreenContext_t *context )
     {
         const PictureDataSpan_t *picture = &context->pictureInfo->picture;
         const PictureColors_t   *colors  = &context->pictureInfo->colors;
+        const uint64_t           rowData = picture->data[context->valveOpenCounter];
 
-        lightUpNeopixels( picture->data[context->valveOpenCounter], colors->main, colors->secondary );
+        lightUpNeopixels( rowData, colors->main, colors->secondary );
 
-        const status_t status       = sendDataToValves( &picture->data[context->valveOpenCounter--] );
+        const status_t status = sendDataToValves( rowData );
+        --context->valveOpenCounter;
+
         context->currentStateStatus = status;
         context->currentStateDelay  = PRESENTING_DELAY_MS;
     }
@@ -69,7 +72,7 @@ void closeValvesSubState( WaterscreenContext_t *context )
 {
     static const uint64_t closeValves = 0;
 
-    const status_t status       = sendDataToValves( &closeValves );
+    const status_t status       = sendDataToValves( closeValves );
     context->currentStateStatus = status;
 }
 
@@ -77,7 +80,7 @@ void idleState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
 
-    context->currentStateDelay = SECOND_MS;
+    context->currentStateDelay = SECOND_MS / 2;
 }
 
 void lowWaterState( WaterscreenContext_t *context )

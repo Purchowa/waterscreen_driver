@@ -42,7 +42,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
         assert_ptr_equal( context.waterscreenStateHandler, presentationState );
         for ( int8_t j = 0; j <= lastIndexFromPicture; ++j )
         {
-            expect_any( sendDataToValves, *data );
+            expect_any( sendDataToValves, data );
             expect_any( manageWaterPump, state );
             will_return( sendDataToValves, SuccessSPI );
             will_return( shouldWaterAlarmTrigger, false );
