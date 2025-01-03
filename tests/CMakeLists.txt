@@ -17,6 +17,8 @@ set(EMBEDDED_DIRS
         ${PROJ_DIR}/source/datetime
         ${PROJ_DIR}/source/picture_management
         ${PROJ_DIR}/source/neopixels
+        ${PROJ_DIR}/source/ble
+        ${PROJ_DIR}/source/config
 )
 
 SET(TEST_UTILS_SRC
@@ -75,7 +77,7 @@ generate_test("valves_test"
         "digital_signaling_mocks.c;picture_logic_mocks.c")
 
 generate_test("config_parser_test"
-        "external_communication/waterscreen_config_parser.c;config/waterscreen_config.c;external/cjson/cjson.c"
+        "external_communication/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"
         "")
 
 generate_test("datetime_parser_test"
@@ -110,3 +112,7 @@ generate_test("neopixel_converter_test"
         "neopixels/color.c;neopixels/converter_utils.c;neopixels/neopixel_converter.c"
         "")
 target_compile_definitions("neopixel_converter_test" PRIVATE NEOPIXEL_COUNT=12 PICTURE_WIDTH=6)
+
+generate_test("ble_receiver_handlers_test"
+        "ble/receiver_handlers.c;config/waterscreen_config.c"
+        "context_handler_mocks.c;states_mocks.c")

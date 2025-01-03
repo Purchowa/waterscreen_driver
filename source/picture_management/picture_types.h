@@ -9,12 +9,13 @@
 
 #define RESIZABLE_PICTURES_CAPACITY 8
 
+typedef uint32_t pictureSize_t;
 typedef uint64_t pictureRow_t;
 typedef uint16_t pictureCharacter_t;
 
 typedef struct
 {
-    uint8_t       size;
+    pictureSize_t size;
     pictureRow_t *data;
 } PictureDataSpan_t;
 
@@ -35,8 +36,8 @@ typedef struct
  */
 typedef struct
 {
-    const uint8_t  size;
-    PictureInfo_t *data[RESIZABLE_PICTURES_CAPACITY];
+    const pictureSize_t size;
+    PictureInfo_t      *data[RESIZABLE_PICTURES_CAPACITY];
 } ResizablePictureInfoArray_t;
 
 typedef struct

@@ -1,32 +1,36 @@
 #include "ble_receiver.h"
 
+#include "common_utils.h"
 #include "receiver_handlers.h"
+#include "receiver_data_types.h"
+
+#include "picture_management/picture_types.h"
+#include "picture_management/picture_data.h"
+#include "config/rtos_time_defines.h"
+
 #include "logging.h"
 
 #include <inttypes.h>
 #include <task.h>
 
-#define BLE_RECEIVE_BUFFER_CAPACITY 128
+#define BLE_RECEIVE_BUFFER_CAPACITY 8192
 #define WORD_BUFFER_CAPACITY        64
+
+#define MAX_DATA_DELAY_TICKS pdMS_TO_TICKS( 5 * SECOND_MS )
 
 // TODO: config, bigger custom picture, wifi password and reload ability.
 
-typedef enum
+static ColorRGB_t receiveRGB( SerializedColorRGB_t c )
 {
-    SmallNum,
-    BigNum,
-    Text,
+    ColorRGB_t rgb = { c.r, c.g, c.b };
 
-    Configuration,
-    CustomPicture,
-    TurnOnRTMode,
-    TurnOffRTMode,
-} DataType_t;
-
-typedef uint32_t smallNum_t;
-typedef uint64_t bigNum_t;
-typedef uint8_t  typeInfo_t;
-typedef uint8_t  textSize_t;
+    return rgb;
+}
+static void receivePictureColors( const SerializedPictureColors_t *serializedColors, PictureColors_t *colors )
+{
+    colors->main      = receiveRGB( serializedColors->main );
+    colors->secondary = receiveRGB( serializedColors->secondary );
+}
 
 StreamBufferHandle_t g_rxBLEBuffer       = NULL;
 static bool          s_isClientConnected = false;
@@ -42,8 +46,7 @@ void bleReceiverTask( void * )
 
     char       text[WORD_BUFFER_CAPACITY] = {};
     typeInfo_t typeInfo                   = 0;
-    smallNum_t smallNum                   = 0;
-    bigNum_t   bigNum                     = 0;
+    bool       isRTModeActive             = false;
     for ( ;; )
     {
         // { 1B[typeInfo]|xB[rest...] }
@@ -51,25 +54,50 @@ void bleReceiverTask( void * )
 
         switch ( typeInfo )
         {
-        case SmallNum:
+        case RTModeActive: // { 1B[isRTModeActive] }
             {
-                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( smallNum_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &smallNum, sizeof( smallNum_t ), portMAX_DELAY );
-                LogDebug( "Got small: %" PRIu32, smallNum );
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( rtModeActive_t ) );
+                xStreamBufferReceive( g_rxBLEBuffer, &isRTModeActive, sizeof( rtModeActive_t ), MAX_DATA_DELAY_TICKS );
+
+                handleBLERTModeEvent( isRTModeActive );
                 break;
             }
-        case BigNum:
+
+        case CustomPicture: // { 6B[colors-main,secondary]|4B[pictureSize]|size_B[pictureData] }
             {
-                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( bigNum_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &bigNum, sizeof( bigNum_t ), portMAX_DELAY );
-                LogDebug( "Got big: %" PRIu64, bigNum );
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer,
+                                              sizeof( SerializedPictureColors_t ) + sizeof( pictureSize_t ) );
+
+                SerializedPictureColors_t colorsPayload;
+                bool                      isOk = true;
+
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &colorsPayload, sizeof( SerializedPictureColors_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( SerializedPictureColors_t );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &g_customPicture.picture.size, sizeof( pictureSize_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( pictureSize_t );
+
+                g_customPicture.picture.size = clamp( g_customPicture.picture.size, 0, MAX_CUSTOM_PICTURE_HEIGHT );
+
+                const size_t expectedPictureSize = g_customPicture.picture.size * sizeof( pictureRow_t );
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, expectedPictureSize );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, g_customPicture.picture.data, expectedPictureSize,
+                                              MAX_DATA_DELAY_TICKS ) == expectedPictureSize;
+
+                if ( !isOk )
+                {
+                    xStreamBufferReset( g_rxBLEBuffer );
+                    LogError( "[CustomPicture] Some data might got lost" );
+                    break;
+                }
+
+                receivePictureColors( &colorsPayload, &g_customPicture.colors );
+                handleCustomPictureEvent();
                 break;
             }
-        case Text:
+        case Text: // { 1B[size]|size_B[text] }
             {
                 textSize_t textSize = 0;
 
-                // Assume that word comes as { 1B[size]|sizeB[text] }
                 xStreamBufferReceive( g_rxBLEBuffer, &textSize, sizeof( textSize_t ), portMAX_DELAY );
                 if ( 0 < textSize && textSize < WORD_BUFFER_CAPACITY )
                 {

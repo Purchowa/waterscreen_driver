@@ -1,9 +1,10 @@
 #include "state_utils.h"
 
 #include "standard_mode_state.h"
+#include "realtime_mode.h"
 #include "waterscreen_states.h"
 
-#define WATERSCREEN_STATE_COUNT 5
+#define WATERSCREEN_STATE_COUNT 6
 #define UNKNOWN_STATE           "unknown"
 
 
@@ -20,7 +21,9 @@ const char *getStateName( const waterscreenStateFunction_t state )
         { presentationState, "presentation" },
         { idleState, "idle" },
         { lowWaterState, "low water" },
-        { standardModeState, "standard" } };
+        { standardModeState, "standard" },
+        { realtimeModeState, "bl-realtime" },
+    };
 
     for ( uint8_t i = 0; i < WATERSCREEN_STATE_COUNT; ++i )
     {
@@ -44,6 +47,8 @@ const char *getModeName( const WaterscreenMode_t mode )
     case Mode_Service:
         return "Service";
 
+    case Mode_RT:
+        return "BL-RealTime";
     default:
         return UNKNOWN_STATE;
     }

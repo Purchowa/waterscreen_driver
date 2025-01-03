@@ -5,9 +5,8 @@
 #include <stdbool.h>
 
 
-#define BLE_NOTIFY_EVN_LEN sizeof( CLIENT_CONNECTED_EVN )
-
-const size_t getNotifyEventsTextLength();
-void         handleBLENotifyEvents( const char *event, bool *isClientConnected );
+void handleBLENotifyEvents( const char *event, bool *isClientConnected );
+void handleBLERTModeEvent( bool isRTModeActive );
+void handleCustomPictureEvent();
 
 #endif /* RECEIVER_HANDLERS_H_ */

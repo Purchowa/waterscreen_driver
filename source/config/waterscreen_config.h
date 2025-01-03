@@ -14,7 +14,8 @@ typedef enum
     Mode_Standard,
     Mode_Demo,
     Mode_Service,
-    Mode_SIZE
+    Mode_SIZE = 3, // That's on purpose because RT can be turned on only from BLE app.
+    Mode_RT,
 } WaterscreenMode_t;
 
 typedef struct

@@ -1,5 +1,7 @@
 #include "waterscreen_config_parser.h"
 
+#include "common_utils.h"
+
 #include "cjson/cjson.h"
 
 #define MAX_IDLE_TIME        30
@@ -7,12 +9,6 @@
 #define MAX_WORK_RANGE_VALUE 24
 
 #define MAX_COLOR_CHANNEL_VALUE 255
-
-static int32_t clamp( const int32_t value, const int32_t min, const int32_t max )
-{
-    const int32_t lower = value < min ? min : value;
-    return max < lower ? max : lower;
-}
 
 static bool parseRGBColor( const cJSON *obj, ColorRGB_t *color )
 {
@@ -52,7 +48,7 @@ static bool parsePictureObject( const cJSON *pictureObject, PictureInfo_t *const
         return false;
 
     const cJSON *element = NULL;
-    uint16_t     i       = 0;
+    uint32_t     i       = 0;
     cJSON_ArrayForEach( element, pictureArray )
     {
         if ( !cJSON_IsNumber( element ) )
