@@ -10,6 +10,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "serial_mwm.h"
+#include "logging.h"
 
 #include <stdio.h>
 
@@ -41,7 +42,7 @@ int wlan_get_state()
     int ret = mwm_wlan_status();
     if ( ret < 0 )
     {
-        PRINTF( "Failed to get WLAN status, error: %d\r\n", ret );
+        LogError( "Failed to get WLAN status, error: %d\r\n", ret );
         while ( 1 )
             ;
     }
@@ -325,12 +326,12 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     int ret;
 
     /* Initialize Serial MWM */
-    PRINTF( "Initializing Serial MWM...\r\n" );
+    LogInfo( "Initializing Serial MWM...\r\n" );
     ret = mwm_init();
     if ( ret < 0 )
     {
 
-        PRINTF( "Could not initialize Serial MWM, error: %d\r\n", ret );
+        LogError( "Could not initialize Serial MWM, error: %d\r\n", ret );
         while ( 1 )
             ;
     }
@@ -338,19 +339,19 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     if ( ret == MWM_INITIALIZED )
     {
 
-        PRINTF( "WLAN Starting...\r\n" );
+        LogInfo( "WLAN Starting...\r\n" );
         ret = mwm_wlan_start();
         if ( ret < 0 )
         {
 
-            PRINTF( "Could not start WLAN subsystem, error: %d\r\n", ret );
+            LogError( "Could not start WLAN subsystem, error: %d\r\n", ret );
             while ( 1 )
                 ;
         }
     }
 
     wlan_config( ap_ssid, ap_passphrase, ap_security_mode );
-    PRINTF( "WLAN Connecting...\r\n" );
+    LogInfo( "WLAN Connecting...\r\n" );
     while ( wlan_get_state() != MWM_CONNECTED )
         ;
     wlan_state();
@@ -361,7 +362,7 @@ static void closeSocket( const int socketHandle )
     int ret = mwm_close( socketHandle );
     while ( ret != 0 )
     {
-        PRINTF( "Could not close socket, error: %d\r\n", ret );
+        LogError( "Could not close socket, error: %d\r\n", ret );
         ret = mwm_close( socketHandle );
     }
 }
@@ -386,7 +387,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( ret != MWM_CONNECTED )
     {
 
-        PRINTF( "WLAN must be in connected state\r\n" );
+        LogDebug( "WLAN must be in connected state\r\n" );
         return;
     }
 
@@ -394,7 +395,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( s < 0 )
     {
 
-        PRINTF( "Could not create socket, error: %d\r\n", ret );
+        LogError( "Could not create socket, error: %d\r\n", ret );
         while ( 1 )
             ;
     }
@@ -408,7 +409,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( ret != 0 )
     {
 
-        PRINTF( "Could not connect to server, error: %d\r\n", ret );
+        LogError( "Could not connect to server, error: %d\r\n", ret );
         closeSocket( s );
         return;
     }
@@ -443,7 +444,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( ret != data_len )
     {
 
-        PRINTF( "Could not send data, error: %d\r\n", ret );
+        LogError( "Could not send data, error: %d\r\n", ret );
         closeSocket( s );
         return;
     }
@@ -473,7 +474,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( ret != MWM_CONNECTED )
     {
 
-        PRINTF( "WLAN must be in connected state\r\n" );
+        LogError( "WLAN must be in connected state\r\n" );
         return;
     }
 
@@ -481,7 +482,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( s < 0 )
     {
 
-        PRINTF( "Could not create socket, error: %d\r\n", ret );
+        LogError( "Could not create socket, error: %d\r\n", ret );
         while ( 1 )
             ;
     }
@@ -495,7 +496,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( ret != 0 )
     {
 
-        PRINTF( "Could not connect to server, error: %d\r\n", ret );
+        LogError( "Could not connect to server, error: %d\r\n", ret );
         closeSocket( s );
         return;
     }
@@ -513,7 +514,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( ret != data_len )
     {
 
-        PRINTF( "Could not send data, error: %d\r\n", ret );
+        LogError( "Could not send data, error: %d\r\n", ret );
         closeSocket( s );
         return;
     }
