@@ -12,8 +12,6 @@
 #define BLE_SEND_BUFFER_CAPACITY   256
 #define SENDING_TASK_TRIGGER_LEVEL 1
 
-#define STREAM_BUFFER_MAX_SEND_WAIT_MS 3
-
 static StreamBufferHandle_t s_txBLEBuffer = NULL;
 static byte_t               s_bytesBuffer[BLE_SEND_BUFFER_CAPACITY];
 
@@ -41,8 +39,7 @@ bool bleWrite( const byte_t *data, const size_t size )
         return false;
 
     taskENTER_CRITICAL();
-    const size_t bytesSend =
-        xStreamBufferSend( s_txBLEBuffer, data, size, pdMS_TO_TICKS( STREAM_BUFFER_MAX_SEND_WAIT_MS ) );
+    const size_t bytesSend = xStreamBufferSend( s_txBLEBuffer, data, size, 0 );
     taskEXIT_CRITICAL();
 
     return bytesSend == size;
