@@ -17,6 +17,7 @@
 
 #include "logging.h"
 #include "status_logging.h"
+#include "serial_mwm.h"
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -109,7 +110,10 @@ void wifiTask( void * )
     for ( ;; )
     {
         logWlanStatus();
-        handleRequests();
+        if ( wlan_get_state() == MWM_CONNECTED )
+        {
+            handleRequests();
+        }
 
         vTaskDelay( pdMS_TO_TICKS( WIFI_TASK_DELAY_MS ) );
     }
