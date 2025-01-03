@@ -8,12 +8,27 @@
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/waterscreen_state_context_handler.h"
 
+static uint8_t s_presentationRepeatCount = 0;
+
+void setRtPicturePresentationRepeatCount( uint8_t n )
+{
+    s_presentationRepeatCount = n;
+}
 
 void realtimeModeState( WaterscreenContext_t *context )
 {
-    context->pictureInfo      = &g_customPicture;
-    context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
+    if ( s_presentationRepeatCount != 0 )
+    {
+        context->pictureInfo      = &g_customPicture;
+        context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
 
-    manageValvePower( OnDeviceState );
-    changeWaterscreenState( context, presentationState );
+        manageValvePower( OnDeviceState );
+        changeWaterscreenState( context, presentationState );
+        --s_presentationRepeatCount;
+    }
+    else
+    {
+        manageValvePower( OffDeviceState );
+        changeWaterscreenState( context, idleState );
+    }
 }
