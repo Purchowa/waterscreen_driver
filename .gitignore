@@ -10,4 +10,4 @@
 *.launch
 
 # Personal config
-/source/config/wifi_cfg.*
+/source/config/wifi_cfg.h

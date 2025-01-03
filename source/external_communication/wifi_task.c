@@ -1,6 +1,8 @@
 #include "wifi_task.h"
 
-#include "waterscreen_config.h"
+#include "config/waterscreen_config.h"
+#include "config/wifi_cfg.h"
+
 #include "waterscreen_state/waterscreen_state_context.h"
 #include "waterscreen_state/waterscreen_states.h"
 #include "waterscreen_state/standard_mode_state.h"
@@ -11,14 +13,14 @@
 #include "waterscreen_config_api.h"
 #include "waterscreen_status_api.h"
 #include "http_return_codes.h"
-#include "wlan_adapter.h"
 
 #include "datetime/rtc_provider.h"
 
 #include "logging.h"
 #include "status_logging.h"
-#include "serial_mwm.h"
+#include "external/wlan/wlan_mwm.h"
 
+#include <serial_mwm.h>
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -96,7 +98,7 @@ void wifiTask( void * )
 {
     Datetime_t datetime = {};
 
-    initSerialMWM();
+    wlan_init( g_wifiCredentials.login, g_wifiCredentials.password, AP_SECURITY_MODE );
 
     requestWeather();
     requestDatetime( &datetime );

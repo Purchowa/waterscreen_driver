@@ -21,4 +21,14 @@ AP_SECURITY_MODE:
 #define WATERSCREEN_CONFIG_GET_URL        ""
 #define WATERSCREEN_STATUS_POST_URL       ""
 
+#define WIFI_CREDENTIALS_CAPACITY 128 // Capacity includes EOL
+
+typedef struct
+{
+    char login[WIFI_CREDENTIALS_CAPACITY];
+    char password[WIFI_CREDENTIALS_CAPACITY];
+} WiFiCredentials_t;
+
+extern WiFiCredentials_t g_wifiCredentials;
+
 #endif /* WIFICFG_EXAMPLE_H_ */
