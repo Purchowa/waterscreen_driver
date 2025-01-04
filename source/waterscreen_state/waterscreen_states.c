@@ -11,6 +11,13 @@
 
 #include <string.h>
 
+static void closeValvesSubState( WaterscreenContext_t *context )
+{
+    static const uint64_t closeValves = 0;
+
+    const status_t status       = sendDataToValves( closeValves );
+    context->currentStateStatus = status;
+}
 
 void demoModeState( WaterscreenContext_t *context )
 {
@@ -26,8 +33,7 @@ void checkSensorsSubState( WaterscreenContext_t *context )
 
     if ( isWaterAlarmTriggered )
     {
-        manageValvePower( OffDeviceState );
-        closeValvesSubState( context );
+        shutdownValves( context );
         changeWaterscreenState( context, lowWaterState );
     }
 
@@ -68,14 +74,6 @@ void presentationState( WaterscreenContext_t *context )
     }
 }
 
-void closeValvesSubState( WaterscreenContext_t *context )
-{
-    static const uint64_t closeValves = 0;
-
-    const status_t status       = sendDataToValves( closeValves );
-    context->currentStateStatus = status;
-}
-
 void idleState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
@@ -95,4 +93,10 @@ void lowWaterState( WaterscreenContext_t *context )
     {
         context->currentStateDelay = SECOND_MS;
     }
+}
+
+void shutdownValves( WaterscreenContext_t *context )
+{
+    closeValvesSubState( context );
+    manageValvePower( OffDeviceState );
 }

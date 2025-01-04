@@ -74,7 +74,7 @@ generate_test("sensors_test"
 
 generate_test("valves_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c")
+        "picture_logic_mocks.c")
 
 generate_test("config_parser_test"
         "external_communication/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"

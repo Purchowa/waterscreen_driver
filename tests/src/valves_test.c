@@ -6,14 +6,36 @@
 #include "waterscreen_state_context.h"
 #include "waterscreen_states.h"
 
-#include "utils/common_state_assert.h"
+#include "power_control.h"
+#include "spi_transfer.h"
+
+void manageValvePower( DeviceState_t state )
+{
+    function_called();
+}
+void manageWaterPump( DeviceState_t state ) {}
+
+status_t sendDataToValves( const uint64_t data )
+{
+    function_called();
+}
+
+bool shouldWaterPumpTrigger() {}
+
+bool shouldWaterAlarmTrigger() {}
+
+void dimNeopixels() {}
+
+void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor ) {}
+
 
 static void givenAnyState_closeValveSubState_turnValvesOffRemainTheSameState( void **state )
 {
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState };
 
-    assertClosedValves();
-    closeValvesSubState( &context );
+    expect_function_call( sendDataToValves );
+    expect_function_call( manageValvePower );
+    shutdownValves( &context );
 
     assert_ptr_equal( context.waterscreenStateHandler, presentationState ); // State handler should remain the same
 }
