@@ -29,6 +29,7 @@ void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
                                      .previousWaterscreenStateHandler = demoModeState };
 
     expect_value( manageWaterPump, state, OffDeviceState );
+    expect_value( manageValvePower, state, OnDeviceState );
     will_return( shouldWaterAlarmTrigger, false );
     performWaterscreenAction( &context );
 

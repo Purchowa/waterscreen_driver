@@ -87,6 +87,7 @@ void lowWaterState( WaterscreenContext_t *context )
     if ( !shouldWaterAlarmTrigger() )
     {
         goBackToPreviousWaterscreenState( context );
+        manageValvePower( OnDeviceState );
         context->currentStateDelay = 5 * SECOND_MS;
     }
     else
