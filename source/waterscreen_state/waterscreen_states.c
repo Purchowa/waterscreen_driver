@@ -16,7 +16,7 @@ static void closeValvesSubState( WaterscreenContext_t *context )
     static const uint64_t closeValves = 0;
 
     const status_t status       = sendDataToValves( closeValves );
-    context->currentStateStatus = status;
+    context->stateStatus = status;
 }
 
 void demoModeState( WaterscreenContext_t *context )
@@ -56,7 +56,7 @@ void presentationState( WaterscreenContext_t *context )
         dimNeopixels();
         closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
-        context->currentStateDelay = BETWEEN_PICTURES_DELAY_MS;
+        context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
     }
     else
     {
@@ -69,8 +69,8 @@ void presentationState( WaterscreenContext_t *context )
         const status_t status = sendDataToValves( rowData );
         --context->valveOpenCounter;
 
-        context->currentStateStatus = status;
-        context->currentStateDelay  = PRESENTING_DELAY_MS;
+        context->stateStatus = status;
+        context->stateDelay  = PRESENTING_DELAY_MS;
     }
 }
 
@@ -78,7 +78,7 @@ void idleState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
 
-    context->currentStateDelay = SECOND_MS / 2;
+    context->stateDelay = SECOND_MS / 2;
 }
 
 void lowWaterState( WaterscreenContext_t *context )
@@ -88,11 +88,11 @@ void lowWaterState( WaterscreenContext_t *context )
     {
         goBackToPreviousWaterscreenState( context );
         manageValvePower( OnDeviceState );
-        context->currentStateDelay = 5 * SECOND_MS;
+        context->stateDelay = 5 * SECOND_MS;
     }
     else
     {
-        context->currentStateDelay = SECOND_MS;
+        context->stateDelay = SECOND_MS;
     }
 }
 

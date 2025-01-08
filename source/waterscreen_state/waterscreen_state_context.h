@@ -20,8 +20,8 @@ typedef struct WaterscreenContext
     waterscreenStateFunction_t previousWaterscreenStateHandler;
     const PictureInfo_t       *pictureInfo;
     int32_t                    valveOpenCounter;
-    status_t                   currentStateStatus;
-    delayMs_t                  currentStateDelay;
+    status_t                   stateStatus;
+    delayMs_t                  stateDelay;
 } WaterscreenContext_t;
 
 extern WaterscreenContext_t g_context;

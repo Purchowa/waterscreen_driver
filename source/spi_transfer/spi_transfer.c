@@ -4,9 +4,9 @@
 
 status_t sendDataToValves( const uint64_t data )
 {
-    static uint64_t       readMock       = 0;
+    static uint64_t       readData       = 0;
     static spi_transfer_t valvesTransfer = { .txData      = NULL,
-                                             .rxData      = (uint8_t *)&readMock,
+                                             .rxData      = (uint8_t *)&readData,
                                              .dataSize    = VALVE_BUFFER_SIZE,
                                              .configFlags = kSPI_FrameAssert };
 

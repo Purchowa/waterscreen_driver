@@ -19,7 +19,7 @@
 
 void logWaterscreenStatus( const WaterscreenContext_t *context )
 {
-    if ( context->currentStateStatus == kStatus_Fail )
+    if ( context->stateStatus == kStatus_Fail )
         LogError( "SPI transfer failed" );
 
     static waterscreenStateFunction_t previousState = NULL;

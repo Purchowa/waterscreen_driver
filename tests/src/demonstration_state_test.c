@@ -27,7 +27,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
     WaterscreenContext_t context = { .waterscreenStateHandler = demoModeState,
                                      .pictureInfo             = NULL,
                                      .valveOpenCounter        = 0,
-                                     .currentStateStatus      = SuccessSPI };
+                                     .stateStatus             = SuccessSPI };
 
     for ( int8_t i = 0; i < mockedInfiniteLoopCount; ++i )
     {

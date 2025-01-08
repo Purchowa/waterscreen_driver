@@ -10,5 +10,5 @@ WaterscreenContext_t g_context = { .waterscreenStateHandler         = standardMo
                                    .previousWaterscreenStateHandler = demoModeState,
                                    .pictureInfo                     = NULL,
                                    .valveOpenCounter                = 0,
-                                   .currentStateStatus              = 0,
-                                   .currentStateDelay               = SECOND_MS };
+                                   .stateStatus                     = 0,
+                                   .stateDelay                      = SECOND_MS };
