@@ -6,18 +6,18 @@
 
 #include <string.h>
 
-
-static colorGRB_t  s_grbColors[NEOPIXEL_COUNT];
+static colorGRB_t  s_grbColors[TOTAL_NEOPIXEL_COUNT];
 static const float s_secondaryColorFactor = 0.1f;
 
 void dimNeopixels()
 {
-    memset( s_grbColors, 0, NEOPIXEL_COUNT * sizeof( *s_grbColors ) );
+    memset( s_grbColors, 0, TOTAL_NEOPIXEL_COUNT * sizeof( *s_grbColors ) );
     Neopixels_Send( s_grbColors );
 }
 
 void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor )
 {
     convertPictureRowToGRBColors( pictureRow, s_grbColors, mainColor, secondaryColor, s_secondaryColorFactor );
+    memcpy( &s_grbColors[NEOPIXEL_COUNT], s_grbColors, NEOPIXEL_COUNT * sizeof( *s_grbColors ) );
     Neopixels_Send( s_grbColors );
 }

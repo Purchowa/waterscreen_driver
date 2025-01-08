@@ -44,7 +44,7 @@ int main()
 
     initRTC();
     LCD_Init( LCD_SPI_FC8_PERIPHERAL );
-    Neopixels_Init( NEOPIXELS_SPI_FC1_PERIPHERAL, TEST_NEOPIXEL_COUNT ); // TODO: Temporary neopixel amount for testing
+    Neopixels_Init( NEOPIXELS_SPI_FC1_PERIPHERAL, TOTAL_NEOPIXEL_COUNT );
 
     if ( xTaskCreate( bleReceiverTask, "BLE-Receiver", BLE_RECEIVE_TASK_STACK_SIZE, NULL, BLE_RECEIVE_TASK_PRIORITY,
                       NULL ) != pdPASS )
