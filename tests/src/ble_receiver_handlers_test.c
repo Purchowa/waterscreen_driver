@@ -10,9 +10,10 @@
 #include "waterscreen_state_context.h"
 
 
-WaterscreenConfig_t              g_waterscreenConfig           = {};
-WaterscreenContext_t             g_context                     = {};
-const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE] = { standardModeState, demoModeState, idleState };
+WaterscreenConfig_t              g_waterscreenConfig                                            = {};
+WaterscreenContext_t             g_context                                                      = {};
+const waterscreenStateFunction_t g_waterscreenConfigAvailableModes[CONFIG_AVAILABLE_MODE_COUNT] = {
+    standardModeState, demoModeState, idleState };
 
 static void givenActiveRtModeAndCurrentModeStandard_handleBLERTModeEvents_changeModeToRTAndStateToIdle()
 {

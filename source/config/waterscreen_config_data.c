@@ -15,4 +15,5 @@ WaterscreenConfig_t g_waterscreenConfig = {
 };
 
 // TODO: service mode is not implemented hence idle is used.
-const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE] = { standardModeState, demoModeState, idleState };
+const waterscreenStateFunction_t g_waterscreenConfigAvailableModes[CONFIG_AVAILABLE_MODE_COUNT] = { standardModeState, demoModeState,
+                                                                                     idleState };

@@ -9,12 +9,12 @@
 #include <stdbool.h>
 
 
+#define CONFIG_AVAILABLE_MODE_COUNT 3 // Three modes are available from config structure
 typedef enum
 {
     Mode_Standard,
     Mode_Demo,
     Mode_Service,
-    Mode_SIZE = 3, // That's on purpose because RT can be turned on only from BLE app.
     Mode_RT,
 } WaterscreenMode_t;
 
@@ -46,7 +46,7 @@ typedef struct
 } WaterscreenConfig_t;
 
 extern WaterscreenConfig_t              g_waterscreenConfig;
-extern const waterscreenStateFunction_t g_waterscreenModes[Mode_SIZE];
+extern const waterscreenStateFunction_t g_waterscreenConfigAvailableModes[CONFIG_AVAILABLE_MODE_COUNT];
 
 void setWaterscreenMode( ModeInfo_t *, WaterscreenMode_t );
 

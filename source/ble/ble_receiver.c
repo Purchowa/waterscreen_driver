@@ -7,6 +7,8 @@
 #include "picture_management/picture_types.h"
 #include "picture_management/picture_data.h"
 #include "config/rtos_time_defines.h"
+#include "config/wifi_cfg.h"
+#include "external_communication/wifi_task.h"
 
 #include "logging.h"
 
@@ -18,7 +20,7 @@
 
 #define MAX_DATA_DELAY_TICKS pdMS_TO_TICKS( 5 * SECOND_MS )
 
-// TODO: config, bigger custom picture, wifi password and reload ability.
+// TODO: configuration
 
 static ColorRGB_t receiveRGB( SerializedColorRGB_t c )
 {
@@ -92,6 +94,30 @@ void bleReceiverTask( void * )
 
                 receivePictureColors( &colorsPayload, &g_customPicture.colors );
                 handleCustomPictureEvent();
+                break;
+            }
+        case WiFiCredentials: // { 1B[loginSize]|size_B[login]|1B[passwordSize]|size_B[password] }
+            {
+                wifiCredentialsSize_t loginSize    = 0;
+                wifiCredentialsSize_t passwordSize = 0;
+
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( wifiCredentialsSize_t ) );
+                xStreamBufferReceive( g_rxBLEBuffer, &loginSize, sizeof( wifiCredentialsSize_t ),
+                                      MAX_DATA_DELAY_TICKS );
+                loginSize = clamp( loginSize, 0, WIFI_CREDENTIALS_CAPACITY );
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, loginSize );
+                xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.login, loginSize, MAX_DATA_DELAY_TICKS );
+                g_wifiCredentials.login[WIFI_CREDENTIALS_CAPACITY - 1] = '\0';
+
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( wifiCredentialsSize_t ) );
+                xStreamBufferReceive( g_rxBLEBuffer, &passwordSize, sizeof( wifiCredentialsSize_t ),
+                                      MAX_DATA_DELAY_TICKS );
+                passwordSize = clamp( passwordSize, 0, WIFI_CREDENTIALS_CAPACITY );
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, passwordSize );
+                xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.password, passwordSize, MAX_DATA_DELAY_TICKS );
+                g_wifiCredentials.password[WIFI_CREDENTIALS_CAPACITY - 1] = '\0';
+
+                reconfigureWifi();
                 break;
             }
         case Text: // { 1B[size]|size_B[text] }

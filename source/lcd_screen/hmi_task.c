@@ -81,7 +81,8 @@ void modeSelectionMenuState()
             pressStart = 0;
 
             setWaterscreenMode( &g_waterscreenConfig.mode, mode );
-            forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode.current] );
+            forceChangeWaterscreenState( &g_context,
+                                         g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
 
             s_menuState = idleMenuState;
         }
@@ -89,7 +90,7 @@ void modeSelectionMenuState()
     else if ( !isS1ButtonPressed() && pressStart != 0 )
     {
         pressStart = 0;
-        mode       = ( mode + 1 ) % Mode_SIZE;
+        mode       = ( mode + 1 ) % CONFIG_AVAILABLE_MODE_COUNT;
         LogDebug( "Mode selected: %s", getModeName( mode ) );
     }
     drawInfoPanel( &g_context, mode, getLastHttpCode(), true );

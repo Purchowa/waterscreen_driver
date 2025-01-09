@@ -100,7 +100,7 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     }
 
     const cJSON *mode = cJSON_GetObjectItemCaseSensitive( cfgJson, "mode" );
-    if ( !cJSON_IsNumber( mode ) || !( 0 <= mode->valueint && mode->valueint < Mode_SIZE ) )
+    if ( !cJSON_IsNumber( mode ) || !( 0 <= mode->valueint && mode->valueint < CONFIG_AVAILABLE_MODE_COUNT ) )
         return Http_WaterscreenConfigParsingError;
     setWaterscreenMode( &config->mode, mode->valueint );
 

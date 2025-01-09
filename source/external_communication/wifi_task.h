@@ -10,5 +10,6 @@
 
 void              wifiTask( void *params );
 HttpReturnCodes_t getLastHttpCode();
+void              reconfigureWifi();
 
 #endif /* WIFI_TASK_H_ */

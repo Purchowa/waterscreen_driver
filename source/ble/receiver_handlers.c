@@ -35,7 +35,7 @@ void handleBLERTModeEvent( bool isRTModeActive )
     else if ( !isRTModeActive && g_waterscreenConfig.mode.current == Mode_RT )
     {
         setWaterscreenMode( &g_waterscreenConfig.mode, g_waterscreenConfig.mode.previous );
-        forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode.current] );
+        forceChangeWaterscreenState( &g_context, g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
     }
 }
 

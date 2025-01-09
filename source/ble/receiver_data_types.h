@@ -9,6 +9,7 @@ typedef enum
     Configuration,
     CustomPicture,
     RTModeActive,
+    WiFiCredentials
 } DataType_t;
 
 #pragma pack( push, 1 )
@@ -32,5 +33,6 @@ typedef uint8_t typeInfo_t;
 
 typedef uint8_t textSize_t;
 typedef uint8_t rtModeActive_t;
+typedef uint8_t wifiCredentialsSize_t;
 
 #endif /* RECEIVER_DATA_TYPES_H_ */

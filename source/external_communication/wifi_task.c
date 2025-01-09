@@ -25,7 +25,8 @@
 #include <task.h>
 
 
-static HttpReturnCodes_t s_httpReturnCode = Http_UnknownError;
+static HttpReturnCodes_t s_httpReturnCode  = Http_UnknownError;
+static bool              s_reconfigureWiFi = false;
 
 static void requestWeather()
 {
@@ -54,7 +55,7 @@ static void requestWaterscreenConfig( bool isInitialRequest )
     {
         LogDebug( "WS-config updated!" );
 
-        forceChangeWaterscreenState( &g_context, g_waterscreenModes[g_waterscreenConfig.mode.current] );
+        forceChangeWaterscreenState( &g_context, g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
         initStandardModeConfig( &g_waterscreenConfig.standardModeConfig );
     }
     else
@@ -117,6 +118,12 @@ void wifiTask( void * )
             handleRequests();
         }
 
+        if ( s_reconfigureWiFi )
+        {
+            wlan_config( g_wifiCredentials.login, g_wifiCredentials.password, AP_SECURITY_MODE );
+            s_reconfigureWiFi = false;
+        }
+
         vTaskDelay( pdMS_TO_TICKS( WIFI_TASK_DELAY_MS ) );
     }
 }
@@ -124,4 +131,9 @@ void wifiTask( void * )
 HttpReturnCodes_t getLastHttpCode()
 {
     return s_httpReturnCode;
+}
+
+void reconfigureWifi()
+{
+    s_reconfigureWiFi = true;
 }
