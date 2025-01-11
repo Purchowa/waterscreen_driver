@@ -28,16 +28,19 @@ static HttpReturnCodes_t httpGetWasReadFlag()
 HttpReturnCodes_t httpGetCustomPicture( PictureInfo_t *customPicture, bool ignoreWasReadFlag )
 {
     const HttpReturnCodes_t code = httpGetWasReadFlag();
-    if ( code != Http_Success || ( ignoreWasReadFlag && code == Http_WebPictureNoUpdate ) )
-        return code;
 
-    char      *pictureContent = NULL;
-    const bool wasReceived =
-        httpGET_receiveContent( &pictureContent, WATERSCREEN_API_BASIC_AUTH_BASE64, WATERSCREEN_WEBPICTURE_GET_URL );
+    if ( code == Http_Success || ( code == Http_WebPictureNoUpdate && ignoreWasReadFlag ) )
+    {
+        char      *pictureContent = NULL;
+        const bool wasReceived    = httpGET_receiveContent( &pictureContent, WATERSCREEN_API_BASIC_AUTH_BASE64,
+                                                            WATERSCREEN_WEBPICTURE_GET_URL );
 
-    if ( !wasReceived )
-        return Http_GETError;
+        if ( !wasReceived )
+            return Http_GETError;
 
-    assert( pictureContent );
-    return parseJsonToCustomPicture( pictureContent, customPicture );
+        assert( pictureContent );
+        return parseJsonToCustomPicture( pictureContent, customPicture );
+    }
+
+    return code;
 }

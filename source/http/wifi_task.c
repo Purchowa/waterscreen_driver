@@ -12,6 +12,7 @@
 #include "weather_api.h"
 #include "waterscreen_config_api.h"
 #include "waterscreen_status_api.h"
+#include "webpicture_api.h"
 #include "http_return_codes.h"
 
 #include "datetime/rtc_provider.h"
@@ -33,6 +34,13 @@ static void requestWeather()
     s_httpReturnCode = httpGetWeather();
 
     logHttpRequest( "Weather", s_httpReturnCode, GET );
+}
+
+static void requestCustomPicture( bool isInitialRequest )
+{
+    s_httpReturnCode = httpGetCustomPicture( &g_customPicture, isInitialRequest );
+
+    logHttpRequest( "WebPicture", s_httpReturnCode, GET );
 }
 
 static void requestDatetime( Datetime_t *datetime )
@@ -72,6 +80,7 @@ static void handleRequests()
     if ( callCounter % WATERSCREEN_CONFIG_GET_CALLS_NUMBER == 0 )
     {
         requestWaterscreenConfig( false );
+        requestCustomPicture( false );
     }
 
     if ( callCounter % WEATHER_GET_CALLS_NUMBER == 0 )
@@ -104,6 +113,7 @@ void wifiTask( void * )
     requestWeather();
     requestDatetime( &datetime );
     requestWaterscreenConfig( true );
+    requestCustomPicture( true );
 
     setRTCDatetime( &datetime );
 
