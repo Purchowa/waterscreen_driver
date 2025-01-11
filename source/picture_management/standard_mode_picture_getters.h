@@ -4,7 +4,7 @@
 #include "picture_management/picture_data_constants.h"
 #include "picture_management/picture_types.h"
 
-#include "external_communication/weather_types.h"
+#include "http/weather_types.h"
 #include "datetime/datetime_types.h"
 
 

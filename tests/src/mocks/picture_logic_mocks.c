@@ -1,6 +1,6 @@
 #include "picture_management/demo_mode_picture_logic.h"
 
-#include "external_communication/weather_types.h"
+#include "http/weather_types.h"
 
 #include <setjmp.h>
 #include <cmocka.h>

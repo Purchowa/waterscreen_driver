@@ -15,6 +15,6 @@
  * @return `Http_Success` if parsing was successful
  * @return `Http_WaterscreenConfigNoUpdate` if config doesn't need to be updated
  */
-HttpReturnCodes_t fromJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest );
+HttpReturnCodes_t parseJsonToWaterscreenCfg( const char *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest );
 
 #endif /* WATERSCREEN_CONFIG_PARSER_H_ */

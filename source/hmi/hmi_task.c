@@ -1,5 +1,5 @@
 #include "hmi_task.h"
-#include "lcd_screen/lcd_panel.h"
+#include "lcd_panel.h"
 
 #include "gpio/button_control.h"
 
@@ -10,7 +10,7 @@
 #include "waterscreen_state/waterscreen_state_context_handler.h"
 #include "waterscreen_state/state_utils.h"
 
-#include "external_communication/wifi_task.h"
+#include "http/wifi_task.h"
 #include "logging.h"
 
 #include <FreeRTOS.h>

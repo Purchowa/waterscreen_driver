@@ -12,7 +12,7 @@ set(EMBEDDED_DIRS
         ${PROJ_DIR}/source/spi_transfer
         ${PROJ_DIR}/source/gpio
         ${PROJ_DIR}/source/waterscreen_state
-        ${PROJ_DIR}/source/external_communication
+        ${PROJ_DIR}/source/http
         ${PROJ_DIR}/source/external
         ${PROJ_DIR}/source/datetime
         ${PROJ_DIR}/source/picture_management
@@ -77,7 +77,7 @@ generate_test("valves_test"
         "picture_logic_mocks.c")
 
 generate_test("config_parser_test"
-        "external_communication/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"
+        "http/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"
         "")
 
 generate_test("datetime_parser_test"
@@ -85,7 +85,7 @@ generate_test("datetime_parser_test"
         "")
 
 generate_test("weather_parser_test"
-        "external_communication/weather_parser.c;external/cjson/cjson.c"
+        "http/weather_parser.c;external/cjson/cjson.c"
         "")
 
 generate_test("picture_logic_standard_mode_getters_test"
@@ -97,7 +97,7 @@ generate_test("picture_logic_standard_mode_test"
         "")
 
 generate_test("waterscreen_status_serializer_test"
-        "external_communication/waterscreen_status_serializer.c;external/cjson/cjson.c"
+        "http/waterscreen_status_serializer.c;external/cjson/cjson.c"
         "")
 
 generate_test("neopixel_converter_utils_test"

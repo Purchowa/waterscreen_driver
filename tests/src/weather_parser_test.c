@@ -2,7 +2,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#include "external_communication/weather_parser.h"
+#include "http/weather_parser.h"
 
 static bool compareWeather( const Weather_t *first, const Weather_t *second )
 {

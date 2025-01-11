@@ -2,8 +2,8 @@
 #define STATUS_LOGGING_H_
 
 #include "datetime/datetime_types.h"
-#include "external_communication/weather_types.h"
-#include "external_communication/http_return_codes.h"
+#include "http/weather_types.h"
+#include "http/http_return_codes.h"
 #include "waterscreen_state/waterscreen_state_context.h"
 #include "gpio/power_control.h"
 

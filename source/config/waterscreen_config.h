@@ -42,7 +42,6 @@ typedef struct
 {
     ModeInfo_t           mode;
     StandardModeConfig_t standardModeConfig;
-    PictureInfo_t *const customPicture;
 } WaterscreenConfig_t;
 
 extern WaterscreenConfig_t              g_waterscreenConfig;

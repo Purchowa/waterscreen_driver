@@ -4,7 +4,7 @@
 
 #include "datetime/datetime_types.h"
 #include "datetime/rtc_provider.h"
-#include "external_communication/weather_api.h"
+#include "http/weather_api.h"
 
 #include "picture_management/picture_logic_utils.h"
 #include "picture_management/standard_mode_picture_logic.h"

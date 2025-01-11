@@ -3,7 +3,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#include "external_communication/weather_types.h"
+#include "http/weather_types.h"
 
 const Weather_t *getWeather()
 {

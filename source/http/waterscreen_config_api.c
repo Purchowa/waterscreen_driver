@@ -20,5 +20,5 @@ HttpReturnCodes_t httpGetWaterscreenConfig( WaterscreenConfig_t *config, bool is
         return Http_GETError;
 
     assert( configContent );
-    return fromJsonToWaterscreenCfg( configContent, config, isInitialRequest );
+    return parseJsonToWaterscreenCfg( configContent, config, isInitialRequest );
 }

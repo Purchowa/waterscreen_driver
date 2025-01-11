@@ -3,7 +3,7 @@
 #include <cmocka.h>
 
 #include "config/waterscreen_config.h"
-#include "external_communication/waterscreen_status_serializer.h"
+#include "http/waterscreen_status_serializer.h"
 
 #include <stdlib.h>
 

@@ -8,7 +8,7 @@
 #include "picture_management/picture_data.h"
 #include "config/rtos_time_defines.h"
 #include "config/wifi_cfg.h"
-#include "external_communication/wifi_task.h"
+#include "http/wifi_task.h"
 
 #include "logging.h"
 
