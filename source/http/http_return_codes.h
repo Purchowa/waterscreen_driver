@@ -12,6 +12,9 @@ typedef enum
     Http_WaterscreenConfigParsingError,
     Http_WaterscreenConfigNoUpdate,
     Http_WaterscreenStatusSerializationError,
+    Http_WebPictureNoUpdate,
+    Http_WebPictureParsingError,
+    Http_WebPictureFlagParsingError,
     Http_UnknownError,
 
     Http_ReturnCodes_Count

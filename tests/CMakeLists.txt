@@ -80,6 +80,10 @@ generate_test("config_parser_test"
         "http/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"
         "")
 
+generate_test("webpicture_parser_test"
+        "http/webpicture_parser.c;common_utils.c;external/cjson/cjson.c"
+        "")
+
 generate_test("datetime_parser_test"
         "datetime/datetime_parser.c"
         "")

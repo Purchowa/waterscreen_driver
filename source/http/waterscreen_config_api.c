@@ -3,8 +3,6 @@
 #include "waterscreen_config_parser.h"
 
 #include "config/wifi_cfg.h"
-#include "wlan/wlan_mwm.h"
-#include "http_return_codes.h"
 #include "http_utils.h"
 
 #include <stdlib.h>

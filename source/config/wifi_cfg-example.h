@@ -17,9 +17,11 @@ AP_SECURITY_MODE:
 
 #define WEATHER_API_URL "api.openweathermap.org/data/2.5/weather?q=<location>,pl&APPID=<your_appid>&units=metric"
 
-#define WATERSCREEN_API_BASIC_AUTH_BASE64 ""
-#define WATERSCREEN_CONFIG_GET_URL        ""
-#define WATERSCREEN_STATUS_POST_URL       ""
+#define WATERSCREEN_API_BASIC_AUTH_BASE64       ""
+#define WATERSCREEN_CONFIG_GET_URL              ""
+#define WATERSCREEN_WEBPICTURE_GET_URL          ""
+#define WATERSCREEN_WAS_WEBPICTURE_READ_GET_URL ""
+#define WATERSCREEN_STATUS_POST_URL             ""
 
 #define WIFI_CREDENTIALS_CAPACITY 128 // Capacity includes EOL
 
