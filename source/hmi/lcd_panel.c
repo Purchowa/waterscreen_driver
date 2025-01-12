@@ -96,8 +96,7 @@ void drawInfoPanel( const WaterscreenContext_t *context, const WaterscreenMode_t
     drawInfoLineStr( "State", getStateName( context->waterscreenStateHandler ), 2 * LCD_FONT_HEIGHT );
     drawInfoLineStr( "ValvePower", getDeviceStateStr( getValvePowerState() ), 3 * LCD_FONT_HEIGHT + MARGIN );
     drawInfoLineStr( "WaterPump", getDeviceStateStr( getWaterPumpState() ), 4 * LCD_FONT_HEIGHT + 2 * MARGIN );
-    drawInfoLineStr( "BLEClient", isClientConnected() ? "connected" : "disconnected",
-                     5 * LCD_FONT_HEIGHT + 3 * MARGIN );
+    drawInfoLineStr( "BLELogging", isLoggingActive() ? "active" : "inactive", 5 * LCD_FONT_HEIGHT + 3 * MARGIN );
 
     static const char *httpCodesTitle = "HttpCodes";
     LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( httpCodesTitle ) ), LCD_FONT_HEIGHT * 11, "HttpCodes",

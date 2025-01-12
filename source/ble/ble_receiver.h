@@ -13,6 +13,6 @@
 extern StreamBufferHandle_t g_rxBLEBuffer;
 
 void bleReceiverTask( void *params );
-bool isClientConnected();
+bool isLoggingActive();
 
 #endif /* BLE_RECEIVE_TASK_H_ */

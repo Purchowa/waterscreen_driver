@@ -17,7 +17,6 @@
 #include <task.h>
 
 #define BLE_RECEIVE_BUFFER_CAPACITY 8192
-#define WORD_BUFFER_CAPACITY        64
 
 #define MAX_DATA_DELAY_TICKS pdMS_TO_TICKS( 5 * SECOND_MS )
 
@@ -34,8 +33,8 @@ static void receivePictureColors( const SerializedPictureColors_t *serializedCol
     colors->secondary = receiveRGB( serializedColors->secondary );
 }
 
-StreamBufferHandle_t g_rxBLEBuffer       = NULL;
-static bool          s_isClientConnected = false;
+StreamBufferHandle_t g_rxBLEBuffer     = NULL;
+static bool          s_isLoggingActive = false;
 
 void bleReceiverTask( void * )
 {
@@ -46,9 +45,7 @@ void bleReceiverTask( void * )
         vTaskSuspend( NULL );
     }
 
-    char       text[WORD_BUFFER_CAPACITY] = {};
-    typeInfo_t typeInfo                   = 0;
-    bool       isRTModeActive             = false;
+    typeInfo_t typeInfo = 0;
     for ( ;; )
     {
         // { 1B[typeInfo]|xB[rest...] }
@@ -58,6 +55,7 @@ void bleReceiverTask( void * )
         {
         case RTModeActive: // { 1B[isRTModeActive] }
             {
+                bool isRTModeActive = false;
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( rtModeActive_t ) );
                 xStreamBufferReceive( g_rxBLEBuffer, &isRTModeActive, sizeof( rtModeActive_t ), MAX_DATA_DELAY_TICKS );
 
@@ -122,18 +120,9 @@ void bleReceiverTask( void * )
             }
         case LogsActive: // { 1B[areLogsActive] }
             {
-                textSize_t textSize = 0;
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( logsActive_t ) );
+                xStreamBufferReceive( g_rxBLEBuffer, &s_isLoggingActive, sizeof( logsActive_t ), MAX_DATA_DELAY_TICKS );
 
-                xStreamBufferReceive( g_rxBLEBuffer, &textSize, sizeof( textSize_t ), portMAX_DELAY );
-                if ( 0 < textSize && textSize < WORD_BUFFER_CAPACITY )
-                {
-                    xStreamBufferSetTriggerLevel( g_rxBLEBuffer, textSize );
-                    xStreamBufferReceive( g_rxBLEBuffer, text, textSize, portMAX_DELAY );
-
-                    text[textSize] = 0; // EOL
-                    handleBLENotifyEvents( text, &s_isClientConnected );
-                    LogDebug( "Got text: %s", text );
-                }
                 break;
             }
 
@@ -159,7 +148,7 @@ void bleReceiverTask( void * )
     }
 }
 
-bool isClientConnected()
+bool isLoggingActive()
 {
-    return s_isClientConnected;
+    return s_isLoggingActive;
 }

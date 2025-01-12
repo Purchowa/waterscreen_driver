@@ -7,7 +7,6 @@
 #include <stdbool.h>
 
 
-void handleBLENotifyEvents( const char *event, bool *isClientConnected );
 void handleBLERTModeEvent( bool isRTModeActive );
 void handleCustomPictureEvent();
 void handleConfiguration( const SerializedConfiguration_t * );

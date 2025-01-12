@@ -8,25 +8,6 @@
 
 #include "common_utils.h"
 
-#include <string.h>
-
-
-#define STRINGS_EQUAL 0
-
-#define CLIENT_CONNECTED_EVN   "OK+CONN"
-#define CLIENT_CONNECTION_LOST "OK+LOST"
-
-void handleBLENotifyEvents( const char *event, bool *isClientConnected )
-{
-    if ( strcmp( event, CLIENT_CONNECTED_EVN ) == STRINGS_EQUAL )
-    {
-        *isClientConnected = true;
-    }
-    else if ( strcmp( event, CLIENT_CONNECTION_LOST ) == STRINGS_EQUAL )
-    {
-        *isClientConnected = false;
-    }
-}
 
 void handleBLERTModeEvent( bool isRTModeActive )
 {

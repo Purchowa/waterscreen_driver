@@ -35,7 +35,7 @@ void bleSenderTask( void *params )
 
 bool bleWrite( const byte_t *data, const size_t size )
 {
-    if ( !isClientConnected() || s_txBLEBuffer == NULL )
+    if ( !isLoggingActive() || s_txBLEBuffer == NULL )
         return false;
 
     taskENTER_CRITICAL();

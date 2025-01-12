@@ -17,6 +17,7 @@ typedef uint8_t typeInfo_t;
 
 typedef uint8_t textSize_t;
 typedef uint8_t rtModeActive_t;
+typedef uint8_t logsActive_t;
 typedef uint8_t wifiCredentialsSize_t;
 
 #pragma pack( push, 1 )
