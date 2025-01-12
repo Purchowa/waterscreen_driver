@@ -6,13 +6,18 @@
 #include "ble/ble_receiver.h"
 #include "gpio/power_control.h"
 
+#include "switch-on.h"
+#include "switch-off.h"
+
 #include "external/lcd/lcd.h"
 #include <stdio.h>
 
 
 #define TEXT_BUFFER_SIZE       LCD_WIDTH
 #define SCREEN_SECOND_HALF_POS ( LCD_WIDTH / 2 )
-#define MARGIN                 2
+
+#define HEADER_MARGIN  2
+#define CONTENT_MARGIN 10
 
 #define LAST_LINE  ( LCD_FONT_HEIGHT * LCD_TXT_LINES )
 #define FIRST_LINE 0
@@ -39,7 +44,7 @@ static void drawHeader( const WaterscreenMode_t mode, bool isModeSelection )
 
     snprintf( textBuffer, sizeof( textBuffer ), modeStrFormat, getModeName( mode ) );
 
-    LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( textBuffer ) ), FIRST_LINE + MARGIN, textBuffer,
+    LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( textBuffer ) ), FIRST_LINE + HEADER_MARGIN, textBuffer,
               isModeSelection ? Screen_SelectionColor : Screen_FontColor );
 
     LCD_Draw_Line( 0, LINE_OFFSET, LCD_WIDTH, LINE_OFFSET, Screen_FontColor );
@@ -53,17 +58,24 @@ static void drawFooter()
 
     snprintf( textBuffer, sizeof( textBuffer ), "%u:%u:%u", datetime.time.hour, datetime.time.minute,
               datetime.time.second );
-    LCD_Puts( MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
+    LCD_Puts( HEADER_MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 
     snprintf( textBuffer, sizeof( textBuffer ), "%u.%u.%u", datetime.date.day, datetime.date.month,
               datetime.date.year );
-    LCD_Puts( SCREEN_SECOND_HALF_POS + 20 - MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
+    LCD_Puts( SCREEN_SECOND_HALF_POS + 20 - HEADER_MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 }
 
-static void drawInfoLineStr( const char *title, const char *str, const uint8_t strPos )
+static void drawInfoLineStr( const char *title, const char *content, const uint8_t strPos )
 {
-    snprintf( textBuffer, sizeof( textBuffer ), "%s: %s", title, str );
-    LCD_Puts( MARGIN, strPos, textBuffer, Screen_FontColor );
+    snprintf( textBuffer, sizeof( textBuffer ), "%s: %s", title, content );
+    LCD_Puts( HEADER_MARGIN, strPos, textBuffer, Screen_FontColor );
+}
+
+static void drawInfoLineIcon( const char *title, bool isOn, const uint8_t strPos )
+{
+    snprintf( textBuffer, sizeof( textBuffer ), "%s", title );
+    LCD_Puts( HEADER_MARGIN, strPos, textBuffer, Screen_FontColor );
+    LCD_Set_Icon( LCD_WIDTH * 0.75, strPos - 3, 22, 12, isOn ? switch_on_22x12 : switch_off_22x12 );
 }
 
 #define HTTP_CODES_BUFFER_SIZE 2
@@ -94,9 +106,10 @@ void drawInfoPanel( const WaterscreenContext_t *context, const WaterscreenMode_t
     drawHeader( mode, isModeSelection ); // takes two lines
 
     drawInfoLineStr( "State", getStateName( context->waterscreenStateHandler ), 2 * LCD_FONT_HEIGHT );
-    drawInfoLineStr( "ValvePower", getDeviceStateStr( getValvePowerState() ), 3 * LCD_FONT_HEIGHT + MARGIN );
-    drawInfoLineStr( "WaterPump", getDeviceStateStr( getWaterPumpState() ), 4 * LCD_FONT_HEIGHT + 2 * MARGIN );
-    drawInfoLineStr( "BLELogging", isLoggingActive() ? "active" : "inactive", 5 * LCD_FONT_HEIGHT + 3 * MARGIN );
+
+    drawInfoLineIcon( "ValvePower", getValvePowerState() == OnDeviceState, 3 * LCD_FONT_HEIGHT + CONTENT_MARGIN );
+    drawInfoLineIcon( "WaterPump", getWaterPumpState() == OnDeviceState, 4 * LCD_FONT_HEIGHT + 2 * CONTENT_MARGIN );
+    drawInfoLineIcon( "BLE-logging", isLoggingActive(), 5 * LCD_FONT_HEIGHT + 3 * CONTENT_MARGIN );
 
     static const char *httpCodesTitle = "HttpCodes";
     LCD_Puts( LCD_WIDTH / 2 - getTextMiddleXPos( strlen( httpCodesTitle ) ), LCD_FONT_HEIGHT * 11, "HttpCodes",
