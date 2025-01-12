@@ -118,5 +118,5 @@ generate_test("neopixel_converter_test"
 target_compile_definitions("neopixel_converter_test" PRIVATE NEOPIXEL_COUNT=12 PICTURE_WIDTH=6)
 
 generate_test("ble_receiver_handlers_test"
-        "ble/receiver_handlers.c;config/waterscreen_config.c"
+        "ble/receiver_handlers.c;config/waterscreen_config.c;common_utils.c;"
         "context_handler_mocks.c;states_mocks.c")

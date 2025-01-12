@@ -13,8 +13,7 @@
 
 #include "ble/ble_send_provider.h"
 
-#include <fsl_common.h>
-#include <stdint.h>
+#include <inttypes.h>
 
 
 void logWaterscreenStatus( const WaterscreenContext_t *context )
@@ -76,6 +75,15 @@ void logWaterPumpState( DeviceState_t state )
         LogDebug( "[GPIO] Water pump %s", getDeviceStateStr( state ) );
         recentState = state;
     }
+}
+
+void logWaterscreenConfig( const WaterscreenConfig_t *config )
+{
+    LogDebug( "[Configuration]\nMode: %s\nIsWorkingDuringWeekend: %" PRIu8 "\nWorkTime: %" PRIu16
+              "m\nIdleTime: %" PRIu16 "m\nWork - from: %" PRIu8 ", to: %" PRIu8 "",
+              getModeName( config->mode.current ), config->standardModeConfig.isWorkingDuringWeekends,
+              config->standardModeConfig.workTimeInStandardMode, config->standardModeConfig.idleTimeInStandardMode,
+              config->standardModeConfig.workRange.from, config->standardModeConfig.workRange.to );
 }
 
 static const char *s_requestMethodsNames[] = { "GET", "POST" };

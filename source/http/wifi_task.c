@@ -61,7 +61,7 @@ static void requestWaterscreenConfig( bool isInitialRequest )
 
     if ( s_httpReturnCode == Http_Success )
     {
-        LogDebug( "WS-config updated!" );
+        logWaterscreenConfig( &g_waterscreenConfig );
 
         forceChangeWaterscreenState( &g_context, g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
         initStandardModeConfig( &g_waterscreenConfig.standardModeConfig );

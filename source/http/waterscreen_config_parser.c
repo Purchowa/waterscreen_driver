@@ -5,10 +5,6 @@
 #include "cjson/cjson.h"
 
 
-#define MAX_IDLE_TIME        30
-#define MAX_WORK_TIME        30
-#define MAX_WORK_RANGE_VALUE 24
-
 static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfig_t *config, bool isInitialRequest )
 {
     if ( cfgJson == NULL )
@@ -39,12 +35,12 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     const cJSON *workTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "workTime" );
     if ( !cJSON_IsNumber( workTime ) )
         return Http_WaterscreenConfigParsingError;
-    standardCfg->workTimeInStandardMode = clamp( workTime->valueint, 0, MAX_WORK_TIME );
+    standardCfg->workTimeInStandardMode = clamp( workTime->valueint, 0, STANDARD_MAX_WORK_TIME );
 
     const cJSON *idleTime = cJSON_GetObjectItemCaseSensitive( cfgJson, "idleTime" );
     if ( !cJSON_IsNumber( idleTime ) )
         return Http_WaterscreenConfigParsingError;
-    standardCfg->idleTimeInStandardMode = clamp( idleTime->valueint, 0, MAX_IDLE_TIME );
+    standardCfg->idleTimeInStandardMode = clamp( idleTime->valueint, 0, STANDARD_MAX_IDLE_TIME );
 
     const cJSON *workRange = cJSON_GetObjectItemCaseSensitive( cfgJson, "workRange" );
     if ( !cJSON_IsObject( workRange ) )
@@ -54,13 +50,13 @@ static HttpReturnCodes_t parseJsonConfig( const cJSON *cfgJson, WaterscreenConfi
     if ( !cJSON_IsNumber( workRangeFrom ) )
         return Http_WaterscreenConfigParsingError;
 
-    const uint8_t workRangeFromValue = clamp( workRangeFrom->valueint, 0, MAX_WORK_RANGE_VALUE );
+    const uint8_t workRangeFromValue = clamp( workRangeFrom->valueint, 0, STANDARD_MAX_WORK_RANGE_VALUE );
 
     const cJSON *workRangeTo = cJSON_GetObjectItemCaseSensitive( workRange, "to" );
     if ( !cJSON_IsNumber( workRangeTo ) )
         return Http_WaterscreenConfigParsingError;
 
-    const uint8_t workRangeToValue = clamp( workRangeTo->valueint, 0, MAX_WORK_RANGE_VALUE );
+    const uint8_t workRangeToValue = clamp( workRangeTo->valueint, 0, STANDARD_MAX_WORK_RANGE_VALUE );
 
     if ( workRangeToValue < workRangeFromValue )
         return Http_WaterscreenConfigParsingError;

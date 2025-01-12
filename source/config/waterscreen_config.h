@@ -9,7 +9,11 @@
 #include <stdbool.h>
 
 
-#define CONFIG_AVAILABLE_MODE_COUNT 3 // Three modes are available from config structure
+#define STANDARD_MAX_IDLE_TIME        30
+#define STANDARD_MAX_WORK_TIME        30
+#define STANDARD_MAX_WORK_RANGE_VALUE 24
+
+#define CONFIG_AVAILABLE_MODE_COUNT 3 // Three modes are available from the config structure
 typedef enum
 {
     Mode_Standard,

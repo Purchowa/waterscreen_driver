@@ -10,6 +10,7 @@
 #include "config/wifi_cfg.h"
 #include "http/wifi_task.h"
 
+#include "status_logging/status_logging.h"
 #include "logging.h"
 
 #include <inttypes.h>
@@ -20,7 +21,6 @@
 
 #define MAX_DATA_DELAY_TICKS pdMS_TO_TICKS( 5 * SECOND_MS )
 
-// TODO: configuration
 
 static ColorRGB_t receiveRGB( SerializedColorRGB_t c )
 {
@@ -120,7 +120,7 @@ void bleReceiverTask( void * )
                 reconfigureWifi();
                 break;
             }
-        case Text: // { 1B[size]|size_B[text] }
+        case LogsActive: // { 1B[areLogsActive] }
             {
                 textSize_t textSize = 0;
 
@@ -134,6 +134,18 @@ void bleReceiverTask( void * )
                     handleBLENotifyEvents( text, &s_isClientConnected );
                     LogDebug( "Got text: %s", text );
                 }
+                break;
+            }
+
+        case Configuration:
+            {
+                SerializedConfiguration_t config = {};
+                xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( SerializedConfiguration_t ) );
+                xStreamBufferReceive( g_rxBLEBuffer, &config, sizeof( SerializedConfiguration_t ),
+                                      MAX_DATA_DELAY_TICKS );
+
+                handleConfiguration( &config );
+                logWaterscreenConfig( &g_waterscreenConfig );
                 break;
             }
         default:
