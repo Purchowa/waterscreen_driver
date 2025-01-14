@@ -13,10 +13,8 @@
 
 static void closeValvesSubState( WaterscreenContext_t *context )
 {
-    static const uint64_t closeValves = 0;
-
-    const status_t status       = sendDataToValves( closeValves );
-    context->stateStatus = status;
+    const status_t status = sendDataToValves( 0 );
+    context->stateStatus  = status;
 }
 
 void demoModeState( WaterscreenContext_t *context )
@@ -94,6 +92,15 @@ void lowWaterState( WaterscreenContext_t *context )
     {
         context->stateDelay = SECOND_MS;
     }
+}
+
+void serviceModeState( WaterscreenContext_t *context )
+{
+    manageWaterPump( OffDeviceState );
+    manageValvePower( OnDeviceState );
+    dimNeopixels();
+    const status_t status = sendDataToValves( UINT64_MAX );
+    context->stateStatus  = status;
 }
 
 void shutdownValves( WaterscreenContext_t *context )

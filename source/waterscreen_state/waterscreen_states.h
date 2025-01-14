@@ -9,6 +9,7 @@ void checkSensorsSubState( WaterscreenContext_t * );
 void presentationState( WaterscreenContext_t * );
 void idleState( WaterscreenContext_t * );
 void lowWaterState( WaterscreenContext_t * );
+void serviceModeState( WaterscreenContext_t * );
 
 /**
  * Function closes valves and turns off their power.

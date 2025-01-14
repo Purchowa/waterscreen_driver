@@ -4,7 +4,7 @@
 #include "realtime_mode.h"
 #include "waterscreen_states.h"
 
-#define WATERSCREEN_STATE_COUNT 6
+#define WATERSCREEN_STATE_COUNT 7
 #define UNKNOWN_STATE           "unknown"
 
 
@@ -23,7 +23,7 @@ const char *getStateName( const waterscreenStateFunction_t state )
         { lowWaterState, "low water" },
         { standardModeState, "standard" },
         { realtimeModeState, "bl-realtime" },
-    };
+        { serviceModeState, "service" } };
 
     for ( uint8_t i = 0; i < WATERSCREEN_STATE_COUNT; ++i )
     {

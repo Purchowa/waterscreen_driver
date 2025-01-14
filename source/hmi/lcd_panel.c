@@ -6,8 +6,8 @@
 #include "ble/ble_receiver.h"
 #include "gpio/power_control.h"
 
-#include "switch-on.h"
-#include "switch-off.h"
+#include "switch_on.h"
+#include "switch_off.h"
 
 #include "external/lcd/lcd.h"
 #include <stdio.h>
@@ -56,11 +56,11 @@ static void drawFooter()
 
     LCD_Draw_Line( 0, LCD_HEIGHT - LINE_OFFSET, LCD_WIDTH, LCD_HEIGHT - LINE_OFFSET, Screen_FontColor );
 
-    snprintf( textBuffer, sizeof( textBuffer ), "%u:%u:%u", datetime.time.hour, datetime.time.minute,
+    snprintf( textBuffer, sizeof( textBuffer ), "%02hhu:%02hhu:%02hhu", datetime.time.hour, datetime.time.minute,
               datetime.time.second );
     LCD_Puts( HEADER_MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 
-    snprintf( textBuffer, sizeof( textBuffer ), "%u.%u.%u", datetime.date.day, datetime.date.month,
+    snprintf( textBuffer, sizeof( textBuffer ), "%hhu.%02d.%hu", datetime.date.day, datetime.date.month,
               datetime.date.year );
     LCD_Puts( SCREEN_SECOND_HALF_POS + 20 - HEADER_MARGIN, LAST_LINE, textBuffer, Screen_FontColor );
 }
@@ -75,7 +75,7 @@ static void drawInfoLineIcon( const char *title, bool isOn, const uint8_t strPos
 {
     snprintf( textBuffer, sizeof( textBuffer ), "%s", title );
     LCD_Puts( HEADER_MARGIN, strPos, textBuffer, Screen_FontColor );
-    LCD_Set_Icon( LCD_WIDTH * 0.75, strPos - 3, 22, 12, isOn ? switch_on_22x12 : switch_off_22x12 );
+    LCD_Set_Icon( LCD_WIDTH * 0.75, strPos - 3, 26, 12, isOn ? switch_on_26x12 : switch_off_26x12 );
 }
 
 #define HTTP_CODES_BUFFER_SIZE 2
