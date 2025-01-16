@@ -46,13 +46,8 @@ static void requestCustomPicture( bool isInitialRequest )
 static void requestDatetime( Datetime_t *datetime )
 {
     s_httpReturnCode = httpGetDatetime( datetime );
-    while ( s_httpReturnCode != Http_Success )
-    {
-        logHttpRequest( "Date-time", s_httpReturnCode, GET );
-        vTaskDelay( pdMS_TO_TICKS( 10 * SECOND_MS ) );
 
-        s_httpReturnCode = httpGetDatetime( datetime );
-    }
+    logHttpRequest( "Date-time", s_httpReturnCode, GET );
 }
 
 static void requestWaterscreenConfig( bool isInitialRequest )
@@ -99,6 +94,15 @@ static void handleRequests()
         s_httpReturnCode                 = httpPostWaterscreenStatus( &status );
 
         logHttpRequest( "WS-status", s_httpReturnCode, POST );
+    }
+
+    if ( callCounter % DATETIME_GET_CALLS_NUMBER == 0 )
+    {
+        Datetime_t datetime = {};
+
+        requestDatetime( &datetime );
+        setRTCDatetime( &datetime );
+        logDatetime( &datetime );
     }
 
     ++callCounter; // no overflow for unsigned it's just modulo
