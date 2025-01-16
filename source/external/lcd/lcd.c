@@ -446,7 +446,7 @@ void LCD_Set_Bitmap( uint16_t *data )
     }
 }
 
-void LCD_Set_Icon( uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t *data )
+void LCD_Set_Icon( uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data )
 {
 
     for ( int i = 0; i < w; i++ )

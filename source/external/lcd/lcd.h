@@ -23,7 +23,7 @@ void LCD_GramRefresh( void );
 
 void     LCD_Clear( uint16_t color );
 void     LCD_Set_Bitmap( uint16_t *data );
-void     LCD_Set_Icon( uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t *data );
+void     LCD_Set_Icon( uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data );
 void     LCD_Draw_Point( uint16_t x, uint16_t y, uint16_t color );
 uint16_t LCD_Get_Point( uint16_t x, uint16_t y );
 void     LCD_Draw_Line( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color );
