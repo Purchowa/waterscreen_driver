@@ -76,7 +76,7 @@ void idleState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
 
-    context->stateDelay = SECOND_MS / 2;
+    context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
 }
 
 void lowWaterState( WaterscreenContext_t *context )
