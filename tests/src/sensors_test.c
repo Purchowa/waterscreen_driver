@@ -9,7 +9,7 @@
 
 #include "utils/common_state_assert.h"
 
-void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClosedValves( void **state )
+void givenAlarmOnPumpOff_checkSensorsSubState_transitionToLowWaterStateWithClosedValves()
 {
     WaterscreenContext_t context = {};
 

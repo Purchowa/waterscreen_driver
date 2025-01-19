@@ -35,7 +35,7 @@ static void assertFloatContainersEqual( const FloatSpan_t lhs, const FloatSpan_t
 
 void givenTwoIncreasingSamples_interpolateNormalized_interpolate()
 {
-    const float yInput[]         = { 0, 1 };
+    float       yInput[]         = { 0, 1 };
     const float expectedOutput[] = { 0, 1 / 3.f, 2 / 3.f, 1 };
 
     static const size_t yOutSize       = 4;
@@ -49,8 +49,8 @@ void givenTwoIncreasingSamples_interpolateNormalized_interpolate()
 
 void givenTwoDecreasingSamples_interpolateNormalized_interpolate()
 {
-    const float yInput[]         = { 1, 0 };
-    const float expectedOutput[] = { 1, 2 / 3.f, 1 / 3.f, 0 };
+    float yInput[]         = { 1, 0 };
+    float expectedOutput[] = { 1, 2 / 3.f, 1 / 3.f, 0 };
 
     static const size_t yOutSize       = 4;
     float               yOut[yOutSize] = {};
@@ -64,8 +64,8 @@ void givenTwoDecreasingSamples_interpolateNormalized_interpolate()
 
 void givenTwoEqualSamples_interpolateNormalized_repeatInputByScale()
 {
-    const float yInput[]         = { 1, 1 };
-    const float expectedOutput[] = { 1, 1, 1, 1 };
+    float yInput[]         = { 1, 1 };
+    float expectedOutput[] = { 1, 1, 1, 1 };
 
     static const size_t yOutSize       = 4;
     float               yOut[yOutSize] = {};
@@ -104,6 +104,18 @@ void givenColorsRatio_convertColorsRatioToRGBColors_convertToRGB()
     }
 }
 
+void givenGRBColorArray_copyReverse_copyInReverseOrder()
+{
+    static const size_t size      = 4;
+    static const size_t totalSize = size * 2;
+    colorGRB_t          colors[]  = { 1, 2, 3, 4, 0, 0, 0, 0 };
+
+    const colorGRB_t expectedColors[] = { 1, 2, 3, 4, 4, 3, 2, 1 };
+
+    copyReverse( &colors[size], colors, size );
+    assert_memory_equal( colors, expectedColors, totalSize * sizeof( *colors ) );
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = {
@@ -112,6 +124,7 @@ int main()
         cmocka_unit_test( givenTwoDecreasingSamples_interpolateNormalized_interpolate ),
         cmocka_unit_test( givenTwoEqualSamples_interpolateNormalized_repeatInputByScale ),
         cmocka_unit_test( givenColorsRatio_convertColorsRatioToRGBColors_convertToRGB ),
+        cmocka_unit_test( givenGRBColorArray_copyReverse_copyInReverseOrder ),
     };
 
     return cmocka_run_group_tests_name( "Picture converter utils tests ", tests, NULL, NULL );

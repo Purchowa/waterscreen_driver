@@ -67,3 +67,9 @@ void convertColorsRatioToRGBColors( const FloatSpan_t colorsRatio, ColorRGB_t *r
         rgbColors[i].b = secRatio * secondaryColor.b * secondaryColorFactor + mainRatio * mainColor.b;
     }
 }
+
+void copyReverse( colorGRB_t *dest, const colorGRB_t *src, size_t n )
+{
+    for ( size_t i = 0; i < n; ++i )
+        dest[i] = src[n - i - 1];
+}

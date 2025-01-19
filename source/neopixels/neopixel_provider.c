@@ -1,5 +1,6 @@
 #include "neopixel_provider.h"
 
+#include "neopixels/converter_utils.h"
 #include "neopixels/neopixel_converter.h"
 #include "neopixels/neopixel_defines.h"
 #include "external/neopixel/neopixels.h"
@@ -18,6 +19,6 @@ void dimNeopixels()
 void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor )
 {
     convertPictureRowToGRBColors( pictureRow, s_grbColors, mainColor, secondaryColor, s_secondaryColorFactor );
-    memcpy( &s_grbColors[NEOPIXEL_COUNT], s_grbColors, NEOPIXEL_COUNT * sizeof( *s_grbColors ) );
+    copyReverse( &s_grbColors[NEOPIXEL_COUNT], s_grbColors, NEOPIXEL_COUNT );
     Neopixels_Send( s_grbColors );
 }

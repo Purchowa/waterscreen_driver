@@ -70,7 +70,7 @@ static void requestWaterscreenConfig( bool isInitialRequest )
 
 static void handleRequests()
 {
-    static uint32_t callCounter = 0;
+    static uint32_t callCounter = 1;
 
     if ( callCounter % WATERSCREEN_CONFIG_GET_CALLS_NUMBER == 0 )
     {
@@ -108,11 +108,25 @@ static void handleRequests()
     ++callCounter; // no overflow for unsigned it's just modulo
 }
 
+static void handleWiFiReconfiguration()
+{
+    if ( s_reconfigureWiFi )
+    {
+        wlan_config( g_wifiCredentials.login, g_wifiCredentials.password, AP_SECURITY_MODE );
+        s_reconfigureWiFi = false;
+    }
+}
+
 void wifiTask( void * )
 {
     Datetime_t datetime = {};
 
     wlan_init( g_wifiCredentials.login, g_wifiCredentials.password, AP_SECURITY_MODE );
+
+    while ( wlan_get_state() != MWM_CONNECTED )
+    {
+        handleWiFiReconfiguration();
+    }
 
     requestWeather();
     requestDatetime( &datetime );
@@ -131,12 +145,7 @@ void wifiTask( void * )
         {
             handleRequests();
         }
-
-        if ( s_reconfigureWiFi )
-        {
-            wlan_config( g_wifiCredentials.login, g_wifiCredentials.password, AP_SECURITY_MODE );
-            s_reconfigureWiFi = false;
-        }
+        handleWiFiReconfiguration();
 
         vTaskDelay( pdMS_TO_TICKS( WIFI_TASK_DELAY_MS ) );
     }

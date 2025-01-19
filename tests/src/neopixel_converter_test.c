@@ -44,7 +44,7 @@ void test()
                                                            expectedSecondary };
 
 
-    static colorGRB_t eps = 35000; // due to flot to int casting.
+    static colorGRB_t eps = 35000; // due to float to int casting.
     for ( size_t i = 0; i < NEOPIXEL_COUNT; ++i )
     {
         assert_in_range( grbColors[i], expectedGrbColors[i] - eps, expectedGrbColors[i] + eps );

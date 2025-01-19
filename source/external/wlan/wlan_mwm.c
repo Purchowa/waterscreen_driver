@@ -208,20 +208,20 @@ void wlan_reboot()
 
     int ret;
 
-    LogInfo( "Rebooting WLAN module...\r\n" );
+    LogInfo( "Rebooting WLAN module..." );
     ret = mwm_reboot();
     if ( ret < 0 )
     {
-        LogError( "WLAN reboot failed, error: %d\r\n", ret );
+        LogError( "WLAN reboot failed, error: %d", ret );
         while ( 1 )
             ;
     }
 
-    LogInfo( "Starting WLAN...\r\n" );
+    LogInfo( "Starting WLAN..." );
     ret = mwm_wlan_start();
     if ( ret < 0 )
     {
-        LogError( "Could not start WLAN subsystem, error: %d\r\n", ret );
+        LogError( "Could not start WLAN subsystem, error: %d", ret );
         while ( 1 )
             ;
     }
@@ -237,7 +237,7 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     ret = mwm_get_param( MWM_MOD_WLAN, MWM_WLAN_CONFIGURED, g_buffer, MWM_BUFFER_LEN );
     if ( ret < 0 )
     {
-        LogError( "Could not get param: %s, error: %d\r\n", MWM_PROV_SSID, ret );
+        LogError( "Could not get param: %s, error: %d", MWM_PROV_SSID, ret );
         while ( 1 )
             ;
     }
@@ -248,7 +248,7 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
         ret = mwm_get_param( MWM_MOD_WLAN, MWM_WLAN_SSID, g_buffer, MWM_BUFFER_LEN );
         if ( ret < 0 )
         {
-            LogError( "Could not get param: %s, error: %d\r\n", MWM_PROV_SSID, ret );
+            LogError( "Could not get param: %s, error: %d", MWM_PROV_SSID, ret );
             while ( 1 )
                 ;
             ;
@@ -260,7 +260,7 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
         ret = mwm_get_param( MWM_MOD_WLAN, MWM_WLAN_SECURITY, g_buffer, MWM_BUFFER_LEN );
         if ( ret < 0 )
         {
-            LogError( "Could not get param: %s, error: %d\r\n", MWM_PROV_SSID, ret );
+            LogError( "Could not get param: %s, error: %d", MWM_PROV_SSID, ret );
             while ( 1 )
                 ;
         }
@@ -274,12 +274,12 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     if ( recofigure )
     {
 
-        LogInfo( "Reconfigure WLAN module\r\n" );
+        LogInfo( "Reconfigure WLAN module" );
 
         ret = mwm_set_param( MWM_MOD_WLAN, MWM_WLAN_SSID, ap_ssid );
         if ( ret < 0 )
         {
-            LogError( "Could not set param: %s, error: %d\r\n", MWM_WLAN_SSID, ret );
+            LogError( "Could not set param: %s, error: %d", MWM_WLAN_SSID, ret );
             while ( 1 )
                 ;
         }
@@ -287,7 +287,7 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
         ret = mwm_set_param( MWM_MOD_WLAN, MWM_WLAN_SECURITY, ap_security_mode );
         if ( ret < 0 )
         {
-            LogError( "Could not set param: %s, error: %d\r\n", MWM_WLAN_SSID, ret );
+            LogError( "Could not set param: %s, error: %d", MWM_WLAN_SSID, ret );
             while ( 1 )
                 ;
         }
@@ -298,7 +298,7 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
             ret = mwm_set_param( MWM_MOD_WLAN, MWM_WLAN_PASSPHRASE, ap_passphrase );
             if ( ret < 0 )
             {
-                LogError( "Could not set param: %s, error: %d\r\n", MWM_WLAN_SSID, ret );
+                LogError( "Could not set param: %s, error: %d", MWM_WLAN_SSID, ret );
                 while ( 1 )
                     ;
             }
@@ -309,12 +309,11 @@ void wlan_config( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
             ret = mwm_set_param( MWM_MOD_WLAN, MWM_WLAN_CONFIGURED, "1" );
             if ( ret < 0 )
             {
-                LogError( "Could not set param: %s, error: %d\r\n", MWM_WLAN_CONFIGURED, ret );
+                LogError( "Could not set param: %s, error: %d", MWM_WLAN_CONFIGURED, ret );
                 while ( 1 )
                     ;
             }
         }
-        PRINTF( "\r\n" );
 
         wlan_reboot();
     }
@@ -352,18 +351,15 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
 
     wlan_config( ap_ssid, ap_passphrase, ap_security_mode );
     LogInfo( "WLAN Connecting...\r\n" );
-    while ( wlan_get_state() != MWM_CONNECTED )
-        ;
-    wlan_state();
 }
 
 static void closeSocket( const int socketHandle )
 {
     int ret = mwm_close( socketHandle );
-    while ( ret != 0 )
+    if ( ret < 0 )
     {
         LogError( "Could not close socket, error: %d\r\n", ret );
-        ret = mwm_close( socketHandle );
+        wlan_reboot();
     }
 }
 
