@@ -437,17 +437,30 @@ void BOARD_InitSPIValvePins(void); /* Function assigned for the Cortex-M33 (Core
  * @brief Selects pin function.: Alternative connection 0. */
 #define PIO1_15_FUNC_ALT0 0x00u
 /*!
+ * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
+#define PIO1_15_MODE_PULL_UP 0x02u
+/*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
 #define PIO1_23_DIGIMODE_DIGITAL 0x01u
 /*!
  * @brief Selects pin function.: Alternative connection 0. */
 #define PIO1_23_FUNC_ALT0 0x00u
 /*!
+ * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
+#define PIO1_23_MODE_PULL_UP 0x02u
+/*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
 #define PIO1_25_DIGIMODE_DIGITAL 0x01u
 /*!
  * @brief Selects pin function.: Alternative connection 0. */
 #define PIO1_25_FUNC_ALT0 0x00u
+/*!
+ * @brief
+ * Selects function mode (on-chip pull-up/pull-down resistor control).
+ * : Inactive.
+ * Inactive (no pull-down/pull-up resistor enabled).
+ */
+#define PIO1_25_MODE_INACTIVE 0x00u
 
 /*! @name PIO0_1 (number 7), P18[2]/SD1_CLK
   @{ */

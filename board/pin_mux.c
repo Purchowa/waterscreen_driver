@@ -914,9 +914,9 @@ BOARD_InitGPIOPins:
     gpio_init_state: 'true'}
   - {pin_num: '57', peripheral: GPIO, signal: 'PIO1, 14', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, direction: OUTPUT,
     gpio_init_state: 'true'}
-  - {pin_num: '77', peripheral: GPIO, signal: 'PIO1, 25', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, direction: INPUT}
-  - {pin_num: '42', peripheral: GPIO, signal: 'PIO1, 23', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, direction: INPUT}
-  - {pin_num: '82', peripheral: GPIO, signal: 'PIO1, 15', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, direction: INPUT}
+  - {pin_num: '77', peripheral: GPIO, signal: 'PIO1, 25', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, direction: INPUT, mode: inactive}
+  - {pin_num: '42', peripheral: GPIO, signal: 'PIO1, 23', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, direction: INPUT, mode: pullUp}
+  - {pin_num: '82', peripheral: GPIO, signal: 'PIO1, 15', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, direction: INPUT, mode: pullUp}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1002,11 +1002,16 @@ void BOARD_InitGPIOPins(void)
 
     IOCON->PIO[1][15] = ((IOCON->PIO[1][15] &
                           /* Mask bits to zero which are setting */
-                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
 
                          /* Selects pin function.
                           * : PORT115 (pin 82) is configured as PIO1_15. */
                          | IOCON_PIO_FUNC(PIO1_15_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Pull-up.
+                          * Pull-up resistor enabled. */
+                         | IOCON_PIO_MODE(PIO1_15_MODE_PULL_UP)
 
                          /* Select Digital mode.
                           * : Enable Digital mode.
@@ -1015,11 +1020,16 @@ void BOARD_InitGPIOPins(void)
 
     IOCON->PIO[1][23] = ((IOCON->PIO[1][23] &
                           /* Mask bits to zero which are setting */
-                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
 
                          /* Selects pin function.
                           * : PORT123 (pin 42) is configured as PIO1_23. */
                          | IOCON_PIO_FUNC(PIO1_23_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Pull-up.
+                          * Pull-up resistor enabled. */
+                         | IOCON_PIO_MODE(PIO1_23_MODE_PULL_UP)
 
                          /* Select Digital mode.
                           * : Enable Digital mode.
@@ -1028,11 +1038,16 @@ void BOARD_InitGPIOPins(void)
 
     IOCON->PIO[1][25] = ((IOCON->PIO[1][25] &
                           /* Mask bits to zero which are setting */
-                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
 
                          /* Selects pin function.
                           * : PORT125 (pin 77) is configured as PIO1_25. */
                          | IOCON_PIO_FUNC(PIO1_25_FUNC_ALT0)
+
+                         /* Selects function mode (on-chip pull-up/pull-down resistor control).
+                          * : Inactive.
+                          * Inactive (no pull-down/pull-up resistor enabled). */
+                         | IOCON_PIO_MODE(PIO1_25_MODE_INACTIVE)
 
                          /* Select Digital mode.
                           * : Enable Digital mode.
