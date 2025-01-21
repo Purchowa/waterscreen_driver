@@ -3,10 +3,13 @@
 
 #include <fsl_gpio.h>
 #include <pin_mux.h>
+#include "logging.h"
 
 #define OPTIMAL_STATE 1
 #define LOW_STATE     0
 
+static uint32_t prevFirst  = 0;
+static uint32_t prevSecond = 0;
 
 bool shouldWaterPumpTrigger()
 {
@@ -23,6 +26,14 @@ bool shouldWaterPumpTrigger()
         s_shouldPumpTrigger = true;
     else if ( firstFloaterState == OPTIMAL_STATE && secondFloaterState == OPTIMAL_STATE )
         s_shouldPumpTrigger = false;
+
+    if ( prevFirst != firstFloaterState || prevSecond != secondFloaterState )
+    {
+        LogDebug( "1. First sensor %s", firstFloaterState == LOW_STATE ? "low" : "optimal" );
+        LogDebug( "2. Second sensor %s", secondFloaterState == LOW_STATE ? "low" : "optimal" );
+        prevFirst  = firstFloaterState;
+        prevSecond = secondFloaterState;
+    }
 
     return s_shouldPumpTrigger;
 }

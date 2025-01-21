@@ -42,9 +42,7 @@ int wlan_get_state()
     int ret = mwm_wlan_status();
     if ( ret < 0 )
     {
-        LogError( "Failed to get WLAN status, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        LogError( "Failed to get WLAN status, error: %d", ret );
     }
 
     return ret;
@@ -158,26 +156,24 @@ void wlan_connect()
     ret = wlan_get_state();
     if ( ret != MWM_DISCONNECTED )
     {
-        PRINTF( "WLAN must be in disconnected state\r\n" );
+        LogDebug( "WLAN must be in disconnected state" );
         return;
     }
 
     ret = mwm_get_param( MWM_MOD_WLAN, MWM_WLAN_SSID, g_buffer, MWM_BUFFER_LEN );
     if ( ret < 0 )
     {
-        PRINTF( "Connecting...\r\n" );
+        LogInfo( "Connecting..." );
     }
     else
     {
-        PRINTF( "Connecting to %s\r\n", g_buffer );
+        LogInfo( "Connecting to %s", g_buffer );
     }
 
     ret = mwm_wlan_connect();
     if ( ret < 0 )
     {
-        PRINTF( "WLAN connect failed, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        LogError( "WLAN connect failed, error: %d", ret );
     }
 }
 
@@ -325,12 +321,12 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     int ret;
 
     /* Initialize Serial MWM */
-    LogInfo( "Initializing Serial MWM...\r\n" );
+    LogInfo( "Initializing Serial MWM..." );
     ret = mwm_init();
     if ( ret < 0 )
     {
 
-        LogError( "Could not initialize Serial MWM, error: %d\r\n", ret );
+        LogError( "Could not initialize Serial MWM, error: %d", ret );
         while ( 1 )
             ;
     }
@@ -338,19 +334,19 @@ void wlan_init( char *ap_ssid, char *ap_passphrase, char *ap_security_mode )
     if ( ret == MWM_INITIALIZED )
     {
 
-        LogInfo( "WLAN Starting...\r\n" );
+        LogInfo( "WLAN Starting..." );
         ret = mwm_wlan_start();
         if ( ret < 0 )
         {
 
-            LogError( "Could not start WLAN subsystem, error: %d\r\n", ret );
+            LogError( "Could not start WLAN subsystem, error: %d", ret );
             while ( 1 )
                 ;
         }
     }
 
     wlan_config( ap_ssid, ap_passphrase, ap_security_mode );
-    LogInfo( "WLAN Connecting...\r\n" );
+    LogInfo( "WLAN Connecting..." );
 }
 
 static void closeSocket( const int socketHandle )
@@ -358,7 +354,7 @@ static void closeSocket( const int socketHandle )
     int ret = mwm_close( socketHandle );
     if ( ret < 0 )
     {
-        LogError( "Could not close socket, error: %d\r\n", ret );
+        LogError( "Could not close socket, error: %d", ret );
         wlan_reboot();
     }
 }
@@ -383,7 +379,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( ret != MWM_CONNECTED )
     {
 
-        LogDebug( "WLAN must be in connected state\r\n" );
+        LogDebug( "WLAN must be in connected state" );
         return;
     }
 
@@ -391,21 +387,18 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( s < 0 )
     {
 
-        LogError( "Could not create socket, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        LogError( "Could not create socket, error: %d", ret );
+        return;
     }
 
     sprintf( g_http_srv_addr.host, hostname );
     g_http_srv_addr.port = 80;
 
-    // PRINTF( "Connecting to: %s:%d\r\n", g_http_srv_addr.host, g_http_srv_addr.port );
-
     ret = mwm_connect( s, &g_http_srv_addr, sizeof( g_http_srv_addr ) );
     if ( ret != 0 )
     {
 
-        LogError( "Could not connect to server, error: %d\r\n", ret );
+        LogError( "Could not connect to server, error: %d", ret );
         closeSocket( s );
         return;
     }
@@ -440,7 +433,7 @@ void http_POST( const char *reqdata, const char *authorization, char *response_d
     if ( ret != data_len )
     {
 
-        LogError( "Could not send data, error: %d\r\n", ret );
+        LogError( "Could not send data, error: %d", ret );
         closeSocket( s );
         return;
     }
@@ -470,7 +463,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( ret != MWM_CONNECTED )
     {
 
-        LogError( "WLAN must be in connected state\r\n" );
+        LogError( "WLAN must be in connected state" );
         return;
     }
 
@@ -478,9 +471,8 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( s < 0 )
     {
 
-        LogError( "Could not create socket, error: %d\r\n", ret );
-        while ( 1 )
-            ;
+        LogError( "Could not create socket, error: %d", ret );
+        return;
     }
 
     sprintf( g_http_srv_addr.host, hostname );
@@ -492,7 +484,7 @@ void http_GET( const char *reqdata, const char *authorization, char *respdata )
     if ( ret != 0 )
     {
 
-        LogError( "Could not connect to server, error: %d\r\n", ret );
+        LogError( "Could not connect to server, error: %d", ret );
         closeSocket( s );
         return;
     }

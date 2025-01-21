@@ -33,8 +33,20 @@ static void receivePictureColors( const SerializedPictureColors_t *serializedCol
     colors->secondary = receiveRGB( serializedColors->secondary );
 }
 
+
 StreamBufferHandle_t g_rxBLEBuffer     = NULL;
 static bool          s_isLoggingActive = false;
+
+static void onDataReceiveFailure( const char *dataType )
+{
+    xStreamBufferReset( g_rxBLEBuffer );
+    LogError( "Some data might got lost while receiving %s", dataType );
+}
+
+static void onDataReceiveSuccess( const char *dataType )
+{
+    LogInfo( "Got %s", dataType );
+}
 
 void bleReceiverTask( void * )
 {
@@ -51,13 +63,22 @@ void bleReceiverTask( void * )
         // { 1B[typeInfo]|xB[rest...] }
         xStreamBufferReceive( g_rxBLEBuffer, &typeInfo, sizeof( typeInfo_t ), portMAX_DELAY );
 
+        bool isOk = true;
         switch ( typeInfo )
         {
         case RTModeActive: // { 1B[isRTModeActive] }
             {
                 bool isRTModeActive = false;
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( rtModeActive_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &isRTModeActive, sizeof( rtModeActive_t ), MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &isRTModeActive, sizeof( rtModeActive_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( rtModeActive_t );
+
+                if ( !isOk )
+                {
+                    onDataReceiveFailure( "RTModeActive" );
+                    break;
+                }
+                onDataReceiveSuccess( "RTModeActive" );
 
                 handleBLERTModeEvent( isRTModeActive );
                 break;
@@ -69,7 +90,6 @@ void bleReceiverTask( void * )
                                               sizeof( SerializedPictureColors_t ) + sizeof( pictureSize_t ) );
 
                 SerializedPictureColors_t colorsPayload;
-                bool                      isOk = true;
 
                 isOk &= xStreamBufferReceive( g_rxBLEBuffer, &colorsPayload, sizeof( SerializedPictureColors_t ),
                                               MAX_DATA_DELAY_TICKS ) == sizeof( SerializedPictureColors_t );
@@ -85,10 +105,10 @@ void bleReceiverTask( void * )
 
                 if ( !isOk )
                 {
-                    xStreamBufferReset( g_rxBLEBuffer );
-                    LogError( "[CustomPicture] Some data might got lost" );
+                    onDataReceiveFailure( "CustomPicture" );
                     break;
                 }
+                onDataReceiveSuccess( "CustomPicture" );
 
                 receivePictureColors( &colorsPayload, &g_customPicture.colors );
                 handleCustomPictureEvent();
@@ -100,20 +120,32 @@ void bleReceiverTask( void * )
                 wifiCredentialsSize_t passwordSize = 0;
 
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( wifiCredentialsSize_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &loginSize, sizeof( wifiCredentialsSize_t ),
-                                      MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &loginSize, sizeof( wifiCredentialsSize_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( wifiCredentialsSize_t );
                 loginSize = clamp( loginSize, 0, WIFI_CREDENTIALS_CAPACITY );
+
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, loginSize );
-                xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.login, loginSize, MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.login, loginSize,
+                                              MAX_DATA_DELAY_TICKS ) == loginSize;
                 g_wifiCredentials.login[WIFI_CREDENTIALS_CAPACITY - 1] = '\0';
 
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( wifiCredentialsSize_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &passwordSize, sizeof( wifiCredentialsSize_t ),
-                                      MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &passwordSize, sizeof( wifiCredentialsSize_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( wifiCredentialsSize_t );
+
                 passwordSize = clamp( passwordSize, 0, WIFI_CREDENTIALS_CAPACITY );
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, passwordSize );
-                xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.password, passwordSize, MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, g_wifiCredentials.password, passwordSize,
+                                              MAX_DATA_DELAY_TICKS ) == passwordSize;
+
                 g_wifiCredentials.password[WIFI_CREDENTIALS_CAPACITY - 1] = '\0';
+
+                if ( !isOk )
+                {
+                    onDataReceiveFailure( "WiFiCredentials" );
+                    break;
+                }
+                onDataReceiveSuccess( "WiFiCredentials" );
 
                 reconfigureWifi();
                 break;
@@ -121,7 +153,15 @@ void bleReceiverTask( void * )
         case LogsActive: // { 1B[areLogsActive] }
             {
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( logsActive_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &s_isLoggingActive, sizeof( logsActive_t ), MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &s_isLoggingActive, sizeof( logsActive_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( logsActive_t );
+
+                if ( !isOk )
+                {
+                    onDataReceiveFailure( "LogsActive" );
+                    break;
+                }
+                onDataReceiveSuccess( "LogsActive" );
 
                 break;
             }
@@ -130,8 +170,15 @@ void bleReceiverTask( void * )
             {
                 SerializedConfiguration_t config = {};
                 xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( SerializedConfiguration_t ) );
-                xStreamBufferReceive( g_rxBLEBuffer, &config, sizeof( SerializedConfiguration_t ),
-                                      MAX_DATA_DELAY_TICKS );
+                isOk &= xStreamBufferReceive( g_rxBLEBuffer, &config, sizeof( SerializedConfiguration_t ),
+                                              MAX_DATA_DELAY_TICKS ) == sizeof( SerializedConfiguration_t );
+
+                if ( !isOk )
+                {
+                    onDataReceiveFailure( "Configuration" );
+                    break;
+                }
+                onDataReceiveSuccess( "Configuration" );
 
                 handleConfiguration( &config );
                 logWaterscreenConfig( &g_waterscreenConfig );
@@ -143,7 +190,6 @@ void bleReceiverTask( void * )
                 xStreamBufferReset( g_rxBLEBuffer );
             }
         }
-
         xStreamBufferSetTriggerLevel( g_rxBLEBuffer, sizeof( typeInfo_t ) );
     }
 }

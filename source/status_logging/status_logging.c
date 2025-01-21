@@ -50,8 +50,8 @@ void logWeather( const Weather_t *weather )
 
 void logDatetime( const Datetime_t *datetime )
 {
-    LogInfo( "Time - weekday: %d, date: %d.%d.%d time: %d:%d:%d", datetime->date.weekday, datetime->date.day,
-             datetime->date.month, datetime->date.year, datetime->time.hour, datetime->time.minute,
+    LogInfo( "Time - weekday: %d, date: %hhu.%02d.%hu time: %02hhu:%02hhu:%02hhu", datetime->date.weekday,
+             datetime->date.day, datetime->date.month, datetime->date.year, datetime->time.hour, datetime->time.minute,
              datetime->time.second );
 }
 
