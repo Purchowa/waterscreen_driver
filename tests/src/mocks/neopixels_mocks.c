@@ -16,6 +16,9 @@ void lightUpNeopixelsWithColor( ColorRGB_t color )
     function_called();
 };
 
-void dimNeopixels() {}
+void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor )
+{
+    check_expected( pictureRow );
+}
 
-void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor ) {}
+void dimNeopixels() {}

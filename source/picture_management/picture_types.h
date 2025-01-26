@@ -5,6 +5,7 @@
 #include "picture_data_constants.h"
 #include "neopixels/color.h"
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define RESIZABLE_PICTURES_CAPACITY 8
@@ -29,6 +30,8 @@ typedef struct
 {
     PictureDataSpan_t picture;
     PictureColors_t   colors;
+    bool enableRowBitSum; // Flag for accumulating row bits. It makes presentation less dynamic but provides more light.
+                          // Useful for icons, picture, etc.
 } PictureInfo_t;
 
 /**

@@ -49,7 +49,7 @@ endfunction()
 enable_testing()
 
 generate_test("presentation_state_test"
-        "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
+        "waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
         "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
 
 generate_test("demonstration_state_test"

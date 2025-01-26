@@ -49,29 +49,41 @@ void checkSensorsSubState( WaterscreenContext_t *context )
     }
 }
 
-void presentationState( WaterscreenContext_t *context )
+static pictureRow_t s_neopixelRowData = 0;
+void                presentationState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
 
     if ( context->valveOpenCounter < 0 )
     {
-        lightUpNeopixelsWithColor(
-            adjustColorBrightness( context->pictureInfo->colors.secondary, SECONDARY_COLOR_FACTOR ) );
+        const PictureColors_t *colors = &context->pictureInfo->colors;
+        if ( context->pictureInfo->enableRowBitSum )
+            lightUpNeopixels( s_neopixelRowData, colors->main, colors->secondary );
+        else
+            lightUpNeopixelsWithColor(
+                adjustColorBrightness( context->pictureInfo->colors.secondary, SECONDARY_COLOR_FACTOR ) );
+
+        s_neopixelRowData = 0;
         closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
         context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
     }
     else
     {
-        const PictureDataSpan_t *picture = &context->pictureInfo->picture;
-        const PictureColors_t   *colors  = &context->pictureInfo->colors;
-        const uint64_t           rowData = picture->data[context->valveOpenCounter];
+        const PictureDataSpan_t *picture       = &context->pictureInfo->picture;
+        const PictureColors_t   *colors        = &context->pictureInfo->colors;
+        const pictureRow_t       valvesRowData = picture->data[context->valveOpenCounter];
 
-        lightUpNeopixels( rowData, colors->main, colors->secondary );
+        if ( context->pictureInfo->enableRowBitSum )
+            s_neopixelRowData |= valvesRowData;
+        else
+            s_neopixelRowData = valvesRowData;
 
-        const status_t status = sendDataToValves( rowData );
+        lightUpNeopixels( s_neopixelRowData, colors->main, colors->secondary );
+
+        const status_t status = sendDataToValves( valvesRowData );
+
         --context->valveOpenCounter;
-
         context->stateStatus = status;
         context->stateDelay  = PRESENTING_DELAY_MS;
     }

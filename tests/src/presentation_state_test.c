@@ -7,7 +7,7 @@
 
 #include "power_control.h"
 #include "waterscreen_state_context_handler.h"
-#include "waterscreen_states.h"
+#include "waterscreen_states.c" // Only for test purposes
 
 #include "utils/common_state_assert.h"
 
@@ -16,19 +16,18 @@ static const pictureRow_t pictureSample[] = { 0b10000000000000000000000000000000
                                               0b0010000000000000000000000000000000000000000000000000000000000000,
                                               0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureInfo_t picture = { .picture = { .size = 4, .data = pictureSample } };
 
-static void givenPicture_presentationState_printBottomUp()
+static void givenPictureWithoutRowBitSum_presentationState_printBottomUpWithSameValueForValvesAndNeopixels()
 {
-    will_return( getEachPicture, &picture );
-    const PictureInfo_t *mockedPicture = getEachPicture();
+    const PictureInfo_t pictInfo = { .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = false };
 
     WaterscreenContext_t context = { .waterscreenStateHandler = presentationState,
-                                     .pictureInfo             = mockedPicture,
-                                     .valveOpenCounter        = mockedPicture->picture.size - 1 };
-    for ( int8_t i = mockedPicture->picture.size - 1; 0 <= i; --i )
+                                     .pictureInfo             = &pictInfo,
+                                     .valveOpenCounter        = pictInfo.picture.size - 1 };
+    for ( int8_t i = pictInfo.picture.size - 1; 0 <= i; --i )
     { // Print picture
-        expect_value( sendDataToValves, data, mockedPicture->picture.data[i] );
+        expect_value( sendDataToValves, data, pictInfo.picture.data[i] );
+        expect_value( lightUpNeopixels, pictureRow, pictInfo.picture.data[i] );
         will_return( shouldWaterPumpTrigger, false );
         will_return( shouldWaterAlarmTrigger, false );
         expect_value( manageWaterPump, state, OffDeviceState );
@@ -38,15 +37,50 @@ static void givenPicture_presentationState_printBottomUp()
     }
 }
 
+static void givenPictureWithRowBitSum_presentationState_printBottomUpAccumulateBitsForNeopixelRowAndResetRow()
+{
+    const PictureInfo_t pictInfo = { .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = true };
+
+    const pictureRow_t expectedNeopixelRows[] = { 0b1111000000000000000000000000000000000000000000000000000000000000,
+                                                  0b0111000000000000000000000000000000000000000000000000000000000000,
+                                                  0b0011000000000000000000000000000000000000000000000000000000000000,
+                                                  0b0001000000000000000000000000000000000000000000000000000000000000 };
+
+    WaterscreenContext_t context = { .waterscreenStateHandler         = presentationState,
+                                     .previousWaterscreenStateHandler = demoModeState,
+                                     .pictureInfo                     = &pictInfo,
+                                     .valveOpenCounter                = pictInfo.picture.size - 1 };
+    for ( int8_t i = pictInfo.picture.size - 1; 0 <= i; --i )
+    { // Print picture
+        expect_value( sendDataToValves, data, pictInfo.picture.data[i] );
+        expect_value( lightUpNeopixels, pictureRow, expectedNeopixelRows[i] );
+        will_return( shouldWaterPumpTrigger, false );
+        will_return( shouldWaterAlarmTrigger, false );
+        expect_value( manageWaterPump, state, OffDeviceState );
+        will_return( sendDataToValves, SuccessSPI );
+        performWaterscreenAction( &context );
+        assert_ptr_equal( context.waterscreenStateHandler, presentationState );
+    }
+
+    will_return( shouldWaterPumpTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
+    expect_value( manageWaterPump, state, OffDeviceState );
+
+    expect_value( lightUpNeopixels, pictureRow, expectedNeopixelRows[0] );
+    assertClosedValves();
+    performWaterscreenAction( &context );
+    assert_int_equal( s_neopixelRowData, 0 );
+    assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
+}
+
 static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState()
 {
-    will_return( getEachPicture, &picture );
-    const PictureInfo_t *mockedPicture = getEachPicture();
+    const PictureInfo_t pictInfo = { .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = false };
 
     WaterscreenContext_t context = {
         .waterscreenStateHandler         = presentationState,
         .previousWaterscreenStateHandler = demoModeState,
-        .pictureInfo                     = mockedPicture,
+        .pictureInfo                     = &pictInfo,
         .valveOpenCounter                = -1,
     };
 
@@ -61,11 +95,25 @@ static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGo
     assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
 }
 
+static int setupNeopixelRowData()
+{
+    s_neopixelRowData = 0;
+
+    return 0;
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test( givenPicture_presentationState_printBottomUp ),
-        cmocka_unit_test( givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState ),
+        cmocka_unit_test_setup(
+
+            givenPictureWithoutRowBitSum_presentationState_printBottomUpWithSameValueForValvesAndNeopixels,
+            setupNeopixelRowData ),
+        cmocka_unit_test_setup(
+            givenPictureWithRowBitSum_presentationState_printBottomUpAccumulateBitsForNeopixelRowAndResetRow,
+            setupNeopixelRowData ),
+        cmocka_unit_test_setup( givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState,
+                                setupNeopixelRowData ),
     };
 
     return cmocka_run_group_tests_name( "Presentation State test", tests, NULL, NULL );
