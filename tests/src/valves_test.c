@@ -24,10 +24,6 @@ bool shouldWaterPumpTrigger() {}
 
 bool shouldWaterAlarmTrigger() {}
 
-void dimNeopixels() {}
-
-void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor ) {}
-
 
 static void givenAnyState_closeValveSubState_turnValvesOffRemainTheSameState( void **state )
 {

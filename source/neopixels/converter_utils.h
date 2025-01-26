@@ -9,11 +9,12 @@
 
 FloatSpan_t createFloatSpan( float *data, size_t size );
 
-void binaryToArray( const pictureRow_t binaryRow, FloatSpan_t dst );
-void interpolateNormalized( const FloatSpan_t yInput, FloatSpan_t yOutput );
-void convertColorsRatioToRGBColors( const FloatSpan_t colorsRatio, ColorRGB_t *rgbColors, ColorRGB_t mainColor,
-                                    ColorRGB_t secondaryColor, float secondaryColorFactor );
-void copyReverse( colorGRB_t *dest, const colorGRB_t *src, size_t n );
+void       binaryToArray( const pictureRow_t binaryRow, FloatSpan_t dst );
+void       interpolateNormalized( const FloatSpan_t yInput, FloatSpan_t yOutput );
+void       convertColorsRatioToRGBColors( const FloatSpan_t colorsRatio, ColorRGB_t *rgbColors, ColorRGB_t mainColor,
+                                          ColorRGB_t secondaryColor, float mainColorFactor, float secondaryColorFactor );
+ColorRGB_t adjustColorBrightness( ColorRGB_t color, float factor );
+void       copyReverse( colorGRB_t *dest, const colorGRB_t *src, size_t n );
 
 
 #endif /* CONVERTER_UTILS_H_ */

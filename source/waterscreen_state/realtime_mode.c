@@ -24,6 +24,7 @@ void realtimeModeState( WaterscreenContext_t *context )
 
         manageValvePower( OnDeviceState );
         changeWaterscreenState( context, presentationState );
+        context->stateDelay = PRESENTING_DELAY_MS;
         --s_presentationRepeatCount;
     }
     else

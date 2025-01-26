@@ -8,6 +8,8 @@
 
 #include "spi_transfer/spi_transfer.h"
 #include "neopixels/neopixel_provider.h"
+#include "neopixels/converter_utils.h"
+#include "neopixels/neopixel_defines.h"
 
 #include <string.h>
 
@@ -22,7 +24,9 @@ void demoModeState( WaterscreenContext_t *context )
     context->pictureInfo      = getEachPicture();
     context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
     manageValvePower( OnDeviceState );
+    dimNeopixels();
     changeWaterscreenState( context, presentationState );
+    context->stateDelay = PRESENTING_DELAY_MS;
 }
 
 void checkSensorsSubState( WaterscreenContext_t *context )
@@ -51,7 +55,8 @@ void presentationState( WaterscreenContext_t *context )
 
     if ( context->valveOpenCounter < 0 )
     {
-        dimNeopixels();
+        lightUpNeopixelsWithColor(
+            adjustColorBrightness( context->pictureInfo->colors.secondary, SECONDARY_COLOR_FACTOR ) );
         closeValvesSubState( context );
         goBackToPreviousWaterscreenState( context );
         context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
@@ -75,6 +80,7 @@ void presentationState( WaterscreenContext_t *context )
 void idleState( WaterscreenContext_t *context )
 {
     checkSensorsSubState( context );
+    dimNeopixels();
 
     context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
 }
@@ -82,6 +88,7 @@ void idleState( WaterscreenContext_t *context )
 void lowWaterState( WaterscreenContext_t *context )
 {
     manageWaterPump( OffDeviceState );
+    dimNeopixels();
     if ( !shouldWaterAlarmTrigger() )
     {
         goBackToPreviousWaterscreenState( context );

@@ -9,6 +9,8 @@
 #include "picture_management/picture_logic_utils.h"
 #include "picture_management/standard_mode_picture_logic.h"
 
+#include "neopixels/neopixel_provider.h"
+
 #include "gpio/power_control.h"
 
 #include <stdlib.h>
@@ -50,8 +52,9 @@ static inline bool isWorkingConditionSatisfied( const Datetime_t *datetime )
 void standardModeState( WaterscreenContext_t *context )
 {
     assert( s_standardModeCfg );
-    const Datetime_t datetime = getRTCDatetime();
+    dimNeopixels();
 
+    const Datetime_t datetime = getRTCDatetime();
     if ( !isWorkingConditionSatisfied( &datetime ) )
     {
         manageValvePower( OffDeviceState );
@@ -66,4 +69,5 @@ void standardModeState( WaterscreenContext_t *context )
 
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );
+    context->stateDelay = PRESENTING_DELAY_MS;
 }

@@ -11,4 +11,7 @@
 
 #define TEST_NEOPIXEL_COUNT 12
 
+#define MAIN_COLOR_FACTOR      0.5
+#define SECONDARY_COLOR_FACTOR 0.1
+
 #endif /* NEOPIXEL_DEFINES_H_ */

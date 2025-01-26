@@ -33,21 +33,25 @@ static void assertFloatContainersEqual( const FloatSpan_t lhs, const FloatSpan_t
     }
 }
 
-void givenTwoIncreasingSamples_interpolateNormalized_interpolate()
+void givenIncreasingSamples_interpolateNormalized_interpolate()
 {
-    float       yInput[]         = { 0, 1 };
-    const float expectedOutput[] = { 0, 1 / 3.f, 2 / 3.f, 1 };
+    float       yInput[]         = { 0, 1, 0 };
+    const float expectedOutput[] = { 0, 0.4f, 0.8f, 0.8f, 0.4f, 0 };
 
-    static const size_t yOutSize       = 4;
+    static const size_t yOutSize       = 6;
     float               yOut[yOutSize] = {};
 
     interpolateNormalized( createFloatSpan( yInput, sizeof( yInput ) / sizeof( *yInput ) ),
                            createFloatSpan( yOut, yOutSize ) );
 
-    assert_memory_equal( expectedOutput, yOut, yOutSize * sizeof( *expectedOutput ) );
+    static float eps = 0.0000001f;
+    for ( size_t i = 0; i < yOutSize; ++i )
+    {
+        assert_float_equal( expectedOutput[i], yOut[i], eps );
+    }
 }
 
-void givenTwoDecreasingSamples_interpolateNormalized_interpolate()
+void givenDecreasingSamples_interpolateNormalized_interpolate()
 {
     float yInput[]         = { 1, 0 };
     float expectedOutput[] = { 1, 2 / 3.f, 1 / 3.f, 0 };
@@ -89,6 +93,7 @@ void givenColorsRatio_convertColorsRatioToRGBColors_convertToRGB()
     float               colorsRatio[]  = { 0, 0.5, 1 };
 
     const ColorRGB_t   mainColor            = { 100, 0, 0 };
+    static const float mainColorFactor      = 1.f;
     const ColorRGB_t   secondaryColor       = { 0, 100, 0 };
     static const float secondaryColorFactor = 0.5f;
 
@@ -96,7 +101,7 @@ void givenColorsRatio_convertColorsRatioToRGBColors_convertToRGB()
     const ColorRGB_t expectedRgb[] = { { 0, 50, 0 }, { 50, 25, 0 }, { 100, 0, 0 } };
 
     convertColorsRatioToRGBColors( createFloatSpan( colorsRatio, colorRatioSize ), rgbColors, mainColor, secondaryColor,
-                                   secondaryColorFactor );
+                                   mainColorFactor, secondaryColorFactor );
 
     for ( uint32_t i = 0; i < colorRatioSize; ++i )
     {
@@ -120,8 +125,8 @@ int main()
 {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test( givenBinaryNumber_binaryToArray_returnAnArrayOfBits ),
-        cmocka_unit_test( givenTwoIncreasingSamples_interpolateNormalized_interpolate ),
-        cmocka_unit_test( givenTwoDecreasingSamples_interpolateNormalized_interpolate ),
+        cmocka_unit_test( givenIncreasingSamples_interpolateNormalized_interpolate ),
+        cmocka_unit_test( givenDecreasingSamples_interpolateNormalized_interpolate ),
         cmocka_unit_test( givenTwoEqualSamples_interpolateNormalized_repeatInputByScale ),
         cmocka_unit_test( givenColorsRatio_convertColorsRatioToRGBColors_convertToRGB ),
         cmocka_unit_test( givenGRBColorArray_copyReverse_copyInReverseOrder ),

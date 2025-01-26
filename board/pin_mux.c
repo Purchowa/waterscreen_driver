@@ -27,6 +27,7 @@ pin_labels:
 - {pin_num: '61', pin_signal: PIO1_2/CTIMER0_MAT3/SCT_GPI6/HS_SPI_SCK/USB1_PORTPWRN/PLU_OUT5, label: 'P17[9]/P23[4]/LSPI_HS_SCK', identifier: CLK;LCD_CLK}
 - {pin_num: '62', pin_signal: PIO1_3/SCT0_OUT4/HS_SPI_MISO/USB0_PORTPWRN/PLU_OUT6, label: 'P17[11]/P23[5]/LSPI_HS_MISO', identifier: LCD_DC}
 - {pin_num: '31', pin_signal: PIO1_5/FC0_RXD_SDA_MOSI_DATA/SD0_D2/CTIMER2_MAT0/SCT_GPI0, label: 'P17[17]/P24[1]/PIO1_5_GPIO_ARD', identifier: LCD_RST}
+- {pin_num: '24', pin_signal: PIO1_8/FC0_CTS_SDA_SSEL0/SD0_CLK/SCT0_OUT1/FC4_SSEL2/ADC0_4, label: 'P17[19]/PIO1_8_GPIO_ARD', identifier: LCD_BL}
 - {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: NEOPIXEL_MOSI}
 - {pin_num: '57', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, label: 'P18[4]/SD1_CMD', identifier: PUMP}
 - {pin_num: '82', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, label: 'P18[12]/SD1_D2', identifier: BOTTOM_WATER_SENSOR}
@@ -1118,6 +1119,7 @@ BOARD_InitLCDPins:
     identifier: LCD_DIN}
   - {pin_num: '59', peripheral: FLEXCOMM8, signal: HS_SPI_SSEL1, pin_signal: PIO1_1/FC3_RXD_SDA_MOSI_DATA/CT_INP3/SCT_GPI5/HS_SPI_SSEL1/USB1_OVERCURRENTN/PLU_OUT4}
   - {pin_num: '31', peripheral: GPIO, signal: 'PIO1, 5', pin_signal: PIO1_5/FC0_RXD_SDA_MOSI_DATA/SD0_D2/CTIMER2_MAT0/SCT_GPI0, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: '24', peripheral: GPIO, signal: 'PIO1, 8', pin_signal: PIO1_8/FC0_CTS_SDA_SSEL0/SD0_CLK/SCT0_OUT1/FC4_SSEL2/ADC0_4, direction: OUTPUT, gpio_init_state: 'true'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1150,6 +1152,13 @@ void BOARD_InitLCDPins(void)
     };
     /* Initialize GPIO functionality on pin PIO1_5 (pin 31)  */
     GPIO_PinInit(BOARD_INITLCDPINS_LCD_RST_GPIO, BOARD_INITLCDPINS_LCD_RST_PORT, BOARD_INITLCDPINS_LCD_RST_PIN, &LCD_RST_config);
+
+    gpio_pin_config_t LCD_BL_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_8 (pin 24)  */
+    GPIO_PinInit(BOARD_INITLCDPINS_LCD_BL_GPIO, BOARD_INITLCDPINS_LCD_BL_PORT, BOARD_INITLCDPINS_LCD_BL_PIN, &LCD_BL_config);
 
     IOCON->PIO[0][26] = ((IOCON->PIO[0][26] &
                           /* Mask bits to zero which are setting */
@@ -1215,6 +1224,19 @@ void BOARD_InitLCDPins(void)
                          * : Enable Digital mode.
                          * Digital input is enabled. */
                         | IOCON_PIO_DIGIMODE(PIO1_5_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[1][8] = ((IOCON->PIO[1][8] &
+                         /* Mask bits to zero which are setting */
+                         (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                        /* Selects pin function.
+                         * : PORT18 (pin 24) is configured as PIO1_8. */
+                        | IOCON_PIO_FUNC(PIO1_8_FUNC_ALT0)
+
+                        /* Select Digital mode.
+                         * : Enable Digital mode.
+                         * Digital input is enabled. */
+                        | IOCON_PIO_DIGIMODE(PIO1_8_DIGIMODE_DIGITAL));
 }
 
 /* clang-format off */

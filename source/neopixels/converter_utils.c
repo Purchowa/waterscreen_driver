@@ -35,37 +35,43 @@ void interpolateNormalized( const FloatSpan_t yInput, FloatSpan_t yOutput )
         }
         return;
     }
+    const float step = ( yInput.size - 1 ) / (float)( yOutput.size - 1 );
 
-    const int scale = ( yOutput.size - 1 ) / ( yInput.size - 1 );
-
-    for ( uint32_t i = 0; i < yInput.size - 1; ++i )
+    for ( size_t i = 0; i < yOutput.size; ++i )
     {
-        for ( uint32_t scaleStep = 0; scaleStep < scale; ++scaleStep )
-        {
-            const float t = scaleStep / (float)scale;
+        const float  pos     = i * step;
+        const size_t lowIdx  = (size_t)pos;
+        size_t       highIdx = lowIdx + 1;
 
-            const float y0 = yInput.data[i];
-            const float y1 = yInput.data[i + 1];
+        if ( yInput.size <= highIdx )
+            highIdx = yInput.size - 1;
 
-            yOutput.data[i * scale + scaleStep] = y0 * ( 1 - t ) + y1 * t;
-        }
+        const float t   = pos - lowIdx;
+        yOutput.data[i] = yInput.data[lowIdx] * ( 1.f - t ) + yInput.data[highIdx] * t;
     }
-
-    yOutput.data[yOutput.size - 1] = yInput.data[yInput.size - 1];
 }
 
 void convertColorsRatioToRGBColors( const FloatSpan_t colorsRatio, ColorRGB_t *rgbColors, ColorRGB_t mainColor,
-                                    ColorRGB_t secondaryColor, float secondaryColorFactor )
+                                    ColorRGB_t secondaryColor, float mainColorFactor, float secondaryColorFactor )
 {
     for ( uint32_t i = 0; i < colorsRatio.size; ++i )
     {
         const float mainRatio = colorsRatio.data[i];
         const float secRatio  = 1 - mainRatio;
 
-        rgbColors[i].r = secRatio * secondaryColor.r * secondaryColorFactor + mainRatio * mainColor.r;
-        rgbColors[i].g = secRatio * secondaryColor.g * secondaryColorFactor + mainRatio * mainColor.g;
-        rgbColors[i].b = secRatio * secondaryColor.b * secondaryColorFactor + mainRatio * mainColor.b;
+        rgbColors[i].r = secRatio * secondaryColor.r * secondaryColorFactor + mainRatio * mainColor.r * mainColorFactor;
+        rgbColors[i].g = secRatio * secondaryColor.g * secondaryColorFactor + mainRatio * mainColor.g * mainColorFactor;
+        rgbColors[i].b = secRatio * secondaryColor.b * secondaryColorFactor + mainRatio * mainColor.b * mainColorFactor;
     }
+}
+
+ColorRGB_t adjustColorBrightness( ColorRGB_t color, float factor )
+{
+    color.r *= factor;
+    color.g *= factor;
+    color.b *= factor;
+
+    return color;
 }
 
 void copyReverse( colorGRB_t *dest, const colorGRB_t *src, size_t n )

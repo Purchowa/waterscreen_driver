@@ -7,7 +7,7 @@
 
 
 void convertPictureRowToGRBColors( const pictureRow_t pictureRow, colorGRB_t *grbColors, ColorRGB_t mainColor,
-                                   ColorRGB_t secondaryColor, float secondaryColorFactor )
+                                   ColorRGB_t secondaryColor, float mainColorFactor, float secondaryColorFactor )
 {
     assert( PICTURE_WIDTH < NEOPIXEL_COUNT );
 
@@ -20,7 +20,8 @@ void convertPictureRowToGRBColors( const pictureRow_t pictureRow, colorGRB_t *gr
     interpolateNormalized( bits, colorsRatio );
 
     static ColorRGB_t rgbColors[NEOPIXEL_COUNT];
-    convertColorsRatioToRGBColors( colorsRatio, rgbColors, mainColor, secondaryColor, secondaryColorFactor );
+    convertColorsRatioToRGBColors( colorsRatio, rgbColors, mainColor, secondaryColor, mainColorFactor,
+                                   secondaryColorFactor );
 
     for ( uint32_t i = 0; i < NEOPIXEL_COUNT; ++i )
     {

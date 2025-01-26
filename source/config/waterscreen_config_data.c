@@ -7,9 +7,9 @@
 
 WaterscreenConfig_t g_waterscreenConfig = { .mode = { .current = Mode_Standard, .previous = Mode_Standard },
                                             .standardModeConfig = { .isWorkingDuringWeekends = false,
-                                                                    .workTimeInStandardMode  = 5,
-                                                                    .idleTimeInStandardMode  = 5,
-                                                                    .workRange = { .from = 7, .to = 18 } } };
+                                                                    .workTimeInStandardMode  = 1,
+                                                                    .idleTimeInStandardMode  = 15,
+                                                                    .workRange = { .from = 8, .to = 15 } } };
 
 const waterscreenStateFunction_t g_waterscreenConfigAvailableModes[CONFIG_AVAILABLE_MODE_COUNT] = {
     standardModeState, demoModeState, serviceModeState };

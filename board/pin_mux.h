@@ -599,6 +599,12 @@ void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 /*!
  * @brief Selects pin function.: Alternative connection 0. */
 #define PIO1_5_FUNC_ALT0 0x00u
+/*!
+ * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
+#define PIO1_8_DIGIMODE_DIGITAL 0x01u
+/*!
+ * @brief Selects pin function.: Alternative connection 0. */
+#define PIO1_8_FUNC_ALT0 0x00u
 
 /*! @name PIO1_2 (number 61), P17[9]/P23[4]/LSPI_HS_SCK
   @{ */
@@ -642,6 +648,17 @@ void MWM_InitPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 #define BOARD_INITLCDPINS_LCD_RST_PIN 5U                   /*!<@brief PORT pin number */
 #define BOARD_INITLCDPINS_LCD_RST_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
                                                            /* @} */
+
+/*! @name PIO1_8 (number 24), P17[19]/PIO1_8_GPIO_ARD
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITLCDPINS_LCD_BL_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_BL_GPIO_PIN_MASK (1U << 8U) /*!<@brief GPIO pin mask */
+#define BOARD_INITLCDPINS_LCD_BL_PORT 1U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLCDPINS_LCD_BL_PIN 8U                   /*!<@brief PORT pin number */
+#define BOARD_INITLCDPINS_LCD_BL_PIN_MASK (1U << 8U)      /*!<@brief PORT pin mask */
+                                                          /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

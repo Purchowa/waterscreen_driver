@@ -40,9 +40,13 @@ static void givenPicture_presentationState_printBottomUp()
 
 static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState()
 {
+    will_return( getEachPicture, &picture );
+    const PictureInfo_t *mockedPicture = getEachPicture();
+
     WaterscreenContext_t context = {
         .waterscreenStateHandler         = presentationState,
         .previousWaterscreenStateHandler = demoModeState,
+        .pictureInfo                     = mockedPicture,
         .valveOpenCounter                = -1,
     };
 
@@ -50,6 +54,7 @@ static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGo
     will_return( shouldWaterAlarmTrigger, false );
     expect_value( manageWaterPump, state, OffDeviceState );
 
+    expect_function_call( lightUpNeopixelsWithColor );
     assertClosedValves();
     performWaterscreenAction( &context );
 
@@ -63,5 +68,5 @@ int main()
         cmocka_unit_test( givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState ),
     };
 
-    return cmocka_run_group_tests_name( "Presentation State", tests, NULL, NULL );
+    return cmocka_run_group_tests_name( "Presentation State test", tests, NULL, NULL );
 }

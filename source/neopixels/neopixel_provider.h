@@ -6,5 +6,6 @@
 
 void dimNeopixels();
 void lightUpNeopixels( const pictureRow_t pictureRow, ColorRGB_t mainColor, ColorRGB_t secondaryColor );
+void lightUpNeopixelsWithColor( ColorRGB_t color );
 
 #endif /* NEOPIXEL_PROVIDER_H_ */

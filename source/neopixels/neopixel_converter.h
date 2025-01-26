@@ -6,6 +6,6 @@
 
 
 void convertPictureRowToGRBColors( const pictureRow_t pictureRow, colorGRB_t *grbColors, ColorRGB_t mainColor,
-                                   ColorRGB_t secondaryColor, float secondaryColorFactor );
+                                   ColorRGB_t secondaryColor, float mainColorFactor, float secondaryColorFactor );
 
 #endif /* NEOPIXEL_CONVERTER_H_ */
