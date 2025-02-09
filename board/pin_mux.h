@@ -432,13 +432,13 @@ void BOARD_InitSPIValvePins(void); /* Function assigned for the Cortex-M33 (Core
 #define PIO1_14_FUNC_ALT0 0x00u
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
-#define PIO1_15_DIGIMODE_DIGITAL 0x01u
+#define PIO1_20_DIGIMODE_DIGITAL 0x01u
 /*!
  * @brief Selects pin function.: Alternative connection 0. */
-#define PIO1_15_FUNC_ALT0 0x00u
+#define PIO1_20_FUNC_ALT0 0x00u
 /*!
  * @brief Selects function mode (on-chip pull-up/pull-down resistor control).: Pull-up. Pull-up resistor enabled. */
-#define PIO1_15_MODE_PULL_UP 0x02u
+#define PIO1_20_MODE_PULL_UP 0x02u
 /*!
  * @brief Select Digital mode.: Enable Digital mode. Digital input is enabled. */
 #define PIO1_23_DIGIMODE_DIGITAL 0x01u
@@ -526,7 +526,7 @@ void BOARD_InitSPIValvePins(void); /* Function assigned for the Cortex-M33 (Core
 #define BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN_MASK (1U << 23U)
 /* @} */
 
-/*! @name PIO1_15 (number 82), P18[12]/SD1_D2
+/*! @name PIO1_20 (number 4), P17[1]/P24[5]/FC4_I2C_SCL_ARD
   @{ */
 
 /* Symbols to be used with GPIO driver */
@@ -535,16 +535,16 @@ void BOARD_InitSPIValvePins(void); /* Function assigned for the Cortex-M33 (Core
 #define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO GPIO
 /*!
  * @brief GPIO pin mask */
-#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO_PIN_MASK (1U << 15U)
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO_PIN_MASK (1U << 20U)
 /*!
  * @brief PORT peripheral base pointer */
 #define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PORT 1U
 /*!
  * @brief PORT pin number */
-#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN 15U
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN 20U
 /*!
  * @brief PORT pin mask */
-#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN_MASK (1U << 15U)
+#define BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN_MASK (1U << 20U)
 /* @} */
 
 /*!
@@ -565,6 +565,13 @@ void BOARD_InitGPIOPins(void); /* Function assigned for the Cortex-M33 (Core #0)
 /*!
  * @brief Selects pin function.: Alternative connection 1. */
 #define PIO1_24_FUNC_ALT1 0x01u
+
+/*! @name PIO1_24 (number 3), P18[15]/P18[10]/P24[3]/PLU_OUT6/GPIO/FC2_USART_RXD_ARD/SD1_D1
+  @{ */
+#define MWM_INITPINS_BOTTOM_WATER_SENSOR_PORT 1U                   /*!<@brief PORT peripheral base pointer */
+#define MWM_INITPINS_BOTTOM_WATER_SENSOR_PIN 24U                   /*!<@brief PORT pin number */
+#define MWM_INITPINS_BOTTOM_WATER_SENSOR_PIN_MASK (1U << 24U)      /*!<@brief PORT pin mask */
+                                                                   /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

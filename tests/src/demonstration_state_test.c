@@ -16,7 +16,7 @@ static const pictureRow_t pictureSample[] = { 0b10000000000000000000000000000000
                                               0b0010000000000000000000000000000000000000000000000000000000000000,
                                               0b0001000000000000000000000000000000000000000000000000000000000000 };
 
-static const PictureInfo_t picture = { .picture = { .size = 4, .data = pictureSample } };
+static const PictureInfo_t picture = { .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = false };
 
 static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
 {
@@ -48,6 +48,7 @@ static void givenDemoModeState_demoModeState_printInfinitelyManyPictures()
             will_return( shouldWaterAlarmTrigger, false );
             will_return( shouldWaterPumpTrigger, false );
             assert_ptr_equal( context.waterscreenStateHandler, presentationState );
+            expect_any( lightUpNeopixels, pictureRow );
             performWaterscreenAction( &context );
             assert_ptr_equal( context.pictureInfo, &picture );
         }

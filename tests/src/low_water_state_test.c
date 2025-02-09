@@ -7,6 +7,7 @@
 #include "spi_transfer.h"
 #include "waterscreen_state_context_handler.h"
 #include "waterscreen_states.h"
+#include "standard_mode_state.h"
 
 
 void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
@@ -23,10 +24,13 @@ void givenAlaramOn_lowWaterState_remainLowWaterState( void **state )
     }
 }
 
-void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
+void givenAlarmOff_lowWaterState_changeToPreviousMode( void **state )
 {
+    g_waterscreenConfig.mode.current  = Mode_Demo;
+    g_waterscreenConfig.mode.previous = Mode_Standard;
+
     WaterscreenContext_t context = { .waterscreenStateHandler         = lowWaterState,
-                                     .previousWaterscreenStateHandler = demoModeState };
+                                     .previousWaterscreenStateHandler = presentationState };
 
     expect_value( manageWaterPump, state, OffDeviceState );
     expect_value( manageValvePower, state, OnDeviceState );
@@ -39,7 +43,7 @@ void givenAlarmOff_lowWaterState_changeToPreviousState( void **state )
 int main()
 {
     const struct CMUnitTest tests[] = { cmocka_unit_test( givenAlaramOn_lowWaterState_remainLowWaterState ),
-                                        cmocka_unit_test( givenAlarmOff_lowWaterState_changeToPreviousState ) };
+                                        cmocka_unit_test( givenAlarmOff_lowWaterState_changeToPreviousMode ) };
 
     return cmocka_run_group_tests_name( "Low-water State", tests, NULL, NULL );
 }

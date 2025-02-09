@@ -31,7 +31,10 @@ pin_labels:
 - {pin_num: '40', pin_signal: PIO1_10/FC1_RXD_SDA_MOSI_DATA/CTIMER1_MAT0/SCT0_OUT3, label: 'P18[3]/PIO1_10_GPIO_ARD', identifier: NEOPIXEL_MOSI}
 - {pin_num: '57', pin_signal: PIO1_14/UTICK_CAP2/CTIMER1_MAT2/FC5_CTS_SDA_SSEL0/USB0_LEDN/SD1_CMD/ACMP0_D, label: 'P18[4]/SD1_CMD', identifier: PUMP}
 - {pin_num: '82', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, label: 'P18[12]/SD1_D2', identifier: BOTTOM_WATER_SENSOR}
+- {pin_num: '4', pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, label: 'P17[1]/P24[5]/FC4_I2C_SCL_ARD', identifier: FC4_I2C_SCL;BOTTOM_WATER_SENSOR}
 - {pin_num: '42', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, label: 'P18[8]/PLU_OUT5/GPIO/SD1_D3/FC4_SPI_SSEL2', identifier: UPPER_WATER_SENSOR_2}
+- {pin_num: '3', pin_signal: PIO1_24/FC2_RXD_SDA_MOSI_DATA/SCT0_OUT1/SD1_D1/FC3_SSEL3/PLU_OUT6, label: 'P18[15]/P18[10]/P24[3]/PLU_OUT6/GPIO/FC2_USART_RXD_ARD/SD1_D1',
+  identifier: BOTTOM_WATER_SENSOR}
 - {pin_num: '77', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, label: 'P18[6]/PLU_CLKIN/GPIO/SD1_D0', identifier: UPPER_WATER_SENSOR_1}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -585,8 +588,8 @@ void BOARD_InitBUTTONsPins(void)
 BOARD_InitI2SPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '4', peripheral: FLEXCOMM4, signal: TXD_SCL_MISO_WS, pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, mode: pullUp, slew_rate: standard,
-    invert: disabled, open_drain: disabled}
+  - {pin_num: '4', peripheral: FLEXCOMM4, signal: TXD_SCL_MISO_WS, pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, identifier: FC4_I2C_SCL,
+    mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
   - {pin_num: '30', peripheral: FLEXCOMM4, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO1_21/FC7_CTS_SDA_SSEL0/CTIMER3_MAT2/FC4_RXD_SDA_MOSI_DATA/PLU_OUT3, mode: pullUp,
     slew_rate: standard, invert: disabled, open_drain: disabled}
   - {pin_num: '91', peripheral: SYSCON, signal: MCLK, pin_signal: PIO1_31/MCLK/SD1_CLK/CTIMER0_MAT2/SCT0_OUT6/PLU_IN0, mode: inactive, slew_rate: standard, invert: disabled,
@@ -731,8 +734,8 @@ BOARD_InitACCELPins:
 - pin_list:
   - {pin_num: '30', peripheral: FLEXCOMM4, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO1_21/FC7_CTS_SDA_SSEL0/CTIMER3_MAT2/FC4_RXD_SDA_MOSI_DATA/PLU_OUT3, mode: pullUp,
     slew_rate: standard, invert: disabled, open_drain: disabled}
-  - {pin_num: '4', peripheral: FLEXCOMM4, signal: TXD_SCL_MISO_WS, pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, mode: pullUp, slew_rate: standard,
-    invert: disabled, open_drain: disabled}
+  - {pin_num: '4', peripheral: FLEXCOMM4, signal: TXD_SCL_MISO_WS, pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, identifier: FC4_I2C_SCL,
+    mode: pullUp, slew_rate: standard, invert: disabled, open_drain: disabled}
   - {pin_num: '58', peripheral: GPIO, signal: 'PIO1, 19', pin_signal: PIO1_19/SCT0_OUT7/CTIMER3_MAT1/SCT_GPI7/FC4_SCK/PLU_OUT1/ACMPVREF, direction: INPUT, mode: inactive,
     slew_rate: standard, invert: disabled, open_drain: disabled, asw: disabled}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -917,7 +920,8 @@ BOARD_InitGPIOPins:
     gpio_init_state: 'true'}
   - {pin_num: '77', peripheral: GPIO, signal: 'PIO1, 25', pin_signal: PIO1_25/FC2_TXD_SCL_MISO_WS/SCT0_OUT2/SD1_D0/UTICK_CAP0/PLU_CLKIN, direction: INPUT, mode: inactive}
   - {pin_num: '42', peripheral: GPIO, signal: 'PIO1, 23', pin_signal: PIO1_23/FC2_SCK/SCT0_OUT0/SD1_D3/FC3_SSEL2/PLU_OUT5, direction: INPUT, mode: pullUp}
-  - {pin_num: '82', peripheral: GPIO, signal: 'PIO1, 15', pin_signal: PIO1_15/UTICK_CAP3/CT_INP7/FC5_RTS_SCL_SSEL1/FC4_RTS_SCL_SSEL1/SD1_D2, direction: INPUT, mode: pullUp}
+  - {pin_num: '4', peripheral: GPIO, signal: 'PIO1, 20', pin_signal: PIO1_20/FC7_RTS_SCL_SSEL1/CT_INP14/FC4_TXD_SCL_MISO_WS/PLU_OUT2, identifier: BOTTOM_WATER_SENSOR,
+    direction: INPUT, mode: pullUp}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -958,7 +962,7 @@ void BOARD_InitGPIOPins(void)
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PIO1_15 (pin 82)  */
+    /* Initialize GPIO functionality on pin PIO1_20 (pin 4)  */
     GPIO_PinInit(BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_GPIO, BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PORT, BOARD_INITGPIOPINS_BOTTOM_WATER_SENSOR_PIN, &BOTTOM_WATER_SENSOR_config);
 
     gpio_pin_config_t UPPER_WATER_SENSOR_2_config = {
@@ -1001,23 +1005,23 @@ void BOARD_InitGPIOPins(void)
                           * Digital input is enabled. */
                          | IOCON_PIO_DIGIMODE(PIO1_14_DIGIMODE_DIGITAL));
 
-    IOCON->PIO[1][15] = ((IOCON->PIO[1][15] &
+    IOCON->PIO[1][20] = ((IOCON->PIO[1][20] &
                           /* Mask bits to zero which are setting */
                           (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_MODE_MASK | IOCON_PIO_DIGIMODE_MASK)))
 
                          /* Selects pin function.
-                          * : PORT115 (pin 82) is configured as PIO1_15. */
-                         | IOCON_PIO_FUNC(PIO1_15_FUNC_ALT0)
+                          * : PORT120 (pin 4) is configured as PIO1_20. */
+                         | IOCON_PIO_FUNC(PIO1_20_FUNC_ALT0)
 
                          /* Selects function mode (on-chip pull-up/pull-down resistor control).
                           * : Pull-up.
                           * Pull-up resistor enabled. */
-                         | IOCON_PIO_MODE(PIO1_15_MODE_PULL_UP)
+                         | IOCON_PIO_MODE(PIO1_20_MODE_PULL_UP)
 
                          /* Select Digital mode.
                           * : Enable Digital mode.
                           * Digital input is enabled. */
-                         | IOCON_PIO_DIGIMODE(PIO1_15_DIGIMODE_DIGITAL));
+                         | IOCON_PIO_DIGIMODE(PIO1_20_DIGIMODE_DIGITAL));
 
     IOCON->PIO[1][23] = ((IOCON->PIO[1][23] &
                           /* Mask bits to zero which are setting */

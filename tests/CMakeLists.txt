@@ -50,31 +50,31 @@ enable_testing()
 
 generate_test("presentation_state_test"
         "waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("demonstration_state_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("low_water_state_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("idle_state_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("standard_state_test"
         "waterscreen_state/standard_mode_state.c;waterscreen_state/waterscreen_state_context_handler.c;waterscreen_state/waterscreen_states.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;datetime_mocks.c;weather_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;datetime_mocks.c;weather_mocks.c;neopixels_mocks.c;config_data_mock.c")
 
 generate_test("sensors_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c")
+        "digital_signaling_mocks.c;picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("valves_test"
         "waterscreen_state/waterscreen_states.c;waterscreen_state/waterscreen_state_context_handler.c;picture_management/picture_logic_utils.c"
-        "picture_logic_mocks.c;neopixels_mocks.c")
+        "picture_logic_mocks.c;neopixels_mocks.c;standard_mode_mock.c;config_data_mock.c")
 
 generate_test("config_parser_test"
         "http/waterscreen_config_parser.c;config/waterscreen_config.c;common_utils.c;external/cjson/cjson.c"
@@ -119,4 +119,4 @@ target_compile_definitions("neopixel_converter_test" PRIVATE NEOPIXEL_COUNT=11 P
 
 generate_test("ble_receiver_handlers_test"
         "ble/receiver_handlers.c;config/waterscreen_config.c;common_utils.c;"
-        "context_handler_mocks.c;states_mocks.c")
+        "context_handler_mocks.c;states_mocks.c;standard_mode_mock.c")

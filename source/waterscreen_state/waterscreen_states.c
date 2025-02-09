@@ -1,5 +1,6 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context_handler.h"
+#include "standard_mode_state.h"
 #include "picture_management/demo_mode_picture_logic.h"
 #include "picture_management/picture_logic_utils.h"
 
@@ -60,8 +61,7 @@ void                presentationState( WaterscreenContext_t *context )
         if ( context->pictureInfo->enableRowBitSum )
             lightUpNeopixels( s_neopixelRowData, colors->main, colors->secondary );
         else
-            lightUpNeopixelsWithColor(
-                adjustColorBrightness( context->pictureInfo->colors.secondary, SECONDARY_COLOR_FACTOR ) );
+            lightUpNeopixelsWithColor( context->pictureInfo->colors.secondary );
 
         s_neopixelRowData = 0;
         closeValvesSubState( context );
@@ -103,7 +103,7 @@ void lowWaterState( WaterscreenContext_t *context )
     dimNeopixels();
     if ( !shouldWaterAlarmTrigger() )
     {
-        goBackToPreviousWaterscreenState( context );
+        changeWaterscreenState( context, g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
         manageValvePower( OnDeviceState );
         context->stateDelay = 5 * SECOND_MS;
     }

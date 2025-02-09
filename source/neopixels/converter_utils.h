@@ -2,7 +2,7 @@
 #define CONVERTER_UTILS_H_
 
 #include "common_types.h"
-#include "picture_types.h"
+#include "picture_management/picture_types.h"
 #include "neopixel_defines.h"
 #include "color.h"
 

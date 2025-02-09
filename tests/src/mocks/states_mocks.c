@@ -3,7 +3,6 @@
 #include <cmocka.h>
 
 #include "waterscreen_states.h"
-#include "standard_mode_state.h"
 #include "realtime_mode.h"
 
 void demoModeState( WaterscreenContext_t *context )
@@ -11,16 +10,6 @@ void demoModeState( WaterscreenContext_t *context )
     assert_non_null( context );
 }
 void idleState( WaterscreenContext_t *context )
-{
-    assert_non_null( context );
-}
-
-void initStandardModeConfig( const StandardModeConfig_t *cfg )
-{
-    assert_non_null( cfg );
-}
-
-void standardModeState( WaterscreenContext_t *context )
 {
     assert_non_null( context );
 }

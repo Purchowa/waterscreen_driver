@@ -8,34 +8,34 @@
 #define OPTIMAL_STATE 1
 #define LOW_STATE     0
 
-static uint32_t prevFirst  = 0;
-static uint32_t prevSecond = 0;
 
 bool shouldWaterPumpTrigger()
 {
-    static bool s_shouldPumpTrigger = false;
+    static uint32_t prevUpper         = LOW_STATE;
+    static uint32_t prevBottom        = OPTIMAL_STATE;
+    static bool     shouldPumpTrigger = false;
 
-    const uint32_t firstFloaterState =
+    const uint32_t upperBuoyState =
         GPIO_PinRead( BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_GPIO, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PORT,
                       BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_1_PIN );
-    const uint32_t secondFloaterState =
+    const uint32_t bottomBuoyState =
         GPIO_PinRead( BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_GPIO, BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PORT,
                       BOARD_INITGPIOPINS_UPPER_WATER_SENSOR_2_PIN );
 
-    if ( firstFloaterState == LOW_STATE && secondFloaterState == LOW_STATE )
-        s_shouldPumpTrigger = true;
-    else if ( firstFloaterState == OPTIMAL_STATE && secondFloaterState == OPTIMAL_STATE )
-        s_shouldPumpTrigger = false;
+    if ( prevBottom == OPTIMAL_STATE && bottomBuoyState == LOW_STATE )
+        shouldPumpTrigger = true;
+    if ( prevUpper == LOW_STATE && upperBuoyState == OPTIMAL_STATE )
+        shouldPumpTrigger = false;
 
-    if ( prevFirst != firstFloaterState || prevSecond != secondFloaterState )
+    if ( prevUpper != upperBuoyState || prevBottom != bottomBuoyState )
     {
-        LogDebug( "1. First sensor %s", firstFloaterState == LOW_STATE ? "low" : "optimal" );
-        LogDebug( "2. Second sensor %s", secondFloaterState == LOW_STATE ? "low" : "optimal" );
-        prevFirst  = firstFloaterState;
-        prevSecond = secondFloaterState;
+        LogDebug( "1. Upper buoy sensor %s", upperBuoyState == LOW_STATE ? "low" : "optimal" );
+        LogDebug( "2. Bottom buoy sensor %s", bottomBuoyState == LOW_STATE ? "low" : "optimal" );
+        prevUpper  = upperBuoyState;
+        prevBottom = bottomBuoyState;
     }
 
-    return s_shouldPumpTrigger;
+    return shouldPumpTrigger;
 }
 
 bool shouldWaterAlarmTrigger()

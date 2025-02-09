@@ -6,8 +6,8 @@
 #endif
 
 // Constants describing how many pictures to print.
-#define ALL_PICTURE_COUNT                  24 // Used in demo
-#define STANDARD_MODE_STATIC_PICTURE_COUNT 9
+#define ALL_PICTURE_COUNT                  28 // Used in demo
+#define STANDARD_MODE_STATIC_PICTURE_COUNT 13
 // ---
 
 #define STANDARD_MODE_PICTURE_GETTER_COUNT 6

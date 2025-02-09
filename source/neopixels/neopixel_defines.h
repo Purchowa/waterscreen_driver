@@ -9,9 +9,7 @@
 #define NEOPIXEL_STRIP_COUNT 2 // Colors on each strip will be a copy of itself
 #define TOTAL_NEOPIXEL_COUNT ( NEOPIXEL_STRIP_COUNT * NEOPIXEL_COUNT )
 
-#define TEST_NEOPIXEL_COUNT 12
-
-#define MAIN_COLOR_FACTOR      0.5
-#define SECONDARY_COLOR_FACTOR 0.1
+#define MAIN_COLOR_FACTOR      1.0
+#define SECONDARY_COLOR_FACTOR 0.8
 
 #endif /* NEOPIXEL_DEFINES_H_ */
