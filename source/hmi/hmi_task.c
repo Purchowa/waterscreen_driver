@@ -96,63 +96,30 @@ void modeSelectionMenuState()
     drawInfoPanel( &g_context, mode, getLastHttpCode(), true );
 }
 
-typedef bool ( *isButtonPressedFun_t )();
-static bool isButtonHeld( isButtonPressedFun_t isPressed )
-{
-    static TickType_t pressStart = 0;
-
-    if ( isPressed() && pressStart == 0 )
-    {
-        pressStart = xTaskGetTickCount();
-    }
-    else if ( isPressed() && pressStart != 0 )
-    {
-        const int32_t pressTime = TICKS_TO_MS( xTaskGetTickCount() - pressStart );
-        return TRANSFER_TO_SELECTION_MODE_HOLD_TIME_MS <= pressTime;
-    }
-
-    pressStart = 0;
-    return false;
-}
-
 static void quickMenu()
 {
-    static bool wasS2Held = false;
-
-    if ( isButtonHeld( isS2ButtonPressed ) )
+    static bool wasS2Pressed = false;
+    if ( isS2ButtonPressed() )
     {
-        wasS2Held = true;
-        LogInfo( "Held" );
+        wasS2Pressed = true;
     }
-    else if ( wasS2Held )
+    else if ( wasS2Pressed )
     {
         const WaterscreenMode_t mode = g_waterscreenConfig.mode.current != Mode_Demo ? Mode_Demo : Mode_Standard;
         setWaterscreenMode( &g_waterscreenConfig.mode, mode );
         forceChangeWaterscreenState( &g_context, g_waterscreenConfigAvailableModes[mode] );
 
-        wasS2Held = false;
+        wasS2Pressed = false;
     }
 }
 
 void hmiTask( void *params )
 {
-    bool wasS2Pressed = false;
     for ( ;; )
     {
         s_menuState();
-        // quickMenu();
-        if ( isS2ButtonPressed() )
-        {
-            wasS2Pressed = true;
-        }
-        else if ( wasS2Pressed )
-        {
-            const WaterscreenMode_t mode = g_waterscreenConfig.mode.current != Mode_Demo ? Mode_Demo : Mode_Standard;
-            setWaterscreenMode( &g_waterscreenConfig.mode, mode );
-            forceChangeWaterscreenState( &g_context, g_waterscreenConfigAvailableModes[mode] );
+        quickMenu();
 
-            wasS2Pressed = false;
-        }
 
         vTaskDelay( pdMS_TO_TICKS( HMI_TASK_DELAY ) );
     }
