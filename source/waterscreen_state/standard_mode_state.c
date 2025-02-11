@@ -64,8 +64,9 @@ void standardModeState( WaterscreenContext_t *context )
 
     const Weather_t *weather = getWeather();
 
-    context->pictureInfo      = getOccasionalPicture( &datetime, weather->weatherCondition );
-    context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
+    context->pictureInfo           = getOccasionalPicture( &datetime, weather->weatherCondition );
+    context->valveOpenCounter      = getLastPictureIndex( &context->pictureInfo->picture );
+    context->presentingLoopCounter = context->pictureInfo->loopCount;
 
     manageValvePower( OnDeviceState );
     changeWaterscreenState( context, presentationState );

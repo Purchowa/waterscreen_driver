@@ -7,7 +7,7 @@
 
 #include "power_control.h"
 #include "waterscreen_state_context_handler.h"
-#include "waterscreen_states.c" // Only for test purposes
+#include "waterscreen_states.c" // Only for testing purpose
 
 #include "utils/common_state_assert.h"
 
@@ -49,7 +49,8 @@ static void givenPictureWithRowBitSum_presentationState_printBottomUpAccumulateB
     WaterscreenContext_t context = { .waterscreenStateHandler         = presentationState,
                                      .previousWaterscreenStateHandler = demoModeState,
                                      .pictureInfo                     = &pictInfo,
-                                     .valveOpenCounter                = pictInfo.picture.size - 1 };
+                                     .valveOpenCounter                = pictInfo.picture.size - 1,
+                                     .presentingLoopCounter           = 0 };
     for ( int8_t i = pictInfo.picture.size - 1; 0 <= i; --i )
     { // Print picture
         expect_value( sendDataToValves, data, pictInfo.picture.data[i] );
@@ -71,6 +72,67 @@ static void givenPictureWithRowBitSum_presentationState_printBottomUpAccumulateB
     performWaterscreenAction( &context );
     assert_int_equal( s_neopixelRowData, 0 );
     assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
+}
+
+static void givenPictureWithLoopCount_presentationState_printMultipleTimesTheSamePicture()
+{
+    const uint32_t      expectedLoopCount = 2;
+    const PictureInfo_t pictInfo          = {
+                 .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = false, .loopCount = expectedLoopCount };
+
+    WaterscreenContext_t context = { .waterscreenStateHandler         = presentationState,
+                                     .previousWaterscreenStateHandler = standardModeState,
+                                     .pictureInfo                     = &pictInfo,
+                                     .valveOpenCounter                = pictInfo.picture.size - 1,
+                                     .presentingLoopCounter           = expectedLoopCount };
+
+
+    // First loop
+    for ( int32_t i = pictInfo.picture.size - 1; 0 <= i; --i )
+    { // Print picture
+        expect_value( sendDataToValves, data, pictInfo.picture.data[i] );
+        expect_value( lightUpNeopixels, pictureRow, pictInfo.picture.data[i] );
+        will_return( shouldWaterPumpTrigger, false );
+        will_return( shouldWaterAlarmTrigger, false );
+        expect_value( manageWaterPump, state, OffDeviceState );
+        will_return( sendDataToValves, SuccessSPI );
+        performWaterscreenAction( &context );
+        assert_ptr_equal( context.waterscreenStateHandler, presentationState );
+        assert_int_equal( context.stateDelay, 16 );
+    }
+
+    // Prepare for second loop
+    will_return( shouldWaterPumpTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
+    expect_value( manageWaterPump, state, OffDeviceState );
+    performWaterscreenAction( &context );
+    assert_int_equal( context.presentingLoopCounter, 1 );
+    assert_int_equal( context.valveOpenCounter, 3 );
+
+    // Second loop
+    for ( int32_t i = pictInfo.picture.size - 1; 0 <= i; --i )
+    { // Print picture
+        expect_value( sendDataToValves, data, pictInfo.picture.data[i] );
+        expect_value( lightUpNeopixels, pictureRow, pictInfo.picture.data[i] );
+        will_return( shouldWaterPumpTrigger, false );
+        will_return( shouldWaterAlarmTrigger, false );
+        expect_value( manageWaterPump, state, OffDeviceState );
+        will_return( sendDataToValves, SuccessSPI );
+        performWaterscreenAction( &context );
+        assert_ptr_equal( context.waterscreenStateHandler, presentationState );
+        assert_int_equal( context.stateDelay, 16 );
+    }
+
+    // End loop
+    will_return( shouldWaterPumpTrigger, false );
+    will_return( shouldWaterAlarmTrigger, false );
+    expect_value( manageWaterPump, state, OffDeviceState );
+
+    expect_function_call( lightUpNeopixelsWithColor );
+    assertClosedValves();
+    performWaterscreenAction( &context );
+    assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
+    assert_int_equal( context.presentingLoopCounter, 0 );
 }
 
 static void givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState()
@@ -106,7 +168,6 @@ int main()
 {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test_setup(
-
             givenPictureWithoutRowBitSum_presentationState_printBottomUpWithSameValueForValvesAndNeopixels,
             setupNeopixelRowData ),
         cmocka_unit_test_setup(
@@ -114,6 +175,7 @@ int main()
             setupNeopixelRowData ),
         cmocka_unit_test_setup( givenValveOpenCounterLessThanZero_presentationState_closeValvesAndGoBackToPreviousState,
                                 setupNeopixelRowData ),
+        cmocka_unit_test( givenPictureWithLoopCount_presentationState_printMultipleTimesTheSamePicture ),
     };
 
     return cmocka_run_group_tests_name( "Presentation State test", tests, NULL, NULL );

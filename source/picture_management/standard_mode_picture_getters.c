@@ -37,8 +37,9 @@ static uint8_t extractTensFromNumber( const uint8_t number )
     return ( number / ONES_EXTRACTOR ) % TENS_EXTRACTOR;
 }
 
-static PictureInfo_t s_timePictureInfo = { .picture = { .size = NUMBER_OF_ROWS_IN_PICTURE_CHARACTER, .data = NULL },
-                                           .colors  = { .main = { 0, 153, 255 }, .secondary = { 0, 255, 47 } },
+static PictureInfo_t s_timePictureInfo = { .picture   = { .size = NUMBER_OF_ROWS_IN_PICTURE_CHARACTER, .data = NULL },
+                                           .colors    = { .main = { 0, 153, 255 }, .secondary = { 0, 255, 47 } },
+                                           .loopCount = 5,
                                            .enableRowBitSum = true };
 
 PictureGetterLoopStatus_t getCurrentTimeAsPicture( PictureInfo_t **const picture, const Datetime_t *datetime,

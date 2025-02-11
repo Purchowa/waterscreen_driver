@@ -30,6 +30,7 @@ typedef struct
 {
     PictureDataSpan_t picture;
     PictureColors_t   colors;
+    int32_t           loopCount;
     bool enableRowBitSum; // Flag for accumulating row bits. It makes presentation less dynamic but provides more light.
                           // Useful for icons, picture, etc.
 } PictureInfo_t;

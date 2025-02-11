@@ -22,8 +22,10 @@ static void closeValvesSubState( WaterscreenContext_t *context )
 
 void demoModeState( WaterscreenContext_t *context )
 {
-    context->pictureInfo      = getEachPicture();
-    context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
+    context->pictureInfo           = getEachPicture();
+    context->valveOpenCounter      = getLastPictureIndex( &context->pictureInfo->picture );
+    context->presentingLoopCounter = context->pictureInfo->loopCount;
+
     manageValvePower( OnDeviceState );
     dimNeopixels();
     changeWaterscreenState( context, presentationState );
@@ -57,16 +59,25 @@ void                presentationState( WaterscreenContext_t *context )
 
     if ( context->valveOpenCounter < 0 )
     {
-        const PictureColors_t *colors = &context->pictureInfo->colors;
-        if ( context->pictureInfo->enableRowBitSum )
-            lightUpNeopixels( s_neopixelRowData, colors->main, colors->secondary );
-        else
-            lightUpNeopixelsWithColor( context->pictureInfo->colors.secondary );
+        --context->presentingLoopCounter;
+        if ( context->presentingLoopCounter <= 0 )
+        {
+            const PictureColors_t *colors = &context->pictureInfo->colors;
+            if ( context->pictureInfo->enableRowBitSum )
+                lightUpNeopixels( s_neopixelRowData, colors->main, colors->secondary );
+            else
+                lightUpNeopixelsWithColor( colors->secondary );
 
-        s_neopixelRowData = 0;
-        closeValvesSubState( context );
-        goBackToPreviousWaterscreenState( context );
-        context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
+            s_neopixelRowData = 0;
+            closeValvesSubState( context );
+            goBackToPreviousWaterscreenState( context );
+            context->stateDelay = BETWEEN_PICTURES_DELAY_MS;
+        }
+        else
+        {
+            context->valveOpenCounter = getLastPictureIndex( &context->pictureInfo->picture );
+            s_neopixelRowData         = 0;
+        }
     }
     else
     {
@@ -104,7 +115,6 @@ void lowWaterState( WaterscreenContext_t *context )
     if ( !shouldWaterAlarmTrigger() )
     {
         changeWaterscreenState( context, g_waterscreenConfigAvailableModes[g_waterscreenConfig.mode.current] );
-        manageValvePower( OnDeviceState );
         context->stateDelay = 5 * SECOND_MS;
     }
     else
