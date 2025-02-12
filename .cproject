@@ -237,7 +237,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/neopixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/lcd}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/http}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_driver/${ProjName}/source/hmi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/hmi}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.1023465353" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.2006366839" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
@@ -681,7 +681,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/neopixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/external/lcd}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/http}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/waterscreen_driver/${ProjName}/source/hmi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/hmi}&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.warnings.nowarn.783918223" name="Suppress warnings (-W)" superClass="gnu.both.asm.option.warnings.nowarn"/>
 								<option id="gnu.both.asm.option.version.1085135446" name="Announce version (-v)" superClass="gnu.both.asm.option.version"/>
