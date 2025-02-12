@@ -3,7 +3,7 @@
 #include <cmocka.h>
 
 #include "waterscreen_states.h"
-#include "realtime_mode.h"
+#include "realtime_mode_state.h"
 
 void demoModeState( WaterscreenContext_t *context )
 {
