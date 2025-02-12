@@ -7,8 +7,6 @@
 #include "waterscreen_state_context_handler.h"
 #include "waterscreen_states.h"
 
-#include "utils/common_state_assert.h"
-
 
 void givenPumpOn_idleState_turnOffPump( void **state )
 {

@@ -1,6 +1,5 @@
 #include "waterscreen_states.h"
 #include "waterscreen_state_context_handler.h"
-#include "standard_mode_state.h"
 #include "picture_management/demo_mode_picture_logic.h"
 #include "picture_management/picture_logic_utils.h"
 
@@ -11,6 +10,8 @@
 #include "neopixels/neopixel_provider.h"
 #include "neopixels/converter_utils.h"
 #include "neopixels/neopixel_defines.h"
+
+#include "config/waterscreen_config.h"
 
 #include <string.h>
 

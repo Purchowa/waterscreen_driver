@@ -1,7 +1,7 @@
 #include "state_utils.h"
 
 #include "standard_mode_state.h"
-#include "realtime_mode.h"
+#include "realtime_mode_state.h"
 #include "waterscreen_states.h"
 
 #define WATERSCREEN_STATE_COUNT 7

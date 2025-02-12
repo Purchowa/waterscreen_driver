@@ -81,7 +81,7 @@ static void givenPictureWithLoopCount_presentationState_printMultipleTimesTheSam
                  .picture = { .size = 4, .data = pictureSample }, .enableRowBitSum = false, .loopCount = expectedLoopCount };
 
     WaterscreenContext_t context = { .waterscreenStateHandler         = presentationState,
-                                     .previousWaterscreenStateHandler = standardModeState,
+                                     .previousWaterscreenStateHandler = demoModeState,
                                      .pictureInfo                     = &pictInfo,
                                      .valveOpenCounter                = pictInfo.picture.size - 1,
                                      .presentingLoopCounter           = expectedLoopCount };
@@ -131,7 +131,7 @@ static void givenPictureWithLoopCount_presentationState_printMultipleTimesTheSam
     expect_function_call( lightUpNeopixelsWithColor );
     assertClosedValves();
     performWaterscreenAction( &context );
-    assert_ptr_equal( context.waterscreenStateHandler, standardModeState );
+    assert_ptr_equal( context.waterscreenStateHandler, demoModeState );
     assert_int_equal( context.presentingLoopCounter, 0 );
 }
 

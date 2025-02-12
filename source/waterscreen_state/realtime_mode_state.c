@@ -1,4 +1,4 @@
-#include "realtime_mode.h"
+#include "realtime_mode_state.h"
 
 #include "picture_management/picture_data.h"
 #include "picture_management/picture_logic_utils.h"

@@ -3,7 +3,6 @@
 #include "waterscreen_state/standard_mode_state.h"
 #include "waterscreen_state/waterscreen_states.h"
 
-
 WaterscreenConfig_t g_waterscreenConfig = { .mode = { .current = Mode_Standard, .previous = Mode_Standard },
                                             .standardModeConfig = { .isWorkingDuringWeekends = false,
                                                                     .workTimeInStandardMode  = 1,
