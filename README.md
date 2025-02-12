@@ -20,7 +20,7 @@ The required SDK for compiling and running the firmware can be downloaded from t
 Once the repository is cloned, you can import the existing project into your **MCUXpresso** workspace by following these steps:
 
 1. **Open MCUXpresso IDE**.
-2. **Go to** `File` → `Import` → `MCUXpresso IDE` → `Existing Projects into Workspace`.
+2. **Go to** `File` → `Import` → `General` → `Existing Projects into Workspace`.
 3. **Browse to the cloned repository directory** and select the project.
 4. Click `Finish` to complete the import.
 
@@ -28,8 +28,8 @@ Once the repository is cloned, you can import the existing project into your **M
 
 Before building the project, you must configure the WiFi settings:
 
-1. **Navigate to the project's include directory**.
-2. **Clone the example configuration file**:
+1. **Navigate to `source/config/`**.
+2. **Clone the `wifi_cfg-example.h` and change its name to `wifi_cfg.h`**:
 3. **Open `wifi_cfg.h` and update the WiFi configuration**:
 
 ## Building the Firmware
